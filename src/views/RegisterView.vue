@@ -32,6 +32,9 @@
         <div class="btn-group">
           <button class="btn-submit" type="submit">Sign Up</button>
         </div>
+        <div class="signin">
+          <span>I already have an account!</span>
+        </div>
       </form>
       <div class="form-greet">
         <svg
@@ -48,7 +51,7 @@
         <div class="greet-group">
           <h3>
             <p>Hello!</p>
-            <div>Welcome to <strong>JcStudy</strong></div>
+            <div>Welcome to <strong class="jcstudy">JcStudy</strong></div>
             first time!
           </h3>
           <div class="select-character">
@@ -80,6 +83,7 @@ const onSubmit = () => {
 </script>
 
 <style scoped lang="scss">
+@use "../styles/variable";
 .auth {
   display: flex;
   justify-content: center;
@@ -89,13 +93,26 @@ const onSubmit = () => {
     display: flex;
     align-items: center;
     width: 80%;
-    height: 70vh;
+    height: 100%;
     overflow: hidden;
-    padding: 2rem 4rem;
+    padding: 4rem;
     box-shadow: 1px 1px 20px 1px rgb(0, 0, 0, 0.3);
     .form-signup {
       width: 50%;
       padding-right: 2rem;
+      .signin {
+        span {
+          font-size: 0.9rem;
+          font-weight: bold;
+          opacity: 0.7;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+        span:hover {
+          color: variable.$primary-color;
+          opacity: 1;
+        }
+      }
       .btn-group {
         padding: 0.3rem 0;
         .btn-submit {
@@ -122,6 +139,12 @@ const onSubmit = () => {
         }
         h2 {
           font-size: 2.5rem;
+          background: -webkit-linear-gradient(
+            variable.$primary-color,
+            rgb(15, 197, 225)
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
         input {
           padding: 0.2rem 0.3rem;
@@ -144,14 +167,19 @@ const onSubmit = () => {
         h3 {
           font-size: 1.5rem;
           text-align: end;
+          background: -webkit-linear-gradient(#1d4ed8, variable.$primary-color);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
           p {
             font-size: 3rem;
             line-height: 3.5rem;
           }
-          strong {
-            font-size: 3rem;
+          .jcstudy {
+            font-size: 2.5rem;
             font-weight: bold;
-            color: rgb(249, 129, 0);
+            background: -webkit-linear-gradient(#facc15, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
           }
         }
         .select-character {
@@ -164,6 +192,11 @@ const onSubmit = () => {
           i {
             cursor: pointer;
             margin: 0 2rem;
+            opacity: 0.7;
+          }
+          i:hover {
+            opacity: 1;
+            scale: 1.1;
           }
         }
         .form-name {
@@ -176,6 +209,18 @@ const onSubmit = () => {
         }
       }
     }
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 789px) {
+  .signup {
+    padding: 2rem !important;
+  }
+  .form-signup {
+    width: 100% !important;
+    padding-right: 0 !important;
+  }
+  .form-greet {
+    display: none;
   }
 }
 </style>
