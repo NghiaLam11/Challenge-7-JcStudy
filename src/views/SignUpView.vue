@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
-    <div class="signup">
-      <form @submit.prevent="onSubmit" class="form-signup">
+    <div class="register">
+      <form @submit.prevent="onSubmit" class="form-register">
         <div class="form-group">
           <h2>Sign Up</h2>
         </div>
@@ -19,13 +19,20 @@
           <label for="password">Password</label>
           <input
             required
+            ref="passwordElement"
             v-model="password"
             type="password"
             id="password"
             class="password"
           />
           <div class="toggle-password">
-            <input type="checkbox" id="checkbox" class="checkbox" />
+            <input
+              v-model="isTogglePassword"
+              @change="onTogglePassword"
+              type="checkbox"
+              id="checkbox"
+              class="checkbox"
+            />
             <label for="checkbox">Reveal password!</label>
           </div>
         </div>
@@ -33,7 +40,11 @@
           <button class="btn-submit" type="submit">Sign Up</button>
         </div>
         <div class="signin">
-          <span>I already have an account!</span>
+          <router-link to="/signin"
+            ><span>I already have an account!</span></router-link
+          >
+          <i> or </i>
+          <span @click="onAnonymus">Visit and go!</span>
         </div>
       </form>
       <div class="form-greet">
@@ -43,8 +54,8 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill="#BAE6FF"
-            d="M45.6,-80.2C58.3,-71.6,67.2,-57.8,75.1,-43.5C83.1,-29.3,90,-14.6,91.2,0.7C92.4,16,87.8,32,79.1,45C70.5,58,57.8,68,43.9,75.3C30,82.5,15,87,0,86.9C-15,86.9,-29.9,82.3,-43.7,75C-57.4,67.7,-70,57.7,-78.6,44.7C-87.2,31.8,-91.9,15.9,-90.9,0.6C-89.9,-14.8,-83.4,-29.6,-75.1,-43.1C-66.8,-56.6,-56.9,-68.9,-44.1,-77.4C-31.3,-85.9,-15.6,-90.6,0.4,-91.3C16.5,-92,32.9,-88.7,45.6,-80.2Z"
+            fill="#F1F5F9"
+            d="M46,-79C60.1,-71.6,72.4,-60.2,79.1,-46.4C85.9,-32.6,87.2,-16.3,87.4,0.1C87.7,16.6,86.8,33.1,80.3,47.4C73.8,61.6,61.6,73.5,47.2,81.5C32.9,89.5,16.4,93.6,0,93.7C-16.5,93.8,-33.1,89.9,-46.5,81.3C-59.9,72.8,-70.1,59.6,-78.3,45.3C-86.6,30.9,-92.7,15.5,-93,-0.2C-93.3,-15.8,-87.8,-31.6,-78.9,-44.9C-70.1,-58.1,-58,-68.8,-44.3,-76.5C-30.6,-84.2,-15.3,-88.8,0.3,-89.4C16,-90,31.9,-86.4,46,-79Z"
             transform="translate(100 100)"
           />
         </svg>
@@ -52,7 +63,7 @@
           <h3>
             <p>Hello!</p>
             <div>Welcome to <strong class="jcstudy">JcStudy</strong></div>
-            first time!
+            first time &#127881;!
           </h3>
           <div class="select-character">
             <i class="fa-solid fa-angle-left"></i>
@@ -80,6 +91,22 @@ const name = ref("JcLearn-er");
 const onSubmit = () => {
   console.log(name.value, password.value, email.value);
 };
+
+// Anonymus visiter
+const onAnonymus = () => {
+  console.log("You are a visiter right now!");
+};
+
+// Feature reveal the password
+const isTogglePassword = ref(false);
+const passwordElement = ref();
+const onTogglePassword = () => {
+  if (isTogglePassword.value) {
+    passwordElement.value.type = "text";
+  } else {
+    passwordElement.value.type = "password";
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -89,7 +116,7 @@ const onSubmit = () => {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  .signup {
+  .register {
     display: flex;
     align-items: center;
     width: 80%;
@@ -97,20 +124,24 @@ const onSubmit = () => {
     overflow: hidden;
     padding: 4rem;
     box-shadow: 1px 1px 20px 1px rgb(0, 0, 0, 0.3);
-    .form-signup {
+    .form-register {
       width: 50%;
       padding-right: 2rem;
-      .signin {
-        span {
+      .signin{
+        a, span {
           font-size: 0.9rem;
           font-weight: bold;
-          opacity: 0.7;
+          color: variable.$primary-light-text;
+          opacity: 0.8;
           text-decoration: underline;
           cursor: pointer;
         }
         span:hover {
           color: variable.$primary-color;
           opacity: 1;
+        }
+        i {
+          font-size: 0.9rem;
         }
       }
       .btn-group {
@@ -157,19 +188,27 @@ const onSubmit = () => {
       .blob {
         position: absolute;
         z-index: -1;
-        scale: 2;
-        transform: translateX(60px) translateY(-50px);
+        scale: 6;
+        transform: translateX(0px) translateY(-50px);
+        transition: animation 0.8s linear;
+        animation: blobAni linear 0.8s;
+      }
+      @keyframes blobAni {
+        from {
+          transform: translateX(100%) translateY(-50px);
+        }
+        to {
+          transform: translateX(0px) translateY(-50px);
+        }
       }
       .greet-group {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-end;
         h3 {
           font-size: 1.5rem;
           text-align: end;
-          background: -webkit-linear-gradient(#1d4ed8, variable.$primary-color);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: variable.$primary-light-text;
           p {
             font-size: 3rem;
             line-height: 3.5rem;
@@ -186,8 +225,10 @@ const onSubmit = () => {
           display: flex;
           align-items: center;
           height: 150px;
+          justify-content: flex-end;
           img {
             height: 100%;
+            transform: scaleX(-1);
           }
           i {
             cursor: pointer;
@@ -200,6 +241,7 @@ const onSubmit = () => {
           }
         }
         .form-name {
+          text-align: end;
           input {
             border: none;
             border-bottom: 1px solid black;
@@ -212,10 +254,10 @@ const onSubmit = () => {
   }
 }
 @media screen and (min-width: 0px) and (max-width: 789px) {
-  .signup {
+  .register {
     padding: 2rem !important;
   }
-  .form-signup {
+  .form-register {
     width: 100% !important;
     padding-right: 0 !important;
   }
