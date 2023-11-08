@@ -3,7 +3,8 @@
 }
 
 .dark {
-  background-color: black !important;
+  /* background-color: #0f172a !important; */
+  background-image: linear-gradient(to right, #0f172a, #111827);
   color: white !important;
 }
 .wrapper {

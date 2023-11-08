@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <div class="nav container">
+  <section class="header">
+    <nav class="nav container">
       <ul class="nav-list">
         <li class="nav-logo"><a href="" class="logo nav-link">JcStudy</a></li>
       </ul>
@@ -12,7 +12,10 @@
           <router-link to="/" class="nav-link">Courses</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/" class="nav-link">Roadmap</router-link>
+          <router-link to="/" class="nav-link">News</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/" class="nav-link">Blogs</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/" class="nav-link">Contact</router-link>
@@ -21,20 +24,54 @@
       <ul class="nav-list">
         <li class="nav-theme">
           <div class="theme">
-            <img src="../images/sun.png" alt="" />
-            <!-- <img src="../images/full-moon (1).png" alt="" /> -->
+            <img
+              v-if="isToggleMode"
+              @click="onLightMode"
+              src="../images/full-moon (1).png"
+              alt=""
+            />
+            <img v-else @click="onDarkMode" src="../images/sun.png" alt="" />
           </div>
         </li>
       </ul>
-    </div>
-  </div>
+    </nav>
+  </section>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+const isToggleMode = ref(false);
+const htmlElements = document.querySelector("html");
+const onDarkMode = () => {
+  console.log("onDarkMode");
+  isToggleMode.value = true;
+  htmlElements?.classList.add("dark");
+  localStorage.setItem("theme", "dark");
+};
+const onLightMode = () => {
+  console.log("onLightMode");
+  isToggleMode.value = false;
+  htmlElements?.classList.remove("dark");
+  localStorage.removeItem("theme");
+};
+
+onMounted(() => {
+  const cat = localStorage.getItem("theme");
+  if (cat === "dark") {
+    onDarkMode();
+  } else {
+    onLightMode();
+  }
+});
+</script>
 
 <style scoped lang="scss">
 @use "../styles/variable";
 .header {
-  background-color: rgb(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  animation: headerAni 1s ease-in-out;
   .nav {
     display: flex;
     align-items: center;
@@ -53,8 +90,8 @@
         .theme {
           img {
             width: 45px;
-            // transform: translateY(100px) translateX(10px);
-            animation: themeAni 1.3s ease-in-out;
+            cursor: pointer;
+            animation: themeAni 2s ease-in-out;
           }
           @keyframes themeAni {
             from {
@@ -85,6 +122,14 @@
       align-items: center;
       padding: 1rem 0;
     }
+  }
+}
+@keyframes headerAni {
+  from {
+    top: -10%;
+  }
+  to {
+    top: 0;
   }
 }
 </style>

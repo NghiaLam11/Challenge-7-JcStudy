@@ -44,21 +44,11 @@
             ><span>I already have an account!</span></router-link
           >
           <i> or </i>
-          <span @click="onAnonymus">Visit and go!</span>
+          <router-link to="/"><span>Visit and go!</span></router-link>
         </div>
       </form>
       <div class="form-greet">
-        <svg
-          class="blob"
-          viewBox="0 0 200 200"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="#F1F5F9"
-            d="M46,-79C60.1,-71.6,72.4,-60.2,79.1,-46.4C85.9,-32.6,87.2,-16.3,87.4,0.1C87.7,16.6,86.8,33.1,80.3,47.4C73.8,61.6,61.6,73.5,47.2,81.5C32.9,89.5,16.4,93.6,0,93.7C-16.5,93.8,-33.1,89.9,-46.5,81.3C-59.9,72.8,-70.1,59.6,-78.3,45.3C-86.6,30.9,-92.7,15.5,-93,-0.2C-93.3,-15.8,-87.8,-31.6,-78.9,-44.9C-70.1,-58.1,-58,-68.8,-44.3,-76.5C-30.6,-84.2,-15.3,-88.8,0.3,-89.4C16,-90,31.9,-86.4,46,-79Z"
-            transform="translate(100 100)"
-          />
-        </svg>
+        <img class="blob" src="../images/sent.png" alt="" />
         <div class="greet-group">
           <h3>
             <p>Hello!</p>
@@ -66,9 +56,9 @@
             first time &#127881;!
           </h3>
           <div class="select-character">
-            <i class="fa-solid fa-angle-left"></i>
-            <img src="../images/peep-54.png" alt="" />
-            <i class="fa-solid fa-angle-right"></i>
+            <i @click="onPrevCharacter" class="fa-solid fa-angle-left"></i>
+            <img ref="characterElement" src="../images/peep-54.png" alt="" />
+            <i @click="onNextCharacter" class="fa-solid fa-angle-right"></i>
           </div>
           <form @submit.prevent="onSubmit" class="form-name">
             <input
@@ -92,11 +82,6 @@ const onSubmit = () => {
   console.log(name.value, password.value, email.value);
 };
 
-// Anonymus visiter
-const onAnonymus = () => {
-  console.log("You are a visiter right now!");
-};
-
 // Feature reveal the password
 const isTogglePassword = ref(false);
 const passwordElement = ref();
@@ -105,6 +90,36 @@ const onTogglePassword = () => {
     passwordElement.value.type = "text";
   } else {
     passwordElement.value.type = "password";
+  }
+};
+const characterElement = ref();
+const characters = ref([
+  "/src/images/peep-82.png",
+  "/src/images/peep-94.png",
+  "/src/images/peep-96.png",
+  "/src/images/peep-54.png",
+]);
+let presentCharacter = ref(0);
+let beat = new Audio("/src/sounds/shooting-sound-fx-159024.mp3");
+const onNextCharacter = () => {
+  beat.play();
+  characterElement.value.src = characters.value[presentCharacter.value];
+  presentCharacter.value++;
+  console.log("character");
+  if (presentCharacter.value >= characters.value.length - 1) {
+    console.log("000");
+    presentCharacter.value = 0;
+  }
+};
+
+const onPrevCharacter = () => {
+  beat.play();
+  characterElement.value.src = characters.value[presentCharacter.value];
+  presentCharacter.value--;
+  console.log("character");
+  if (presentCharacter.value <= 0) {
+    console.log("000");
+    presentCharacter.value = characters.value.length - 1;
   }
 };
 </script>
@@ -124,14 +139,17 @@ const onTogglePassword = () => {
     overflow: hidden;
     padding: 4rem;
     box-shadow: 1px 1px 20px 1px rgb(0, 0, 0, 0.3);
+    background-color: inherit;
+    color: inherit;
     .form-register {
       width: 50%;
       padding-right: 2rem;
-      .signin{
-        a, span {
+      .signin {
+        a,
+        span {
           font-size: 0.9rem;
           font-weight: bold;
-          color: variable.$primary-light-text;
+          color: inherit;
           opacity: 0.8;
           text-decoration: underline;
           cursor: pointer;
@@ -149,6 +167,8 @@ const onTogglePassword = () => {
         .btn-submit {
           cursor: pointer;
           padding: 0.2rem 1rem;
+          background-color: rgb(255, 255, 255, 0.1);
+          color: inherit;
         }
       }
       .form-group {
@@ -179,6 +199,8 @@ const onTogglePassword = () => {
         }
         input {
           padding: 0.2rem 0.3rem;
+          color: inherit;
+          background-color: rgb(255, 255, 255, 0.1);
         }
       }
     }
@@ -188,17 +210,18 @@ const onTogglePassword = () => {
       .blob {
         position: absolute;
         z-index: -1;
-        scale: 6;
-        transform: translateX(0px) translateY(-50px);
+        scale: 2;
+        rotate: 15deg;
+        opacity: 0.8;
         transition: animation 0.8s linear;
-        animation: blobAni linear 0.8s;
+        animation: blobAni linear 1.3s forwards;
       }
       @keyframes blobAni {
         from {
-          transform: translateX(100%) translateY(-50px);
+          transform: translateX(-300%) translateY(180%);
         }
         to {
-          transform: translateX(0px) translateY(-50px);
+          transform: translateX(200%) translateY(-160%);
         }
       }
       .greet-group {
@@ -208,7 +231,7 @@ const onTogglePassword = () => {
         h3 {
           font-size: 1.5rem;
           text-align: end;
-          color: variable.$primary-light-text;
+          color: inherit;
           p {
             font-size: 3rem;
             line-height: 3.5rem;
@@ -244,9 +267,10 @@ const onTogglePassword = () => {
           text-align: end;
           input {
             border: none;
-            border-bottom: 1px solid black;
+            border-bottom: 1px solid rgb(96, 95, 95);
             background-color: transparent;
             outline: none;
+            color: inherit;
           }
         }
       }

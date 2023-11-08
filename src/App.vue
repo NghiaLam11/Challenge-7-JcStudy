@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <header class="header"><NavBar /></header>
+    <header v-if="!isSpecialPage" class="header"><NavBar /></header>
     <main class="body">
       <router-view></router-view>
     </main>
@@ -9,14 +9,31 @@
 </template>
 <script setup lang="ts">
 import NavBar from "./components/NavBar.vue";
-// import { onMounted } from 'vue';
-// import { useRouter } from 'vue-router';
-
+import { onMounted, watch, ref } from "vue";
+// import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const isSpecialPage = ref(false);
 // const router = useRouter();
-// onMounted(() => {
-//   router.push('/signup');
-// })
+onMounted(() => {
+  // router.push('/signup');
+  watch(
+    () => route.fullPath,
+    (newPath) => {
+      if (newPath === "/signin" || newPath === "/signup") {
+        isSpecialPage.value = true;
+        console.log("TRUE: " + newPath);
+      } else {
+        isSpecialPage.value = false;
+        console.log("FALSE: " + newPath);
+      }
+    }
+  );
+});
 </script>
 
 <style scoped lang="scss">
+.header {
+  margin-bottom: 5.5rem;
+}
 </style>
