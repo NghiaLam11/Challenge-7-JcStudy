@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import './style.css'
+import './style.scss'
 import './reset.css'
 import router from './router'
 import { createPinia } from 'pinia'

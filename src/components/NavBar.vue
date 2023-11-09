@@ -2,7 +2,7 @@
   <section class="header">
     <nav class="nav container">
       <ul class="nav-list">
-        <li class="nav-logo"><a href="" class="logo nav-link">JcStudy</a></li>
+        <li class="nav-logo"><a href="" class="logo">JcStudy</a></li>
       </ul>
       <ul class="nav-list">
         <li class="nav-item">
@@ -32,6 +32,11 @@
             />
             <img v-else @click="onDarkMode" src="../images/sun.png" alt="" />
           </div>
+        </li>
+        <li class="nav-auth">
+          <router-link to="/"
+            ><img src="../images/peep-82.png" alt=""
+          /></router-link>
         </li>
       </ul>
     </nav>
@@ -103,21 +108,41 @@ onMounted(() => {
           }
         }
       }
+      .nav-auth {
+        padding: 0.5rem;
+        img {
+          width: 35px;
+          cursor: pointer;
+          transform: scaleX(-1);
+        }
+      }
       .nav-logo {
         font-size: 1.5rem;
         font-weight: bold;
-        .nav-link {
+        .logo {
           font-family: monospace;
-          background: -webkit-linear-gradient(#facc15, #f97316);
+          background: -webkit-linear-gradient(
+            variable.$primary-color,
+            variable.$primary-color-light
+          );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
+          text-decoration: none;
+          color: inherit;
+          padding: 0 1rem;
         }
       }
       .nav-item:hover {
-        color: variable.$primary-color;
+        cursor: pointer;
+        transform: translateX(-5px);
       }
     }
     .nav-list:nth-child(2) {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    .nav-list:nth-child(3) {
       display: flex;
       align-items: center;
       padding: 1rem 0;
