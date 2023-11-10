@@ -11,7 +11,8 @@
             required
             v-model="email"
             type="email"
-            id="email"
+            placeholder="Ex: jcstudy123@gmail.com"
+
             class="email"
           />
         </div>
@@ -22,7 +23,8 @@
             ref="passwordElement"
             v-model="password"
             type="password"
-            id="password"
+            placeholder="Ex: jcstudy123"
+
             class="password"
           />
           <div class="toggle-password">
@@ -116,7 +118,7 @@ const onTogglePassword = () => {
           cursor: pointer;
         }
         span:hover {
-          color: variable.$primary-color;
+          color: variable.$primary-color-dark;
           opacity: 1;
         }
         i {
@@ -130,6 +132,13 @@ const onTogglePassword = () => {
           padding: 0.2rem 1rem;
           background-color: rgb(255, 255, 255, 0.1);
           color: inherit;
+          border: 1px solid;
+          border-bottom: 0.3rem solid;
+          border-radius: 4px;
+          transition: all 0.2s linear;
+        }
+        .btn-submit:hover {
+          border-bottom: 0.1rem solid;
         }
       }
       .form-group {
@@ -152,8 +161,8 @@ const onTogglePassword = () => {
         h2 {
           font-size: 2.5rem;
           background: -webkit-linear-gradient(
-            variable.$primary-color,
-            rgb(15, 197, 225)
+            variable.$primary-color-dark,
+            variable.$primary-color-light
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -161,7 +170,19 @@ const onTogglePassword = () => {
         input {
           padding: 0.2rem 0.3rem;
           color: inherit;
-          background-color: rgb(255, 255, 255, 0.1);
+          background-color: rgba(118, 117, 117, 0.1);
+          border: 1px solid;
+          border-bottom: 0.3rem solid;
+          border-radius: 4px;
+          outline: none;
+          transition: all 0.1s ease-in-out;
+        }
+        input:focus {
+          border-bottom: 0.1rem solid;
+        }
+        input::placeholder {
+          font-size: 0.9rem;
+          opacity: 0.7;
         }
       }
     }
@@ -200,7 +221,10 @@ const onTogglePassword = () => {
           .jcstudy {
             font-size: 2.5rem;
             font-weight: bold;
-            background: -webkit-linear-gradient(#facc15, #f97316);
+            background: -webkit-linear-gradient(
+              variable.$primary-color-dark,
+              variable.$primary-color-light
+            );
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }

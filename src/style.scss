@@ -2,23 +2,40 @@
 * {
   font-family: "Poppins", sans-serif;
 }
-html {
+
+.light {
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: #333 !important;
+  .nav-item:hover .nav-link {
+    color: variable.$primary-color-light !important;
+  }
+  .active {
+    color: variable.$primary-color-light !important;
+    font-weight: bold;
+  }
+  .bg-primary {
+    background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
+    color: hsl(0, 0%, 20%);
+  }
 }
-.nav-item:hover .nav-link {
-  color: variable.$primary-color-light !important;
-  font-weight: bold;
-}
+
 .dark {
   /* background-color: #0f172a !important; */
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: white !important;
+  .nav-item:hover .nav-link {
+    color: variable.$primary-color-dark !important;
+  }
+  .active {
+    color: variable.$primary-color-dark !important;
+    font-weight: bold;
+  }
+  .bg-primary {
+    background-image: linear-gradient(to right, #0f172a, #111827);
+    color: #e2e8f0;
+  }
 }
-.dark .nav-item:hover .nav-link {
-  color: variable.$primary-color !important;
-  font-weight: bold;
-}
+
 .wrapper {
   width: 100%;
 }
