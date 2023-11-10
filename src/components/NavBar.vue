@@ -52,7 +52,7 @@
         </ul>
       </nav>
     </section>
-    <div class="nav-mobile">
+    <section class="nav-mobile">
       <ul class="nav-list">
         <i @click="onOpenNavMobile" class="fas fa-bars"></i>
         <li class="nav-auth" @click="onAuth">
@@ -61,54 +61,46 @@
           /></router-link>
         </li>
       </ul>
-    </div>
-    <section ref="hiddenNavMobileElement" class="header-mobile bg-primary">
-      <nav class="nav container">
-        <ul class="nav-list">
-          <li class="nav-logo"><a href="" class="logo">JcStudy</a></li>
-        </ul>
-
-        <ul class="nav-list">
-          <li class="nav-item">
+    </section>
+    <section ref="hiddenNavMobileElement" class="nav-hidden bg-primary">
+      <nav class="nav-wrapper">
+        <div class="logo-mobile">
+          <h3 class="logo">JcStudy</h3>
+        </div>
+        <ul class="nav-list-mobile">
+          <li class="nav-item-mobile">
             <router-link to="/" active-class="active" class="nav-link"
               >Home</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item-mobile">
             <router-link to="/courses" active-class="active" class="nav-link"
               >Courses</router-link
             >
           </li>
-          <li class="nav-item">
-            <router-link to="/news" active-class="active" class="nav-link"
-              >News</router-link
-            >
-          </li>
-          <li class="nav-item">
+          <li class="nav-item-mobile">
             <router-link to="/blogs" active-class="active" class="nav-link"
               >Blogs</router-link
             >
           </li>
-          <li class="nav-item">
+          <li class="nav-item-mobile">
             <router-link to="/contact" active-class="active" class="nav-link"
               >Contact</router-link
             >
           </li>
-          <li class="nav-theme">
-            <div class="theme">
-              <img
-                v-if="isToggleMode"
-                @click="onLightMode"
-                src="../images/full-moon (1).png"
-                alt=""
-              />
-              <img v-else @click="onDarkMode" src="../images/sun.png" alt="" />
-            </div>
-          </li>
-          <li class="nav-close">
-            <i @click="onCloseNavMobile" class="fas fa-times"></i>
-          </li>
         </ul>
+        <div class="theme">
+          <img
+            v-if="isToggleMode"
+            @click="onLightMode"
+            src="../images/full-moon (1).png"
+            alt=""
+          />
+          <img v-else @click="onDarkMode" src="../images/sun.png" alt="" />
+        </div>
+        <div class="nav-close">
+          <i @click="onCloseNavMobile" class="fas fa-angle-double-left"></i>
+        </div>
       </nav>
     </section>
   </div>
@@ -133,10 +125,10 @@ const onLightMode = () => {
 };
 const hiddenNavMobileElement = ref();
 const onCloseNavMobile = () => {
-  hiddenNavMobileElement.value.style.visibility = "hidden";
+  hiddenNavMobileElement.value.style.left = -100 + "%";
 };
 const onOpenNavMobile = () => {
-  hiddenNavMobileElement.value.style.visibility = "visible";
+  hiddenNavMobileElement.value.style.left = 0;
 };
 
 const onAuth = () => {
@@ -248,9 +240,6 @@ onMounted(() => {
     }
   }
 }
-.header-mobile {
-  display: none;
-}
 @keyframes headerAni {
   from {
     top: -10%;
@@ -258,6 +247,9 @@ onMounted(() => {
   to {
     top: 0;
   }
+}
+.nav-hidden {
+  display: none;
 }
 .nav-mobile {
   display: none;
@@ -267,47 +259,74 @@ onMounted(() => {
   .header {
     display: none;
   }
-  .header-mobile {
-    visibility: hidden;
+  .nav-hidden {
     display: block;
     position: fixed;
     top: 0;
-    left: 0;
+    left: -100%;
     right: 0;
     bottom: 0;
     z-index: 99;
-    transition: visibility 1s linear;
-    .nav {
-      flex-direction: column;
-      align-items: flex-start;
-      .nav-list:nth-child(2) {
+    max-width: 100vw;
+    transition: all 0.4s linear;
+    .nav-wrapper {
+      .logo {
+        font-size: 2rem;
+        padding: 1rem;
+        padding-left: 0.5rem;
+        margin-left: 1rem;
+        font-family: monospace;
+        background: -webkit-linear-gradient(
+          variable.$primary-color-dark,
+          variable.$primary-color-light
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .nav-list-mobile {
+        list-style: none;
         padding: 0;
-        align-items: flex-start;
-        flex-direction: column;
-        .nav-item {
-          padding: 0.7rem;
-        }
-        .nav-theme {
-          padding-left: 1.5rem;
-          img {
-            width: 30px;
-            height: 30px;
-          }
-          @keyframes themeAni {
-            from {
-              transform: translateX(-100px) translateY(-30px) rotate(90deg);
-            }
-            to {
-              transform: translateX(0px) translateY(0px) rotate(0);
-            }
+        padding-left: 1rem;
+        .nav-item-mobile {
+          padding: 0.5rem;
+          .nav-link {
+            color: inherit;
+            text-decoration: none;
           }
         }
-        .nav-close {
-          position: absolute;
-          top: 5px;
-          right: 10px;
-          font-size: 1.4rem;
+        .nav-item-mobile:hover {
+          cursor: pointer;
+          transform: translateX(-5px);
+          transition: all 0.3s ease-in-out;
         }
+      }
+      .theme {
+        padding: 0.5rem 0;
+        margin-left: 1.5rem;
+        img {
+          width: 35px;
+          height: 35px;
+          cursor: pointer;
+          animation: themeAni 2s ease-in-out;
+        }
+        @keyframes themeAni {
+          from {
+            transform: translateX(-100px) translateY(-30px) rotate(90deg);
+          }
+          to {
+            transform: translateX(0px) translateY(0px) rotate(0);
+          }
+        }
+      }
+      .nav-close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        opacity: 0.6;
+      }
+      .nav-close:hover {
+        opacity: 1;
       }
     }
   }
