@@ -216,10 +216,13 @@ const onPrevCharacter = () => {
         }
         input:focus {
           border-bottom: 0.1rem solid;
+          font-size: 0.9rem;
+          
         }
         input::placeholder {
           font-size: 0.9rem;
-          opacity: 0.7;
+          opacity: 0.8;
+          color: inherit;
         }
       }
     }

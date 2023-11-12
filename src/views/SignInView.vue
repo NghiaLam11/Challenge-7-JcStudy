@@ -177,12 +177,13 @@ const onTogglePassword = () => {
           outline: none;
           transition: all 0.1s ease-in-out;
         }
-        input:focus {
+        input:hover {
           border-bottom: 0.1rem solid;
         }
         input::placeholder {
           font-size: 0.9rem;
-          opacity: 0.7;
+          opacity: 0.8;
+          color: inherit;
         }
       }
     }

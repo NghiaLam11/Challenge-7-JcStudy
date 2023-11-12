@@ -70,22 +70,27 @@
         <ul class="nav-list-mobile">
           <li class="nav-item-mobile">
             <router-link to="/" active-class="active" class="nav-link"
-              >Home</router-link
+              ><i class="fas fa-laptop-house"></i> Home</router-link
             >
           </li>
           <li class="nav-item-mobile">
             <router-link to="/courses" active-class="active" class="nav-link"
-              >Courses</router-link
+              ><i class="fas fa-book"></i> Courses</router-link
+            >
+          </li>
+          <li class="nav-item-mobile">
+            <router-link to="/news" active-class="active" class="nav-link"
+              ><i class="far fa-newspaper"></i> News</router-link
             >
           </li>
           <li class="nav-item-mobile">
             <router-link to="/blogs" active-class="active" class="nav-link"
-              >Blogs</router-link
+              ><i class="fab fa-blogger-b"></i> Blogs</router-link
             >
           </li>
           <li class="nav-item-mobile">
             <router-link to="/contact" active-class="active" class="nav-link"
-              >Contact</router-link
+              ><i class="fas fa-splotch"></i> Contact</router-link
             >
           </li>
         </ul>
@@ -98,7 +103,7 @@
           />
           <img v-else @click="onDarkMode" src="../images/sun.png" alt="" />
         </div>
-        <div class="nav-close">
+        <div ref="navCloseElement" class="nav-close">
           <i @click="onCloseNavMobile" class="fas fa-angle-double-left"></i>
         </div>
       </nav>
@@ -124,10 +129,17 @@ const onLightMode = () => {
   localStorage.setItem("theme", "light");
 };
 const hiddenNavMobileElement = ref();
+const navCloseElement = ref();
 const onCloseNavMobile = () => {
   hiddenNavMobileElement.value.style.left = -100 + "%";
+  setTimeout(() => {
+    navCloseElement.value.style.transform = "scaleX(-1)";
+  }, 600);
 };
 const onOpenNavMobile = () => {
+  setTimeout(() => {
+    navCloseElement.value.style.transform = "scaleX(1)";
+  }, 600);
   hiddenNavMobileElement.value.style.left = 0;
 };
 
@@ -268,10 +280,10 @@ onMounted(() => {
     bottom: 0;
     z-index: 99;
     max-width: 100vw;
-    transition: all 0.4s linear;
+    transition: all 0.5s linear;
     .nav-wrapper {
       .logo {
-        font-size: 2rem;
+        font-size: 2.5rem;
         padding: 1rem;
         padding-left: 0.5rem;
         margin-left: 1rem;
@@ -292,11 +304,12 @@ onMounted(() => {
           .nav-link {
             color: inherit;
             text-decoration: none;
+            font-size: 1.1rem;
           }
         }
         .nav-item-mobile:hover {
           cursor: pointer;
-          transform: translateX(-5px);
+          transform: translateX(-10px);
           transition: all 0.3s ease-in-out;
         }
       }
@@ -324,6 +337,7 @@ onMounted(() => {
         right: 15px;
         font-size: 1.5rem;
         opacity: 0.6;
+        transform: scaleX(-1);
       }
       .nav-close:hover {
         opacity: 1;
@@ -350,6 +364,11 @@ onMounted(() => {
         }
       }
     }
+  }
+}
+@media screen and (max-width: 534px) {
+  .nav-mobile .nav-list {
+    padding: 0.5rem 1rem;
   }
 }
 </style>

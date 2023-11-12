@@ -15,7 +15,10 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const isSpecialPage = ref(false);
 // const router = useRouter();
+
 onMounted(() => {
+  const navHiddenElement: any = document.querySelector(".nav-hidden");
+  const navCloseElement: any = document.querySelector(".nav-close");
   // router.push('/signup');
   watch(
     () => route.fullPath,
@@ -27,6 +30,10 @@ onMounted(() => {
         isSpecialPage.value = false;
         console.log("FALSE: " + newPath);
       }
+      navHiddenElement.style.left = -100 + "%";
+      setTimeout(() => {
+        navCloseElement.style.transform = "scaleX(-1)";
+      }, 600);
     }
   );
 });
