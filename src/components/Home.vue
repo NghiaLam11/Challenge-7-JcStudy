@@ -18,11 +18,25 @@
         <img src="../images/peep-94.png" alt="" />
       </div>
     </div>
+    <div class="courses">
+      <Carousel :items-to-show="1">
+        <Slide v-for="slide in 10" :key="slide">
+          {{ slide }}
+        </Slide>
+
+        <template #addons>
+          <Navigation />
+          <Pagination />
+        </template>
+      </Carousel>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const isDiscover = ref(true);
@@ -32,6 +46,19 @@ const onDiscover = () => {
     router.push("/courses");
   }, 2000);
 };
+const theme = localStorage.getItem("theme");
+onMounted(() => {
+  // Set color of the carousel icon when render 
+  const iconNext: any = document.querySelector(".carousel__next");
+  const iconPrev: any = document.querySelector(".carousel__prev");
+  if (theme === "dark") {
+    iconNext.style.color = "white";
+    iconPrev.style.color = "white";
+  } else {
+    iconNext.style.color = "black";
+    iconPrev.style.color = "black";
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -69,6 +96,7 @@ const onDiscover = () => {
   border-bottom: 0.3rem solid;
   transition: all 0.2s linear;
   overflow: hidden;
+  position: relative;
   i {
     animation: SlideIn 3s ease-in-out;
   }
@@ -93,9 +121,25 @@ const onDiscover = () => {
     }
   }
 }
+.btn-hero::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  // transform: translateX(100px);
+  background-color: rgba(134, 133, 133, 0.2);
+  transition: all 0.3s linear;
+}
+.btn-hero:hover.btn-hero::after {
+  right: 0;
+  z-index: -1;
+}
 .btn-hero:hover {
   border-bottom: 0.1rem solid;
 }
+
 .hero-right,
 .hero-left {
   width: 50%;

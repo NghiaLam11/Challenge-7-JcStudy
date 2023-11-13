@@ -120,6 +120,13 @@ const onDarkMode = () => {
   htmlElements?.classList.remove("light");
   htmlElements?.classList.add("dark");
   localStorage.setItem("theme", "dark");
+  // light Icon CAROUSEL when dark mode
+  const iconNext: any = document.querySelector(".carousel__next");
+  const iconPrev: any = document.querySelector(".carousel__prev");
+  if (iconNext != null && iconPrev != null) {
+    iconNext.style.color = "white";
+    iconPrev.style.color = "white";
+  }
 };
 const onLightMode = () => {
   console.log("onLightMode");
@@ -127,6 +134,14 @@ const onLightMode = () => {
   htmlElements?.classList.remove("dark");
   htmlElements?.classList.add("light");
   localStorage.setItem("theme", "light");
+
+  // Dark Icon CAROUSEL when light mode
+  const iconNext: any = document.querySelector(".carousel__next");
+  const iconPrev: any = document.querySelector(".carousel__prev");
+  if (iconNext != null && iconPrev != null) {
+    iconNext.style.color = "black";
+    iconPrev.style.color = "black";
+  }
 };
 const hiddenNavMobileElement = ref();
 const navCloseElement = ref();
@@ -149,8 +164,8 @@ const onAuth = () => {
 };
 
 onMounted(() => {
-  const cat = localStorage.getItem("theme");
-  if (cat === "dark") {
+  const theme = localStorage.getItem("theme");
+  if (theme === "dark") {
     onDarkMode();
   } else {
     onLightMode();
