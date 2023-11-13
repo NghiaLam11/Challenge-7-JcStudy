@@ -19,7 +19,6 @@ const isSpecialPage = ref(false);
 onMounted(() => {
   const navHiddenElement: any = document.querySelector(".nav-hidden");
   const navCloseElement: any = document.querySelector(".nav-close");
-  // router.push('/signup');
   watch(
     () => route.fullPath,
     (newPath) => {
@@ -30,6 +29,7 @@ onMounted(() => {
         isSpecialPage.value = false;
         console.log("FALSE: " + newPath);
       }
+      // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {
         navCloseElement.style.transform = "scaleX(-1)";

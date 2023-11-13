@@ -180,6 +180,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 99;
   animation: headerAni 1s ease-in-out;
   .nav {
     display: flex;

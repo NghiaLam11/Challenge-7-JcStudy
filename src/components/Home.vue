@@ -19,9 +19,32 @@
       </div>
     </div>
     <div class="courses">
-      <Carousel :items-to-show="1">
+      <Carousel
+        :items-to-show="2"
+        :snap-align="'start'"
+        :breakpoints="breakpoints"
+      >
         <Slide v-for="slide in 10" :key="slide">
-          {{ slide }}
+          <div class="card-item">
+            <div class="thumbnail">
+              <img
+                src="../images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
+                alt=""
+              />
+            </div>
+            <div class="card-right bg-primary">
+              <h3 class="multiline-ellipsis-2">Lorem islem posile delao</h3>
+              <p class="multiline-ellipsis-4">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+                eos voluptatem iusto delectus, minus sapiente! Distinctio atque
+                dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
+                aspernatur dolore nulla cumque odio.
+              </p>
+              <button @click="onUnlock" class="hvr-shutter-in-horizontal">
+                Unlock (Free)
+              </button>
+            </div>
+          </div>
         </Slide>
 
         <template #addons>
@@ -38,6 +61,8 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSound } from "../pinia";
+// ------------------------- START HERO SECTION -----------------------
 const router = useRouter();
 const isDiscover = ref(true);
 const onDiscover = () => {
@@ -46,9 +71,11 @@ const onDiscover = () => {
     router.push("/courses");
   }, 2000);
 };
+// ------------------------- END HERO SECTION -----------------------
+// ------------------------- START COURSES SECTION -----------------------
 const theme = localStorage.getItem("theme");
 onMounted(() => {
-  // Set color of the carousel icon when render 
+  // Set color of the carousel icon when render
   const iconNext: any = document.querySelector(".carousel__next");
   const iconPrev: any = document.querySelector(".carousel__prev");
   if (theme === "dark") {
@@ -59,9 +86,27 @@ onMounted(() => {
     iconPrev.style.color = "black";
   }
 });
+// Play sound when btn is clicked
+const soundStore = useSound();
+const onUnlock = () => {
+  soundStore.playSound();
+};
+// breakpoint of slide vue-carousel
+const breakpoints = ref({
+  0: {
+    itemsToShow: 1,
+    snapAlign: "center",
+  },
+  768: {
+    itemsToShow: 2,
+    snapAlign: "center",
+  },
+});
+// ------------------------- END COURSES SECTION -----------------------
 </script>
 
 <style scoped lang="scss">
+// ---------------------------------------------- START HERO SCSS STYLE
 .hero {
   display: flex;
   align-items: center;
@@ -138,8 +183,8 @@ onMounted(() => {
 }
 .btn-hero:hover {
   border-bottom: 0.1rem solid;
+  box-shadow: 0 0 2rem 1px rgb(255, 255, 255, 0.2);
 }
-
 .hero-right,
 .hero-left {
   width: 50%;
@@ -187,6 +232,69 @@ onMounted(() => {
   }
   .hero-left {
     padding: 0 1rem 0 1rem;
+  }
+}
+// ------------------------------- END HERO CSS STYLE
+// ------------------------------- START COURSES CSS STYLE
+.courses {
+  .card-item {
+    display: flex;
+    cursor: pointer;
+    .thumbnail {
+      width: 50%;
+      height: 100%;
+      padding: 1rem;
+      transition: all 0.35s ease;
+      filter: grayscale(1);
+      img {
+        object-fit: cover;
+        width: 100%;
+        min-height: 180px;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
+    .card-right {
+      width: 50%;
+      text-align: start;
+      transition: all 0.35s ease;
+      padding: 1rem;
+      padding-left: 0;
+      h3 {
+        font-size: 1.3rem;
+        line-height: 1.8rem;
+        margin-bottom: 0.2rem;
+      }
+      p {
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        opacity: 0.7;
+      }
+      button {
+        cursor: pointer;
+        padding: 0.2rem 1rem;
+        background-color: rgb(255, 255, 255, 0.1);
+        color: inherit;
+        margin-top: 1rem;
+        border: 1px solid;
+        border-radius: 3px;
+        border-left: 0.2rem solid;
+        border-bottom: 0.3rem solid;
+        font-size: 0.8rem;
+        // transition: all 0.2s linear;
+      }
+      button:active {
+        border: 1px solid;
+      }
+    }
+  }
+  .card-item:hover .card-right {
+    transform: translateX(-50%);
+    padding-left: 1rem;
+    border-radius: 5px;
+  }
+  .card-item:hover .thumbnail {
+    filter: grayscale(0);
   }
 }
 </style>
