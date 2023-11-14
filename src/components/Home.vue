@@ -19,6 +19,9 @@
       </div>
     </div>
     <div class="courses">
+      <div class="topic">
+        <h3>Courses</h3>
+      </div>
       <Carousel
         :items-to-show="2"
         :snap-align="'start'"
@@ -40,9 +43,42 @@
                 dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
                 aspernatur dolore nulla cumque odio.
               </p>
-              <button @click="onUnlock" class="hvr-shutter-in-horizontal">
-                Unlock (Free)
-              </button>
+              <button @click="onUnlock">Unlock (Free)</button>
+            </div>
+          </div>
+        </Slide>
+
+        <template #addons>
+          <Navigation />
+          <Pagination />
+        </template>
+      </Carousel>
+    </div>
+
+    <div class="courses-unlock">
+      <div class="topic">
+        <h3>Courses unlock</h3>
+      </div>
+      <Carousel
+        :breakpoints="breakpointsunlock"
+      >
+        <Slide v-for="slide in 10" :key="slide">
+          <div class="card-item">
+            <div class="thumbnail">
+              <img
+                src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
+                alt=""
+              />
+            </div>
+            <div class="card-right bg-primary">
+              <h3 class="multiline-ellipsis-2">Lorem islem posile delao</h3>
+              <p class="multiline-ellipsis-4">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+                eos voluptatem iusto delectus, minus sapiente! Distinctio atque
+                dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
+                aspernatur dolore nulla cumque odio.
+              </p>
+              <button @click="onUnlock">Continue ...</button>
             </div>
           </div>
         </Slide>
@@ -99,6 +135,20 @@ const breakpoints = ref({
   },
   768: {
     itemsToShow: 2,
+    snapAlign: "start",
+  },
+});
+const breakpointsunlock = ref({
+  0: {
+    itemsToShow: 1,
+    snapAlign: "center",
+  },
+  534: {
+    itemsToShow: 2,
+    snapAlign: "center",
+  },
+  889: {
+    itemsToShow: 4,
     snapAlign: "center",
   },
 });
@@ -237,6 +287,10 @@ const breakpoints = ref({
 // ------------------------------- END HERO CSS STYLE
 // ------------------------------- START COURSES CSS STYLE
 .courses {
+  margin: 2rem 0;
+  .topic {
+    margin-left: 1rem;
+  }
   .card-item {
     display: flex;
     cursor: pointer;
@@ -295,6 +349,74 @@ const breakpoints = ref({
   }
   .card-item:hover .thumbnail {
     filter: grayscale(0);
+  }
+}
+// ---------------------------------- END COURSE CSS STYLE
+// ------------------------------- START COURSES UNLOCK CSS STYLE
+.courses-unlock {
+  margin: 2rem 0;
+  .topic {
+    margin-left: 1rem;
+  }
+  .card-item {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      padding: 0.7rem;
+      transition: all 0.9s ease;
+      filter: grayscale(1);
+      img {
+        object-fit: cover;
+        width: 100%;
+        min-height: 180px;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
+    .card-right {
+      width: 100%;
+      text-align: start;
+      transition: all 0.35s ease;
+      padding: 0 1rem;
+      h3 {
+        font-size: 1.3rem;
+        line-height: 1.8rem;
+        margin-bottom: 0.2rem;
+      }
+      p {
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        opacity: 0.7;
+      }
+      button {
+        cursor: pointer;
+        padding: 0.2rem 1rem;
+        background-color: rgb(255, 255, 255, 0.1);
+        color: inherit;
+        margin-top: 1rem;
+        border: 1px solid;
+        border-radius: 3px;
+        border-left: 0.2rem solid;
+        border-bottom: 0.3rem solid;
+        font-size: 0.8rem;
+        // transition: all 0.2s linear;
+      }
+      button:active {
+        border: 1px solid;
+      }
+    }
+  }
+  .card-item:hover .card-right {
+    transform: translateY(-50%);
+    padding-left: 1.5rem;
+    border-radius: 5px;
+  }
+  .card-item:hover .thumbnail {
+    filter: grayscale(0);
+    transform: rotateY(360deg);
   }
 }
 </style>

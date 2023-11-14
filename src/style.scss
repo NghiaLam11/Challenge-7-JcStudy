@@ -2,6 +2,9 @@
 * {
   font-family: "Poppins", sans-serif;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 .light {
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
