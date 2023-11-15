@@ -36,7 +36,7 @@
               />
             </div>
             <div class="card-right bg-primary">
-              <h3 class="multiline-ellipsis-2">Lorem islem posile delao</h3>
+              <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
               <p class="multiline-ellipsis-4">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
                 eos voluptatem iusto delectus, minus sapiente! Distinctio atque
@@ -59,9 +59,7 @@
       <div class="topic">
         <h3>Courses unlock</h3>
       </div>
-      <Carousel
-        :breakpoints="breakpointsunlock"
-      >
+      <Carousel :breakpoints="breakpointsunlock">
         <Slide v-for="slide in 10" :key="slide">
           <div class="card-item">
             <div class="thumbnail">
@@ -71,14 +69,61 @@
               />
             </div>
             <div class="card-right bg-primary">
-              <h3 class="multiline-ellipsis-2">Lorem islem posile delao</h3>
+              <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
               <p class="multiline-ellipsis-4">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
                 eos voluptatem iusto delectus, minus sapiente! Distinctio atque
                 dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
                 aspernatur dolore nulla cumque odio.
               </p>
+              <div class="card-progress">
+                <progress class="accent-color" value="32" max="100"></progress>
+                <span class="percent">32%</span>
+              </div>
+
               <button @click="onUnlock">Continue ...</button>
+            </div>
+          </div>
+        </Slide>
+
+        <template #addons>
+          <Navigation />
+          <Pagination />
+        </template>
+      </Carousel>
+    </div>
+
+    <div class="news">
+      <div class="topic">
+        <h3>News</h3>
+      </div>
+      <Carousel :breakpoints="breakpointsnews">
+        <Slide v-for="slide in 10" :key="slide">
+          <div class="card-item">
+            <div class="thumbnail">
+              <img
+                src="../images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
+                alt=""
+              />
+            </div>
+            <div class="card-right bg-primary">
+              <h3 class="multiline-ellipsis-1">
+                Lorem islem posile delao adipisicing elit!
+              </h3>
+              <p class="multiline-ellipsis-2">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+                eos voluptatem iusto delectus, minus sapiente! Distinctio atque
+                dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
+                aspernatur dolore nulla cumque odio.
+              </p>
+              <div class="card-auth">
+                <div class="wrapper-img">
+                  <img src="../images/peep-82.png" alt="" />
+                </div>
+
+                <span>Jclahi</span>
+              </div>
+              <div><button @click="onUnlock">Read more...</button></div>
             </div>
           </div>
         </Slide>
@@ -112,14 +157,19 @@ const onDiscover = () => {
 const theme = localStorage.getItem("theme");
 onMounted(() => {
   // Set color of the carousel icon when render
-  const iconNext: any = document.querySelector(".carousel__next");
-  const iconPrev: any = document.querySelector(".carousel__prev");
+  const iconNext: any = document.querySelectorAll(".carousel__next");
+  const iconPrev: any = document.querySelectorAll(".carousel__prev");
+  console.log(iconNext.length, iconPrev.length);
   if (theme === "dark") {
-    iconNext.style.color = "white";
-    iconPrev.style.color = "white";
+    for (let i = 0; i < iconNext.length; i++) {
+      iconNext[i].style.color = "white";
+      iconPrev[i].style.color = "white";
+    }
   } else {
-    iconNext.style.color = "black";
-    iconPrev.style.color = "black";
+    for (let i = 0; i < iconNext.length; i++) {
+      iconNext[i].style.color = "black";
+      iconPrev[i].style.color = "black";
+    }
   }
 });
 // Play sound when btn is clicked
@@ -149,6 +199,20 @@ const breakpointsunlock = ref({
   },
   889: {
     itemsToShow: 4,
+    snapAlign: "center",
+  },
+});
+const breakpointsnews = ref({
+  0: {
+    itemsToShow: 1,
+    snapAlign: "center",
+  },
+  534: {
+    itemsToShow: 2,
+    snapAlign: "center",
+  },
+  889: {
+    itemsToShow: 3,
     snapAlign: "center",
   },
 });
@@ -239,53 +303,9 @@ const breakpointsunlock = ref({
 .hero-left {
   width: 50%;
 }
-@media screen and (min-width: 538px) and (max-width: 889px) {
-  .hero-right,
-  .hero-left {
-    width: 50%;
-  }
-  .hero-right {
-    img {
-      transform: scaleX(-1);
-      width: 100%;
-      object-fit: cover;
-      margin: 0 auto;
-    }
-  }
-  .hero-left {
-    padding: 0 0rem 0 2rem;
-    h2 {
-      font-size: 2.5rem;
-      line-height: 2.8rem;
-    }
-    p {
-      font-size: 0.9rem;
-      line-height: 1.3rem;
-    }
-  }
-}
-@media screen and (max-width: 538px) {
-  .hero {
-    flex-direction: column-reverse;
-  }
-  .hero-right,
-  .hero-left {
-    width: 100%;
-  }
-  .hero-right {
-    img {
-      transform: scaleX(-1);
-      height: 300px;
-      padding: 2rem;
-      margin: 0 auto;
-    }
-  }
-  .hero-left {
-    padding: 0 1rem 0 1rem;
-  }
-}
-// ------------------------------- END HERO CSS STYLE
-// ------------------------------- START COURSES CSS STYLE
+
+// ------------------------------- END HERO CSS STYLE----------------------------
+// ------------------------------- START COURSES CSS STYLE----------------------------
 .courses {
   margin: 2rem 0;
   .topic {
@@ -351,8 +371,8 @@ const breakpointsunlock = ref({
     filter: grayscale(0);
   }
 }
-// ---------------------------------- END COURSE CSS STYLE
-// ------------------------------- START COURSES UNLOCK CSS STYLE
+// ---------------------------------- END COURSE CSS STYLE----------------------------------------------
+// ------------------------------- START COURSES UNLOCK CSS STYLE------------------------------------------------
 .courses-unlock {
   margin: 2rem 0;
   .topic {
@@ -391,6 +411,19 @@ const breakpointsunlock = ref({
         line-height: 1.2rem;
         opacity: 0.7;
       }
+
+      .percent {
+        font-size: 0.6rem;
+        opacity: 0.7;
+        margin-left: 2px;
+      }
+      progress {
+        height: 10px;
+        margin-bottom: 1.5px;
+        outline: none;
+        opacity: 0.7;
+      }
+
       button {
         cursor: pointer;
         padding: 0.2rem 1rem;
@@ -417,6 +450,184 @@ const breakpointsunlock = ref({
   .card-item:hover .thumbnail {
     filter: grayscale(0);
     transform: rotateY(360deg);
+  }
+}
+// ------------------------------- END COURSES UNLOCK CSS STYLE------------------------------------------------
+// ------------------------------- START NEWS CSS STYLE------------------------------------------------
+
+.news {
+  margin: 2rem 0;
+  .topic {
+    margin-left: 1rem;
+  }
+  .card-item {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: hidden;
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+      padding: 0.7rem;
+
+      transition: all 0.9s ease;
+      filter: grayscale(1);
+      img {
+        object-fit: cover;
+        width: 100%;
+        min-height: 180px;
+        height: 100%;
+        border-radius: 5px;
+      }
+    }
+    .card-right {
+      width: 100%;
+      text-align: start;
+      transition: all 0.8s ease;
+      padding: 0 1rem;
+      h3 {
+        font-size: 1.3rem;
+        line-height: 1.8rem;
+        margin-bottom: 0.2rem;
+      }
+      p {
+        font-size: 0.8rem;
+        line-height: 1.2rem;
+        opacity: 0.7;
+      }
+
+      .card-auth {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem;
+        margin: 0.5rem 0;
+        .wrapper-img {
+          width: 35px;
+          height: 35px;
+          padding: 0.2rem;
+          position: relative;
+          padding-bottom: 0.4rem;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.35s ease;
+          }
+        }
+
+        .wrapper-img::after {
+          content: "";
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          scale: 1.03;
+          border-radius: 50%;
+          border: 1px dashed;
+          transition: all 0.35s ease;
+        }
+        span {
+          margin-left: 0.3rem;
+          font-weight: bold;
+          font-size: 1.1rem;
+        }
+      }
+      .card-auth:hover .wrapper-img img {
+        scale: 1.05;
+      }
+      .card-auth:hover .wrapper-img::after {
+        scale: 1.1;
+        animation: spinAni 10s ease-in-out infinite;
+      }
+      @keyframes spinAni {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      button {
+        cursor: pointer;
+        padding: 0.2rem 1rem;
+        background-color: rgb(255, 255, 255, 0.1);
+        color: inherit;
+        border: 1px solid;
+        border-radius: 3px;
+        border-left: 0.2rem solid;
+        border-bottom: 0.3rem solid;
+        font-size: 0.8rem;
+        // transition: all 0.2s linear;
+      }
+      button:active {
+        border: 1px solid;
+      }
+    }
+  }
+  .card-item:hover .card-right {
+    transform: translateX(1.5rem);
+    border-radius: 5px;
+  }
+  .card-item:hover .thumbnail {
+    filter: grayscale(0);
+    transform: translateX(2rem);
+    animation: filterAni 1s ease-in-out;
+  }
+  @keyframes filterAni {
+    from {
+      filter: hue-rotate(90deg);
+    }
+    to {
+      filter: hue-rotate(0);
+    }
+  }
+}
+// ------------------------------- END NEWS CSS STYLE------------------------------------------------
+@media screen and (min-width: 538px) and (max-width: 889px) {
+  .hero-right,
+  .hero-left {
+    width: 50%;
+  }
+  .hero-right {
+    img {
+      transform: scaleX(-1);
+      width: 100%;
+      object-fit: cover;
+      margin: 0 auto;
+    }
+  }
+  .hero-left {
+    padding: 0 0rem 0 2rem;
+    h2 {
+      font-size: 2.5rem;
+      line-height: 2.8rem;
+    }
+    p {
+      font-size: 0.9rem;
+      line-height: 1.3rem;
+    }
+  }
+}
+@media screen and (max-width: 538px) {
+  .hero {
+    flex-direction: column-reverse;
+  }
+  .hero-right,
+  .hero-left {
+    width: 100%;
+  }
+  .hero-right {
+    img {
+      transform: scaleX(-1);
+      height: 300px;
+      padding: 2rem;
+      margin: 0 auto;
+    }
+  }
+  .hero-left {
+    padding: 0 1rem 0 1rem;
   }
 }
 </style>

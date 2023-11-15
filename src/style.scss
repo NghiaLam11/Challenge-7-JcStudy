@@ -20,6 +20,9 @@ html {
     background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
     color: hsl(0, 0%, 20%);
   }
+  .accent-color {
+    accent-color: black !important;
+  }
 }
 
 .dark {
@@ -36,6 +39,9 @@ html {
   .bg-primary {
     background-image: linear-gradient(to right, #0f172a, #111827);
     color: #e2e8f0;
+  }
+  .accent-color {
+    accent-color: white !important;
   }
 }
 
@@ -58,5 +64,12 @@ html {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
+  white-space: pre-wrap; /* let the text wrap preserving spaces */
+}
+.multiline-ellipsis-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* start showing ellipsis when 3rd line is reached */
   white-space: pre-wrap; /* let the text wrap preserving spaces */
 }
