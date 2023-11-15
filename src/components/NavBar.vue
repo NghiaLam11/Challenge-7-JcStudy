@@ -260,9 +260,10 @@ onMounted(() => {
       padding: 1rem 0;
       width: 75%;
     }
-    .nav-list:nth-child(3) {
+    .nav-list:last-child {
       display: flex;
       align-items: center;
+      justify-content: end;
       padding: 1rem 0;
       width: 15%;
     }
