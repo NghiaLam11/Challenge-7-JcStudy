@@ -4,11 +4,12 @@
     <main class="body">
       <router-view></router-view>
     </main>
-    <footer class="footer"></footer>
+    <footer><FooterSection /></footer>
   </div>
 </template>
 <script setup lang="ts">
 import NavBar from "./components/NavBar.vue";
+import FooterSection from "./components/FooterSection.vue";
 import { onMounted, watch, ref } from "vue";
 // import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";

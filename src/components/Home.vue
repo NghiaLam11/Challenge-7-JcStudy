@@ -93,11 +93,11 @@
       </Carousel>
     </div>
 
-    <div class="news">
+    <div class="blogs">
       <div class="topic">
-        <h3>News</h3>
+        <h3>Blogs</h3>
       </div>
-      <Carousel :breakpoints="breakpointsnews">
+      <Carousel :breakpoints="breakpointsblogs">
         <Slide v-for="slide in 10" :key="slide">
           <div class="card-item">
             <div class="thumbnail">
@@ -202,7 +202,7 @@ const breakpointsunlock = ref({
     snapAlign: "center",
   },
 });
-const breakpointsnews = ref({
+const breakpointsblogs = ref({
   0: {
     itemsToShow: 1,
     snapAlign: "center",
@@ -453,9 +453,9 @@ const breakpointsnews = ref({
   }
 }
 // ------------------------------- END COURSES UNLOCK CSS STYLE------------------------------------------------
-// ------------------------------- START NEWS CSS STYLE------------------------------------------------
+// ------------------------------- START Blogs CSS STYLE------------------------------------------------
 
-.news {
+.blogs {
   margin: 2rem 0;
   .topic {
     margin-left: 1rem;
@@ -464,15 +464,17 @@ const breakpointsnews = ref({
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    overflow: hidden;
+    padding: 2rem 0;
     .thumbnail {
       width: 100%;
       height: 100%;
       padding: 0.7rem;
+      border-radius: 5px;
+      overflow: hidden;
 
-      transition: all 0.9s ease;
-      filter: grayscale(1);
       img {
+        transition: all 0.9s ease;
+        filter: grayscale(1);
         object-fit: cover;
         width: 100%;
         min-height: 180px;
@@ -567,24 +569,14 @@ const breakpointsnews = ref({
     }
   }
   .card-item:hover .card-right {
-    transform: translateX(1.5rem);
+    transform: translateY(1.5rem);
     border-radius: 5px;
   }
-  .card-item:hover .thumbnail {
+  .card-item:hover .thumbnail img {
     filter: grayscale(0);
-    transform: translateX(2rem);
-    animation: filterAni 1s ease-in-out;
-  }
-  @keyframes filterAni {
-    from {
-      filter: hue-rotate(90deg);
-    }
-    to {
-      filter: hue-rotate(0);
-    }
   }
 }
-// ------------------------------- END NEWS CSS STYLE------------------------------------------------
+// ------------------------------- END Blogs CSS STYLE------------------------------------------------
 @media screen and (min-width: 538px) and (max-width: 889px) {
   .hero-right,
   .hero-left {
