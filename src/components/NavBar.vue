@@ -259,6 +259,12 @@ onMounted(() => {
       flex-wrap: wrap;
       padding: 1rem 0;
       width: 75%;
+      .nav-item {
+        padding: 0;
+        .nav-link {
+          padding: 1rem 2rem;
+        }
+      }
     }
     .nav-list:last-child {
       display: flex;

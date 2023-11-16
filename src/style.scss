@@ -5,12 +5,12 @@
 html {
   scroll-behavior: smooth;
 }
-
 .light {
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: #333 !important;
-  .nav-item:hover .nav-link {
+  .nav-link:hover {
     color: variable.$primary-color-light !important;
+    transition: all 0.3s ease-in-out;
   }
   .active {
     color: variable.$primary-color-light !important;
@@ -32,8 +32,9 @@ html {
   /* background-color: #0f172a !important; */
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: white !important;
-  .nav-item:hover .nav-link {
+  .nav-link:hover {
     color: variable.$primary-color-dark !important;
+    transition: all 0.3s ease-in-out;
   }
   .active {
     color: variable.$primary-color-dark !important;

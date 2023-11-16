@@ -24,6 +24,43 @@
             >
           </li>
         </ul>
+        <form class="contact-form">
+          <h3>Send Message &#128236;</h3>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              placeholder="Ex: JcStudy"
+              class="name"
+              type="text"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              placeholder="Ex: JcStudy@gmail.com"
+              class="email"
+              type="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea
+              placeholder="Ex: Write your message!"
+              class="message"
+              type="text"
+              required
+              cols="20"
+              rows="5"
+            ></textarea>
+          </div>
+          <div class="form-btn">
+            <button>
+              <span>Send </span><i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
       </div>
       <div class="contact-map">
         <div
@@ -55,6 +92,61 @@
       width: 50%;
     }
     .contact-address {
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        h3 {
+          font-size: 1.4rem;
+        }
+        .form-group {
+          display: flex;
+          flex-direction: column;
+
+          textarea,
+          input::placeholder {
+            font-size: 0.8rem;
+            padding: 0.3rem;
+          }
+          textarea,
+          input {
+            padding: 0.2rem 0.3rem;
+            color: inherit;
+            background-color: rgba(118, 117, 117, 0.1);
+            border: 1px solid;
+            border-bottom: 0.3rem solid;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.1s ease-in-out;
+          }
+          textarea:hover {
+            border-bottom: 0.1rem solid;
+          }
+          input:hover {
+            border-bottom: 0.1rem solid;
+          }
+        }
+        .form-btn {
+          margin-top: 1rem;
+          button {
+            cursor: pointer;
+            padding: 0.2rem 1rem;
+            background-color: rgb(255, 255, 255, 0.1);
+            color: inherit;
+            border: 1px solid;
+            border-radius: 3px;
+            border-left: 0.2rem solid;
+            border-bottom: 0.3rem solid;
+            font-size: 0.8rem;
+            width: 100px;
+            overflow: hidden;
+            // transition: all 0.2s linear;
+          }
+          button:active {
+            border: 1px solid;
+          }
+        }
+      }
       .address-list {
         .title {
           font-size: 1.5rem;
@@ -93,6 +185,10 @@
       }
       .contact-address {
         margin-bottom: 2rem;
+        .contact-form {
+          margin: 1rem 0;
+          padding: 0;
+        }
         ul {
           padding-left: 1rem;
         }

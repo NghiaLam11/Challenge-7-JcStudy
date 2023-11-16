@@ -51,6 +51,7 @@
 </template>
 
 <style lang="scss" scoped>
+@use "../styles/variable";
 .footer {
   padding: 2rem;
   box-shadow: 0 0 1rem 1rem rgba(0, 0, 0, 0.1);
@@ -58,6 +59,18 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem;
+    .footer-logo {
+      h2 {
+        font-size: 1.7rem;
+        font-family: monospace;
+        background: -webkit-linear-gradient(
+          variable.$primary-color-dark,
+          variable.$primary-color-light
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
     .footer-list {
       display: flex;
       flex-direction: column;
@@ -68,26 +81,25 @@
       .footer-item {
         padding: 0.2rem 0.1rem;
         .footer-link {
-            text-decoration: none;
-            color: inherit;
-            opacity: 0.6;
+          text-decoration: none;
+          color: inherit;
+          opacity: 0.6;
         }
         .footer-link:hover {
-            text-decoration: underline;
-            opacity: 0.8;
+          text-decoration: underline;
+          opacity: 0.8;
         }
       }
-        
     }
     .footer-list:last-child {
-        .footer-item {
-            .footer-link {
-                padding: 0.2rem;
-                i {
-                    font-size: 1.7rem;
-                }
-            }
+      .footer-item {
+        .footer-link {
+          padding: 0.2rem;
+          i {
+            font-size: 1.7rem;
+          }
         }
+      }
     }
   }
 }
