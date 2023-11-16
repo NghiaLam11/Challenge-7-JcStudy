@@ -17,8 +17,8 @@
             >
           </li>
           <li class="nav-item">
-            <router-link to="/news" active-class="active" class="nav-link"
-              >News</router-link
+            <router-link to="/notes" active-class="active" class="nav-link"
+              >Notes</router-link
             >
           </li>
           <li class="nav-item">
@@ -80,7 +80,7 @@
           </li>
           <li class="nav-item-mobile">
             <router-link to="/news" active-class="active" class="nav-link"
-              ><i class="far fa-newspaper"></i> News</router-link
+              ><i class="far fa-newspaper"></i> Notes</router-link
             >
           </li>
           <li class="nav-item-mobile">
@@ -174,7 +174,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use "../styles/variable";
+@import "../styles/variable";
+
 .header {
   position: fixed;
   top: 0;
@@ -234,8 +235,8 @@ onMounted(() => {
         .logo {
           font-family: monospace;
           background: -webkit-linear-gradient(
-            variable.$primary-color-dark,
-            variable.$primary-color-light
+            $primary-color-dark,
+            $primary-color-light
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -263,6 +264,10 @@ onMounted(() => {
         padding: 0;
         .nav-link {
           padding: 1rem 2rem;
+        }
+        .nav-link:hover {
+          color: $primary-color-dark !important;
+          transition: all 0.3s ease-in-out;
         }
       }
     }
@@ -312,8 +317,8 @@ onMounted(() => {
         margin-left: 1rem;
         font-family: monospace;
         background: -webkit-linear-gradient(
-          variable.$primary-color-dark,
-          variable.$primary-color-light
+          $primary-color-dark,
+          $primary-color-light
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -328,6 +333,10 @@ onMounted(() => {
             color: inherit;
             text-decoration: none;
             font-size: 1.1rem;
+          }
+          .nav-link:hover {
+            color: $primary-color-dark !important;
+            transition: all 0.3s ease-in-out;
           }
         }
         .nav-item-mobile:hover {

@@ -1,4 +1,4 @@
-@use "./styles/variable";
+@import "./styles/variable";
 * {
   font-family: "Poppins", sans-serif;
 }
@@ -8,12 +8,8 @@ html {
 .light {
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: #333 !important;
-  .nav-link:hover {
-    color: variable.$primary-color-light !important;
-    transition: all 0.3s ease-in-out;
-  }
   .active {
-    color: variable.$primary-color-light !important;
+    color: $primary-color-light !important;
     font-weight: bold;
   }
   .bg-primary {
@@ -21,23 +17,28 @@ html {
     color: hsl(0, 0%, 20%);
   }
   .accent-color {
-    accent-color: black !important;
+    accent-color: $accent-color-light;
   }
   .footer-bg-color {
-    background-color: #f1f5f9;
+    background-color: $footer-color-light;
+  }
+  .blur {
+    background-image: linear-gradient(
+      to right,
+      rgb(225, 231, 239, 0.8),
+      rgb(225, 231, 239, 0)
+    );
+  }
+  .bg-gallery {
+    background-color: #0f172a;
   }
 }
 
 .dark {
-  /* background-color: #0f172a !important; */
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: white !important;
-  .nav-link:hover {
-    color: variable.$primary-color-dark !important;
-    transition: all 0.3s ease-in-out;
-  }
   .active {
-    color: variable.$primary-color-dark !important;
+    color: $primary-color-dark !important;
     font-weight: bold;
   }
   .bg-primary {
@@ -45,10 +46,20 @@ html {
     color: #e2e8f0;
   }
   .accent-color {
-    accent-color: white !important;
+    accent-color: $accent-color-dark;
   }
   .footer-bg-color {
-    background-color: #020617;
+    background-color: $footer-color-dark;
+  }
+  .blur {
+    background-image: linear-gradient(
+      to right,
+      rgb(15, 23, 41, 0.8),
+      rgb(15, 23, 41, 0)
+    );
+  }
+  .bg-gallery {
+    background-color: #e2e8f0;
   }
 }
 
@@ -59,24 +70,21 @@ html {
   max-width: 1264px;
   margin: 0 auto;
 }
-.multiline-ellipsis-4 {
+@mixin ellipsisText {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4; /* start showing ellipsis when 3rd line is reached */
   white-space: pre-wrap; /* let the text wrap preserving spaces */
+}
+.multiline-ellipsis-4 {
+  -webkit-line-clamp: 4; /* start showing ellipsis when 3rd line is reached */
+  @include ellipsisText();
 }
 .multiline-ellipsis-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
-  white-space: pre-wrap; /* let the text wrap preserving spaces */
+  @include ellipsisText();
 }
 .multiline-ellipsis-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
   -webkit-line-clamp: 1; /* start showing ellipsis when 3rd line is reached */
-  white-space: pre-wrap; /* let the text wrap preserving spaces */
+  @include ellipsisText();
 }

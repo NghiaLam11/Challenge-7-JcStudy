@@ -184,8 +184,10 @@ const breakpoints = ref({
     snapAlign: "center",
   },
   768: {
+    autoplay: 3000,
     itemsToShow: 2,
     snapAlign: "start",
+    pauseAutoplayOnHover: true,
   },
 });
 const breakpointsunlock = ref({
@@ -195,11 +197,15 @@ const breakpointsunlock = ref({
   },
   534: {
     itemsToShow: 2,
-    snapAlign: "center",
+    snapAlign: "start",
+    autoplay: 3000,
+    pauseAutoplayOnHover: true,
   },
   889: {
+    autoplay: 5000,
     itemsToShow: 4,
-    snapAlign: "center",
+    snapAlign: "start",
+    pauseAutoplayOnHover: true,
   },
 });
 const breakpointsblogs = ref({
@@ -209,11 +215,15 @@ const breakpointsblogs = ref({
   },
   534: {
     itemsToShow: 2,
-    snapAlign: "center",
+    snapAlign: "start",
+    autoplay: 3000,
+    pauseAutoplayOnHover: true,
   },
   889: {
+    autoplay: 4000,
     itemsToShow: 3,
-    snapAlign: "center",
+    pauseAutoplayOnHover: true,
+    snapAlign: "start",
   },
 });
 // ------------------------- END COURSES SECTION -----------------------
