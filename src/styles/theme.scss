@@ -1,0 +1,91 @@
+@import "./variable";
+
+.light {
+  background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
+  color: #333 !important;
+  // .hero-right {
+  //   img {
+  //     filter: invert(28%) sepia(100%) saturate(3);
+  //   }
+  // }
+  .gradient-color-text {
+    background: -webkit-linear-gradient(#facc15, $primary-color-light);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .active {
+    color: $primary-color-light !important;
+    font-weight: bold;
+  }
+  .nav-link:hover {
+    color: $primary-color-light !important;
+  }
+  .bg-primary {
+    background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
+    color: hsl(0, 0%, 20%);
+  }
+  .accent-color {
+    accent-color: $accent-color-light;
+  }
+  .footer-bg-color {
+    background-color: $footer-color-light;
+  }
+  .blur {
+    background-image: linear-gradient(
+      to right,
+      rgb(225, 231, 239, 0.8),
+      rgb(225, 231, 239, 0)
+    );
+  }
+  .bg-gallery {
+    background-color: #0f172a;
+  }
+  .thumbnail {
+    filter: grayscale(0) !important;
+  }
+}
+
+.dark {
+  background-image: linear-gradient(to right, #0f172a, #111827);
+  color: white !important;
+  .gradient-color-text {
+    background: -webkit-linear-gradient(#84ff00, $primary-color-dark);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .blob {
+    filter: hue-rotate(90deg);
+  }
+  // .hero-right {
+  //   img {
+  //     filter: invert(0) sepia(0) saturate(0);
+  //   }
+  // }
+  .active {
+    color: $primary-color-dark !important;
+    font-weight: bold;
+  }
+  .nav-link:hover {
+    color: $primary-color-dark !important;
+  }
+  .bg-primary {
+    background-image: linear-gradient(to right, #0f172a, #111827);
+    color: #e2e8f0;
+  }
+  .accent-color {
+    accent-color: $accent-color-dark;
+  }
+  .footer-bg-color {
+    background-color: $footer-color-dark;
+  }
+  .blur {
+    background-image: linear-gradient(
+      to right,
+      rgb(15, 23, 41, 0.8),
+      rgb(15, 23, 41, 0)
+    );
+  }
+  .bg-gallery {
+    background-color: #e2e8f0;
+  }
+}

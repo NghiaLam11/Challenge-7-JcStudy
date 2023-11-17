@@ -164,11 +164,15 @@ onMounted(() => {
     for (let i = 0; i < iconNext.length; i++) {
       iconNext[i].style.color = "white";
       iconPrev[i].style.color = "white";
+      iconNext[i].style.scale = "1.5";
+      iconPrev[i].style.scale = "1.5";
     }
   } else {
     for (let i = 0; i < iconNext.length; i++) {
       iconNext[i].style.color = "black";
       iconPrev[i].style.color = "black";
+      iconNext[i].style.scale = "1.5";
+      iconPrev[i].style.scale = "1.5";
     }
   }
 });
@@ -234,84 +238,84 @@ const breakpointsblogs = ref({
 .hero {
   display: flex;
   align-items: center;
-}
-.hero-right {
-  img {
-    transform: scaleX(-1);
-    height: 500px;
-    padding: 3rem;
-    margin: 0 auto;
-  }
-}
-.hero-left {
-  padding: 0 1rem 0 4rem;
-  h2 {
-    font-size: 3rem;
-    line-height: 3.5rem;
-  }
-  p {
-    line-height: 1.5rem;
-  }
-}
-.btn-hero {
-  cursor: pointer;
-  padding: 0.2rem 1rem;
-  width: 100px;
-  background-color: rgb(255, 255, 255, 0.1);
-  color: inherit;
-  margin-top: 1rem;
-  border: 1px solid;
-  border-radius: 3px;
-  border-bottom: 0.3rem solid;
-  transition: all 0.2s linear;
-  overflow: hidden;
-  position: relative;
-  i {
-    animation: SlideIn 3s ease-in-out;
-  }
-  @keyframes SlideIn {
-    0% {
-      transform: translateY(40px);
-    }
-    20% {
-      transform: translateY(0px);
-    }
-    40% {
-      transform: translateX(-10px);
-    }
-    60% {
-      transform: translateX(100px);
-    }
-    80% {
+  .hero-right {
+    img {
       transform: scaleX(-1);
-    }
-    100% {
-      transform: translateX(0px);
+      height: 500px;
+      padding: 3rem;
+      margin: 0 auto;
     }
   }
-}
-.btn-hero::after {
-  content: " ";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 100%;
-  bottom: 0;
-  // transform: translateX(100px);
-  background-color: rgba(134, 133, 133, 0.2);
-  transition: all 0.3s linear;
-}
-.btn-hero:hover.btn-hero::after {
-  right: 0;
-  z-index: -1;
-}
-.btn-hero:hover {
-  border-bottom: 0.1rem solid;
-  box-shadow: 0 0 2rem 1px rgb(255, 255, 255, 0.2);
-}
-.hero-right,
-.hero-left {
-  width: 50%;
+  .hero-left {
+    padding: 0 1rem 0 4rem;
+    h2 {
+      font-size: 3rem;
+      line-height: 3.5rem;
+    }
+    p {
+      line-height: 1.5rem;
+    }
+  }
+  .btn-hero {
+    cursor: pointer;
+    padding: 0.2rem 1rem;
+    width: 100px;
+    background-color: rgb(255, 255, 255, 0.1);
+    color: inherit;
+    margin-top: 1rem;
+    border: 1px solid;
+    border-radius: 3px;
+    border-bottom: 0.3rem solid;
+    transition: all 0.2s linear;
+    overflow: hidden;
+    position: relative;
+    i {
+      animation: SlideIn 3s ease-in-out;
+    }
+    @keyframes SlideIn {
+      0% {
+        transform: translateY(40px);
+      }
+      20% {
+        transform: translateY(0px);
+      }
+      40% {
+        transform: translateX(-10px);
+      }
+      60% {
+        transform: translateX(100px);
+      }
+      80% {
+        transform: scaleX(-1);
+      }
+      100% {
+        transform: translateX(0px);
+      }
+    }
+  }
+  .btn-hero::after {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    // transform: translateX(100px);
+    background-color: rgba(134, 133, 133, 0.2);
+    transition: all 0.3s linear;
+  }
+  .btn-hero:hover.btn-hero::after {
+    right: 0;
+    z-index: -1;
+  }
+  .btn-hero:hover {
+    border-bottom: 0.1rem solid;
+    box-shadow: 0 0 2rem 1px rgb(255, 255, 255, 0.2);
+  }
+  .hero-right,
+  .hero-left {
+    width: 50%;
+  }
 }
 
 // ------------------------------- END HERO CSS STYLE----------------------------
@@ -355,20 +359,7 @@ const breakpointsblogs = ref({
         opacity: 0.7;
       }
       button {
-        cursor: pointer;
-        padding: 0.2rem 1rem;
-        background-color: rgb(255, 255, 255, 0.1);
-        color: inherit;
         margin-top: 1rem;
-        border: 1px solid;
-        border-radius: 3px;
-        border-left: 0.2rem solid;
-        border-bottom: 0.3rem solid;
-        font-size: 0.8rem;
-        // transition: all 0.2s linear;
-      }
-      button:active {
-        border: 1px solid;
       }
     }
   }
@@ -433,23 +424,6 @@ const breakpointsblogs = ref({
         outline: none;
         opacity: 0.7;
       }
-
-      button {
-        cursor: pointer;
-        padding: 0.2rem 1rem;
-        background-color: rgb(255, 255, 255, 0.1);
-        color: inherit;
-        margin-top: 1rem;
-        border: 1px solid;
-        border-radius: 3px;
-        border-left: 0.2rem solid;
-        border-bottom: 0.3rem solid;
-        font-size: 0.8rem;
-        // transition: all 0.2s linear;
-      }
-      button:active {
-        border: 1px solid;
-      }
     }
   }
   .card-item:hover .card-right {
@@ -474,17 +448,18 @@ const breakpointsblogs = ref({
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    padding: 2rem 0;
+    padding-bottom: 2rem;
+    padding-top: 0;
     .thumbnail {
       width: 100%;
       height: 100%;
       padding: 0.7rem;
       border-radius: 5px;
       overflow: hidden;
-
+      filter: grayscale(1);
       img {
         transition: all 0.9s ease;
-        filter: grayscale(1);
+
         object-fit: cover;
         width: 100%;
         min-height: 180px;
@@ -561,28 +536,13 @@ const breakpointsblogs = ref({
           transform: rotate(360deg);
         }
       }
-      button {
-        cursor: pointer;
-        padding: 0.2rem 1rem;
-        background-color: rgb(255, 255, 255, 0.1);
-        color: inherit;
-        border: 1px solid;
-        border-radius: 3px;
-        border-left: 0.2rem solid;
-        border-bottom: 0.3rem solid;
-        font-size: 0.8rem;
-        // transition: all 0.2s linear;
-      }
-      button:active {
-        border: 1px solid;
-      }
     }
   }
   .card-item:hover .card-right {
     transform: translateY(1.5rem);
     border-radius: 5px;
   }
-  .card-item:hover .thumbnail img {
+  .card-item:hover .thumbnail {
     filter: grayscale(0);
   }
 }

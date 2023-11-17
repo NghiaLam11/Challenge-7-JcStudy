@@ -167,21 +167,7 @@ const breakpoints = ref({
           }
 
           button {
-            cursor: pointer;
-            padding: 0.3rem 1.2rem;
-            background-color: rgb(255, 255, 255, 0.1);
-            color: inherit;
-            margin-top: 0.5rem;
-            border: 1px solid;
-            border-radius: 3px;
-            border-left: 0.2rem solid;
-            border-bottom: 0.3rem solid;
-            font-size: 0.8rem;
             width: 100px;
-            // transition: all 0.2s linear;
-          }
-          button:active {
-            border: 1px solid;
           }
         }
       }
@@ -228,23 +214,6 @@ const breakpoints = ref({
             margin-bottom: 1.5px;
             outline: none;
             opacity: 0.7;
-          }
-
-          button {
-            cursor: pointer;
-            padding: 0.2rem 1rem;
-            background-color: rgb(255, 255, 255, 0.1);
-            color: inherit;
-            margin-top: 0.5rem;
-            border: 1px solid;
-            border-radius: 3px;
-            border-left: 0.2rem solid;
-            border-bottom: 0.3rem solid;
-            font-size: 0.8rem;
-            // transition: all 0.2s linear;
-          }
-          button:active {
-            border: 1px solid;
           }
         }
       }

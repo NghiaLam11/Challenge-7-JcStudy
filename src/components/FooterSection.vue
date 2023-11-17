@@ -2,7 +2,7 @@
   <div class="footer footer-bg-color">
     <div class="footer-wrapper container">
       <div class="footer-logo">
-        <h2>JcStudy</h2>
+        <h2 class="gradient-color-text">JcStudy</h2>
       </div>
       <ul class="footer-list">
         <h4 class="footer-topic">Pages</h4>
@@ -63,12 +63,6 @@
       h2 {
         font-size: 1.7rem;
         font-family: monospace;
-        background: -webkit-linear-gradient(
-          variable.$primary-color-dark,
-          variable.$primary-color-light
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
     }
     .footer-list {

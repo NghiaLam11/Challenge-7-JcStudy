@@ -3,7 +3,7 @@
     <div class="register">
       <form @submit.prevent="onSubmit" class="form-register">
         <div class="form-group">
-          <h2>Sign Up</h2>
+          <h2 class="gradient-color-text">Sign Up</h2>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
@@ -41,10 +41,10 @@
         </div>
         <div class="signin">
           <router-link to="/signin"
-            ><span>I already have an account!</span></router-link
+            ><span class="nav-link">I already have an account!</span></router-link
           >
           <i> or </i>
-          <router-link to="/"><span>Visit and go!</span></router-link>
+          <router-link to="/"><span class="nav-link">Visit and go!</span></router-link>
         </div>
       </form>
       <div class="form-greet">
@@ -52,7 +52,10 @@
         <div class="greet-group">
           <h3>
             <p>Hello!</p>
-            <div>Welcome to <strong class="jcstudy">JcStudy</strong></div>
+            <div>
+              Welcome to
+              <strong class="jcstudy gradient-color-text">JcStudy</strong>
+            </div>
             first time &#127881;!
           </h3>
           <div class="select-character">
@@ -125,7 +128,7 @@ const onPrevCharacter = () => {
 </script>
 
 <style scoped lang="scss">
-@use "../styles/variable";
+@import "../styles/variable";
 .auth {
   display: flex;
   justify-content: center;
@@ -155,7 +158,6 @@ const onPrevCharacter = () => {
           cursor: pointer;
         }
         span:hover {
-          color: variable.$primary-color-dark;
           opacity: 1;
         }
         i {
@@ -197,12 +199,6 @@ const onPrevCharacter = () => {
         }
         h2 {
           font-size: 2.5rem;
-          background: -webkit-linear-gradient(
-            variable.$primary-color-dark,
-            variable.$primary-color-light
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
         }
         input {
           padding: 0.2rem 0.3rem;
@@ -217,7 +213,6 @@ const onPrevCharacter = () => {
         input:focus {
           border-bottom: 0.1rem solid;
           font-size: 0.9rem;
-          
         }
         input::placeholder {
           font-size: 0.9rem;
@@ -261,12 +256,6 @@ const onPrevCharacter = () => {
           .jcstudy {
             font-size: 2.5rem;
             font-weight: bold;
-            background: -webkit-linear-gradient(
-              variable.$primary-color-dark,
-              variable.$primary-color-light
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
           }
         }
         .select-character {

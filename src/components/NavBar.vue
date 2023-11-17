@@ -3,7 +3,7 @@
     <section class="header">
       <nav class="nav container">
         <ul class="nav-list">
-          <li class="nav-logo"><a href="" class="logo">JcStudy</a></li>
+          <li class="nav-logo"><a href="" class="logo gradient-color-text">JcStudy</a></li>
         </ul>
         <ul class="nav-list">
           <li class="nav-item">
@@ -65,7 +65,7 @@
     <section ref="hiddenNavMobileElement" class="nav-hidden bg-primary">
       <nav class="nav-wrapper">
         <div class="logo-mobile">
-          <h3 class="logo">JcStudy</h3>
+          <h3 class="logo gradient-color-text">JcStudy</h3>
         </div>
         <ul class="nav-list-mobile">
           <li class="nav-item-mobile">
@@ -234,12 +234,6 @@ onMounted(() => {
         font-weight: bold;
         .logo {
           font-family: monospace;
-          background: -webkit-linear-gradient(
-            $primary-color-dark,
-            $primary-color-light
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
           text-decoration: none;
         }
       }
@@ -266,7 +260,6 @@ onMounted(() => {
           padding: 1rem 2rem;
         }
         .nav-link:hover {
-          color: $primary-color-dark !important;
           transition: all 0.3s ease-in-out;
         }
       }
@@ -316,12 +309,6 @@ onMounted(() => {
         padding-left: 0.5rem;
         margin-left: 1rem;
         font-family: monospace;
-        background: -webkit-linear-gradient(
-          $primary-color-dark,
-          $primary-color-light
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
       .nav-list-mobile {
         list-style: none;

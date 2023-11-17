@@ -129,21 +129,7 @@
         .form-btn {
           margin-top: 1rem;
           button {
-            cursor: pointer;
-            padding: 0.2rem 1rem;
-            background-color: rgb(255, 255, 255, 0.1);
-            color: inherit;
-            border: 1px solid;
-            border-radius: 3px;
-            border-left: 0.2rem solid;
-            border-bottom: 0.3rem solid;
-            font-size: 0.8rem;
             width: 100px;
-            overflow: hidden;
-            // transition: all 0.2s linear;
-          }
-          button:active {
-            border: 1px solid;
           }
         }
       }

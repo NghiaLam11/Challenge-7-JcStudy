@@ -4,7 +4,7 @@
     <main class="body">
       <router-view></router-view>
     </main>
-    <footer><FooterSection /></footer>
+    <footer v-if="!isSpecialPage"><FooterSection /></footer>
   </div>
 </template>
 <script setup lang="ts">

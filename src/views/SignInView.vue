@@ -3,7 +3,7 @@
     <div class="register">
       <form @submit.prevent="onSubmit" class="form-register">
         <div class="form-group">
-          <h2>Sign In</h2>
+          <h2 class="gradient-color-text">Sign In</h2>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
@@ -43,7 +43,7 @@
         </div>
         <div class="signup">
           <router-link to="/signup"
-            ><span>I don't have an account!</span></router-link
+            ><span class="nav-link">I don't have an account!</span></router-link
           >
         </div>
       </form>
@@ -52,7 +52,7 @@
         <div class="greet-group">
           <h3>
             <p>Hi!</p>
-            <div>Welcome back to <strong class="jcstudy">JcStudy</strong></div>
+            <div>Welcome back to <strong class="jcstudy gradient-color-text">JcStudy</strong></div>
             <div>Let's explore together &#x1F60D;!</div>
           </h3>
           <div class="select-character">
@@ -88,7 +88,7 @@ const onTogglePassword = () => {
 </script>
 
 <style scoped lang="scss">
-@use "../styles/variable";
+@import "../styles/variable";
 .auth {
   display: flex;
   justify-content: center;
@@ -118,7 +118,6 @@ const onTogglePassword = () => {
           cursor: pointer;
         }
         span:hover {
-          color: variable.$primary-color-dark;
           opacity: 1;
         }
         i {
@@ -160,12 +159,6 @@ const onTogglePassword = () => {
         }
         h2 {
           font-size: 2.5rem;
-          background: -webkit-linear-gradient(
-            variable.$primary-color-dark,
-            variable.$primary-color-light
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
         }
         input {
           padding: 0.2rem 0.3rem;
@@ -222,12 +215,6 @@ const onTogglePassword = () => {
           .jcstudy {
             font-size: 2.5rem;
             font-weight: bold;
-            background: -webkit-linear-gradient(
-              variable.$primary-color-dark,
-              variable.$primary-color-light
-            );
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
           }
         }
         .select-character {
