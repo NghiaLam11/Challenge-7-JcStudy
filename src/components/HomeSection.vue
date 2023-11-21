@@ -1,17 +1,17 @@
 <template>
-  <div class="courses">
-    <div class="courses-container container">
-      <CoursesGallery />
-      <CoursesUnlock />
-      <NewSection />
-    </div>
+  <div class="home container">
+    <HeroSection />
+    <CoursesHomeSection />
+    <NewSection />
+    <BlogsSection />
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import HeroSection from "./ChildSections/HeroSection.vue";
 import NewSection from "./ChildSections/NewSection.vue";
-import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
-import CoursesGallery from "./ChildSections/CoursesGallery.vue";
+import BlogsSection from "./ChildSections/BlogsSection.vue";
+import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import { onMounted } from "vue";
 const theme = localStorage.getItem("theme");
 onMounted(() => {
@@ -36,11 +36,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style scoped lang="scss">
-.courses {
-  .courses-container {
-    padding-top: 1rem;
-  }
-}
-</style>

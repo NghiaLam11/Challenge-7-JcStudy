@@ -3,7 +3,9 @@
     <section class="header">
       <nav class="nav container">
         <ul class="nav-list">
-          <li class="nav-logo"><a href="" class="logo gradient-color-text">JcStudy</a></li>
+          <li class="nav-logo">
+            <a href="" class="logo gradient-color-text">JcStudy</a>
+          </li>
         </ul>
         <ul class="nav-list">
           <li class="nav-item">
@@ -112,6 +114,8 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useSound } from "../composable/useSound";
+
 const isToggleMode = ref(false);
 const htmlElements = document.querySelector("html");
 const onDarkMode = () => {
@@ -157,10 +161,9 @@ const onOpenNavMobile = () => {
   }, 600);
   hiddenNavMobileElement.value.style.left = 0;
 };
-
+const sound = useSound();
 const onAuth = () => {
-  let beat = new Audio("/src/sounds/digital-beeping-151921.mp3");
-  beat.play();
+  sound.playSound();
 };
 
 onMounted(() => {

@@ -8,7 +8,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import NavBar from "./components/NavBar.vue";
+import NavBar from "./components/HeaderSection.vue";
 import FooterSection from "./components/FooterSection.vue";
 import { onMounted, watch, ref } from "vue";
 // import { useRouter } from "vue-router";
@@ -38,6 +38,7 @@ onMounted(() => {
     }
   );
 });
+
 </script>
 
 <style scoped lang="scss">
