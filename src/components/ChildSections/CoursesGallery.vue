@@ -78,7 +78,8 @@
 import { ref } from "vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
-import { useSound } from "/src/composable/useSound.ts";
+import { useSound } from "../../../src/composable/useSound.ts";
+
 
 // Play sound when btn is clicked
 const soundStore = useSound();
@@ -151,6 +152,7 @@ const breakpoints = ref({
       display: flex;
       flex-direction: column;
       justify-content: center;
+      color: white;
       h3 {
         font-size: 2.2rem;
         line-height: 2.8rem;

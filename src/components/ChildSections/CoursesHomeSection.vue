@@ -39,7 +39,8 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useSound } from "/src/composable/useSound.ts";
+import { useSound } from "../../../src/composable/useSound.ts";
+
 
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";

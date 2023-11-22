@@ -21,15 +21,18 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useSound } from "/src/composable/useSound.ts";
+import { useSound } from "../../../src/composable/useSound.ts";
+import { useEffectChangeRoute } from "../../../src/composable/useEffectChangeRoute";
 
 // ------------------------- START HERO SECTION -----------------------
 const soundStore = useSound();
+const effectStore = useEffectChangeRoute();
 const router = useRouter();
 const isDiscover = ref(true);
 const onDiscover = () => {
   isDiscover.value = !isDiscover.value;
   soundStore.playSound();
+  effectStore.onChange();
   setTimeout(() => {
     router.push("/courses");
   }, 2000);

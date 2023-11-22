@@ -45,7 +45,8 @@
 import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { useSound } from "/src/composable/useSound.ts";
+import { useSound } from "../../../src/composable/useSound.ts";
+
 
 // Play sound when btn is clicked
 const soundStore = useSound();

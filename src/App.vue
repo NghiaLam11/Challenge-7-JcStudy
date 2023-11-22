@@ -5,18 +5,24 @@
       <router-view></router-view>
     </main>
     <footer v-if="!isSpecialPage"><FooterSection /></footer>
+    <section v-if="effectStore.isChange" class="change-route-section">
+      <ChangeRouteSection />
+    </section>
   </div>
 </template>
 <script setup lang="ts">
 import NavBar from "./components/HeaderSection.vue";
 import FooterSection from "./components/FooterSection.vue";
+import ChangeRouteSection from "./components/ChangeRouteSection.vue";
 import { onMounted, watch, ref } from "vue";
+import { useEffectChangeRoute } from "./composable/useEffectChangeRoute";
 // import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const isSpecialPage = ref(false);
-// const router = useRouter();
+const effectStore = useEffectChangeRoute();
 
+// const router = useRouter();
 onMounted(() => {
   const navHiddenElement: any = document.querySelector(".nav-hidden");
   const navCloseElement: any = document.querySelector(".nav-close");
@@ -30,6 +36,7 @@ onMounted(() => {
         isSpecialPage.value = false;
         console.log("FALSE: " + newPath);
       }
+
       // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {
@@ -37,8 +44,8 @@ onMounted(() => {
       }, 600);
     }
   );
-});
 
+});
 </script>
 
 <style scoped lang="scss">
