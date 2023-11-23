@@ -62,12 +62,81 @@
           </div>
         </div>
       </div>
-      <div class="lesson-right"></div>
+      <div class="lesson-right">
+        <div>
+          <div class="band">
+            <video controls>
+              <source src="../videos/video-1645947165.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="lesson-category tab">
+            <button
+              class="tablinks bg-primary active"
+              @click="openCategory($event, 'overview')"
+            >
+              Overview
+            </button>
+            <button
+              class="tablinks bg-primary"
+              @click="openCategory($event, 'quiz')"
+            >
+              Quiz
+            </button>
+            <button
+              class="tablinks bg-primary"
+              @click="openCategory($event, 'comments')"
+            >
+              Comments
+            </button>
+          </div>
+          <div class="lesson-detail tabcontent" id="overview">
+            <h3 class="detail-title">
+              Overview ipsum dolor sit amet consectetur adipisicing elit.
+            </h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
+              sequi, distinctio cupiditate repudiandae dolor corporis possimus
+              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
+              ad saepe perspiciatis.
+            </p>
+          </div>
+          <div style="display: none" id="quiz" class="tabcontent lesson-detail">
+            <h3 class="detail-title">
+              Quiz ipsum dolor sit amet consectetur adipisicing elit.
+            </h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
+              sequi, distinctio cupiditate repudiandae dolor corporis possimus
+              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
+              ad saepe perspiciatis.
+            </p>
+          </div>
+          <div
+            style="display: none"
+            id="comments"
+            class="tabcontent lesson-detail"
+          >
+            <h3 class="detail-title">
+              Comments ipsum dolor sit amet consectetur adipisicing elit.
+            </h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
+              sequi, distinctio cupiditate repudiandae dolor corporis possimus
+              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
+              ad saepe perspiciatis.
+            </p>
+          </div>
+          <div class="course-related">
+            <CoursesRelatedSection />
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
 const collapseIconElementUp = ref();
@@ -86,6 +155,20 @@ const onToggleCollapse = (num: number) => {
     console.log("close");
   }
 };
+function openCategory(evt: any, tabName: string) {
+  var i, tablinks;
+  const tabcontent: any = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  const tab: any = document.getElementById(tabName);
+  tab.style.display = "block";
+  evt.currentTarget.className += " active";
+}
 </script>
 
 <style scoped lang="scss">
@@ -97,6 +180,54 @@ const onToggleCollapse = (num: number) => {
     .lesson-right {
       width: 78%;
       height: 100%;
+      padding: 1rem;
+      overflow-y: scroll;
+      .band {
+        video {
+          width: 100%;
+          max-height: 450px;
+          background-color: black;
+        }
+      }
+      /* Style the tab content */
+      .tabcontent {
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+      }
+      .lesson-category {
+        margin-top: 1rem;
+        button {
+          border: none;
+          background-color: transparent;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          font-weight: bold;
+          width: 150px;
+          padding: 0.5rem 0;
+        }
+        .active {
+          transform: scaleY(1.07) !important;
+          border: 2px solid var(--border-color);
+          border-bottom: 0;
+          text-transform: uppercase;
+        }
+      }
+      .lesson-detail {
+        border: none;
+        border-top: 0.5px solid var(--border-color);
+        margin-left: 0.2rem;
+        padding: 0.5rem;
+        h3 {
+          font-size: 1.5rem;
+          letter-spacing: 0.05rem;
+        }
+        p {
+          opacity: 0.8;
+          line-height: 1.3rem;
+          font-size: 0.9rem;
+        }
+      }
     }
     .lesson-left {
       width: 22%;
@@ -108,6 +239,7 @@ const onToggleCollapse = (num: number) => {
         padding: 0.5rem 0;
 
         h3 {
+          letter-spacing: 0.05rem;
           font-size: 1.5rem;
         }
         p {

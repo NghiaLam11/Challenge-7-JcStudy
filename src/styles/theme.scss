@@ -1,6 +1,8 @@
 @import "./variable";
 
 .light {
+  --border-color: #facc15;
+
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: #333 !important;
   // .hero-right {
@@ -39,6 +41,7 @@
 }
 
 .dark {
+  --border-color: #84ff00;
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: rgb(250, 250, 250) !important;
   .gradient-color-text {
