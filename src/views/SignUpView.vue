@@ -41,10 +41,14 @@
         </div>
         <div class="signin">
           <router-link to="/signin"
-            ><span class="nav-link">I already have an account!</span></router-link
+            ><span class="nav-link"
+              >I already have an account!</span
+            ></router-link
           >
           <i> or </i>
-          <router-link to="/"><span class="nav-link">Visit and go!</span></router-link>
+          <router-link to="/"
+            ><span class="nav-link">Visit and go!</span></router-link
+          >
         </div>
       </form>
       <div class="form-greet">
@@ -128,7 +132,6 @@ const onPrevCharacter = () => {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/variable";
 .auth {
   display: flex;
   justify-content: center;
@@ -166,14 +169,17 @@ const onPrevCharacter = () => {
       }
       .btn-group {
         padding: 0.3rem 0;
+
         .btn-submit {
           cursor: pointer;
           padding: 0.2rem 1rem;
+          margin-top: 0;
           background-color: rgb(255, 255, 255, 0.1);
           color: inherit;
           border: 1px solid;
           border-radius: 3px;
           border-bottom: 0.3rem solid;
+          border-color: var(--border-color);
           transition: all 0.2s linear;
         }
         .btn-submit:hover {
@@ -203,9 +209,10 @@ const onPrevCharacter = () => {
         input {
           padding: 0.2rem 0.3rem;
           color: inherit;
-          background-color: rgba(118, 117, 117, 0.1);
+          background-color: transparent;
           border: 1px solid;
           border-bottom: 0.3rem solid;
+          border-color: var(--border-color);
           border-radius: 4px;
           outline: none;
           transition: all 0.1s ease-in-out;

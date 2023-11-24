@@ -177,7 +177,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/variable";
 
 .header {
   position: fixed;
@@ -325,7 +324,7 @@ onMounted(() => {
             font-size: 1.1rem;
           }
           .nav-link:hover {
-            color: $primary-color-dark !important;
+            color: var(--primary-color) !important;
             transition: all 0.3s ease-in-out;
           }
         }

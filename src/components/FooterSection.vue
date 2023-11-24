@@ -51,7 +51,7 @@
 </template>
 
 <style lang="scss" scoped>
-@use "../styles/variable";
+
 .footer {
   padding: 2rem;
   box-shadow: 0 0 1rem 1rem rgba(0, 0, 0, 0.1);

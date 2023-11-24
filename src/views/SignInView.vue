@@ -12,7 +12,6 @@
             v-model="email"
             type="email"
             placeholder="Ex: jcstudy123@gmail.com"
-
             class="email"
           />
         </div>
@@ -24,7 +23,6 @@
             v-model="password"
             type="password"
             placeholder="Ex: jcstudy123"
-
             class="password"
           />
           <div class="toggle-password">
@@ -52,7 +50,10 @@
         <div class="greet-group">
           <h3>
             <p>Hi!</p>
-            <div>Welcome back to <strong class="jcstudy gradient-color-text">JcStudy</strong></div>
+            <div>
+              Welcome back to
+              <strong class="jcstudy gradient-color-text">JcStudy</strong>
+            </div>
             <div>Let's explore together &#x1F60D;!</div>
           </h3>
           <div class="select-character">
@@ -88,7 +89,6 @@ const onTogglePassword = () => {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/variable";
 .auth {
   display: flex;
   justify-content: center;
@@ -128,6 +128,7 @@ const onTogglePassword = () => {
         padding: 0.3rem 0;
         .btn-submit {
           cursor: pointer;
+          margin-top: 0;
           padding: 0.2rem 1rem;
           background-color: rgb(255, 255, 255, 0.1);
           color: inherit;
@@ -135,6 +136,7 @@ const onTogglePassword = () => {
           border-bottom: 0.3rem solid;
           border-radius: 4px;
           transition: all 0.2s linear;
+          border-color: var(--border-color);
         }
         .btn-submit:hover {
           border-bottom: 0.1rem solid;
@@ -163,14 +165,15 @@ const onTogglePassword = () => {
         input {
           padding: 0.2rem 0.3rem;
           color: inherit;
-          background-color: rgba(118, 117, 117, 0.1);
+          background-color: transparent;
           border: 1px solid;
           border-bottom: 0.3rem solid;
           border-radius: 4px;
+          border-color: var(--border-color);
           outline: none;
           transition: all 0.1s ease-in-out;
         }
-        input:hover {
+        input:focus {
           border-bottom: 0.1rem solid;
         }
         input::placeholder {

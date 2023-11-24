@@ -14,7 +14,7 @@
           </div>
           <div class="card-right bg-primary">
             <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
-            <p class="multiline-ellipsis-4">
+            <p class="multiline-ellipsis-3">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
               voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
               reprehenderit laboriosam? Sit et possimus assumenda! Quas

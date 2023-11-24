@@ -120,15 +120,14 @@ const breakpoints = ref({
   .card-gallery {
     width: 100%;
     position: relative;
-    padding: 1px 1px 0.4rem 0.2rem;
+    // padding: 1px 1px 0.4rem 0.2rem;
     border-radius: 5px;
     .blur {
       position: absolute;
-      height: calc(100% - 0.4rem - 1px);
+      height: calc(100%);
       min-width: 600px;
       max-width: 800px;
-      left: 0.2rem;
-      bottom: 0.4rem;
+      transform: scaleY(1.1);
       z-index: 1;
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;

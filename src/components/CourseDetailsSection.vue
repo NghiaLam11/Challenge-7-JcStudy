@@ -78,15 +78,15 @@
             </button>
             <button
               class="tablinks bg-primary"
-              @click="openCategory($event, 'quiz')"
-            >
-              Quiz
-            </button>
-            <button
-              class="tablinks bg-primary"
               @click="openCategory($event, 'comments')"
             >
               Comments
+            </button>
+            <button
+              class="tablinks bg-primary"
+              @click="openCategory($event, 'quiz')"
+            >
+              Quiz
             </button>
           </div>
           <div class="lesson-detail tabcontent" id="overview">
@@ -172,7 +172,6 @@ function openCategory(evt: any, tabName: string) {
 </script>
 
 <style scoped lang="scss">
-@import "../styles/variable";
 .course-detail {
   .course-detail-wrapper {
     display: flex;
@@ -207,15 +206,15 @@ function openCategory(evt: any, tabName: string) {
           padding: 0.5rem 0;
         }
         .active {
-          transform: scaleY(1.07) !important;
-          border: 2px solid var(--border-color);
+          transform: scaleY(1.1) !important;
+          border: 2px solid var(--primary-color);
           border-bottom: 0;
           text-transform: uppercase;
         }
       }
       .lesson-detail {
         border: none;
-        border-top: 0.5px solid var(--border-color);
+        border-top: 2px solid;
         margin-left: 0.2rem;
         padding: 0.5rem;
         h3 {
@@ -326,7 +325,7 @@ function openCategory(evt: any, tabName: string) {
             .lesson-item:hover {
               .lesson-link {
                 opacity: 1;
-                color: $primary-color-hover !important;
+                color: var(--primary-color) !important;
               }
             }
           }

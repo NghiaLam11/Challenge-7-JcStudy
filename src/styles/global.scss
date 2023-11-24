@@ -19,6 +19,10 @@
   -webkit-line-clamp: 2; /* start showing ellipsis when 2rd line is reached */
   @include ellipsisText();
 }
+.multiline-ellipsis-3 {
+  -webkit-line-clamp: 3; /* start showing ellipsis when 3rd line is reached */
+  @include ellipsisText();
+}
 .multiline-ellipsis-1 {
   -webkit-line-clamp: 1; /* start showing ellipsis when 1rd line is reached */
   @include ellipsisText();
@@ -34,6 +38,7 @@ button {
   border-radius: 3px;
   border-left: 0.2rem solid;
   border-bottom: 0.3rem solid;
+  border-color: var(--border-color) !important;
   font-size: 0.8rem !important;
   // transition: all 0.2s linear;
 }
