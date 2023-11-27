@@ -33,7 +33,7 @@
               <ul
                 class="lesson-list"
                 ref="collapseListElement"
-                style="display: none"
+                :style="num === 1 ? 'display:block' : 'display: none'"
               >
                 <li class="lesson-item">
                   <router-link class="lesson-link" to="/"
@@ -99,6 +99,9 @@
               doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
               ad saepe perspiciatis.
             </p>
+            <div class="course-related">
+              <CoursesRelatedSection />
+            </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
             <h3 class="detail-title">
@@ -116,18 +119,28 @@
             id="comments"
             class="tabcontent lesson-detail"
           >
-            <h3 class="detail-title">
-              Comments ipsum dolor sit amet consectetur adipisicing elit.
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-              sequi, distinctio cupiditate repudiandae dolor corporis possimus
-              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
-              ad saepe perspiciatis.
-            </p>
-          </div>
-          <div class="course-related">
-            <CoursesRelatedSection />
+            <form class="form-comment">
+              <input placeholder="Write your comment..." type="text" />
+              <button><i class="fas fa-paper-plane"></i></button>
+            </form>
+            <div class="comment-group">
+              <div class="comment-item">
+                <div class="comment-top">
+                  <div class="comment-auth">
+                    <h4>JcLahi</h4>
+                  </div>
+                  <span class="comment-time">10/11/2003</span>
+                </div>
+
+                <div class="comment-text">
+                  <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Animi excepturi neque voluptatibus eaque nostrum eveniet
+                    ipsa doloribus.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -193,6 +206,60 @@ function openCategory(evt: any, tabName: string) {
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-top: none;
+        .form-comment {
+          border: 1px solid;
+          border-left: 1px solid;
+          border-bottom: 3px solid;
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          padding: 0.6rem 0.2rem;
+          margin-top: 1rem;
+          border-radius: 5px;
+          input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            width: 90%;
+            color: inherit;
+            padding-left: 0.5rem;
+            font-size: 0.8rem;
+          }
+          button {
+            margin: 0;
+            background-color: transparent;
+            border: none;
+            i {
+              font-size: 1rem;
+            }
+          }
+        }
+        .comment-group {
+          .comment-item {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            .comment-top {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .comment-time {
+                font-size: 0.6rem;
+                opacity: 0.8;
+              }
+            }
+            .comment-text {
+              margin: 0.3rem 0;
+              padding: 1rem;
+              border-radius: 5px;
+              border: 1px solid;
+              p {
+                font-size: 0.8rem;
+              }
+            }
+          }
+        }
       }
       .lesson-category {
         margin-top: 1rem;
@@ -236,7 +303,6 @@ function openCategory(evt: any, tabName: string) {
       padding: 0 1rem;
       .course-text {
         padding: 0.5rem 0;
-
         h3 {
           letter-spacing: 0.05rem;
           font-size: 1.5rem;
@@ -270,12 +336,15 @@ function openCategory(evt: any, tabName: string) {
             border: none;
             padding: 0.4rem 1rem;
             box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.2);
+            border-left: 3px solid;
+            font-weight: bold;
           }
         }
         .chapter-collapse {
           border-radius: 3px;
           margin: 0.5rem 0;
           box-shadow: -1px 3px 5px 1px rgba(0, 0, 0, 0.2);
+          border-left: 3px solid;
           button {
             margin-top: 0;
             width: 100%;
@@ -285,6 +354,7 @@ function openCategory(evt: any, tabName: string) {
             align-items: center;
             justify-content: space-between;
             padding: 0.4rem 1rem;
+            font-weight: bold;
             i {
               opacity: 0.6;
             }
@@ -298,6 +368,7 @@ function openCategory(evt: any, tabName: string) {
             padding: 0.5rem;
             border-top: none;
             list-style: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
             .lesson-item {
               padding: 0.1rem;
               border-bottom: 1px solid;
@@ -327,6 +398,16 @@ function openCategory(evt: any, tabName: string) {
                 opacity: 1;
                 color: var(--primary-color) !important;
               }
+            }
+          }
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: scaleY(0) translateY(-100%);
+            }
+            to {
+              opacity: 1;
+              transform: scaleY(1) translateY(0%);
             }
           }
         }
