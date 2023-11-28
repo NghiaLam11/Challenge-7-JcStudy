@@ -1,17 +1,53 @@
 <template>
   <div class="course-search">
     <div class="search">
-      <div class="form-search">
+      <form class="form-search">
         <input placeholder="Ex: Software" type="text" />
         <button type="submit">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
+      </form>
+      <div class="search-result" style="display: none">
+        <h5>Results</h5>
+        <div class="results">
+          <div class="card-item" v-for="n in 8" :key="n">
+            <div class="thumbnail">
+              <img
+                src="/src/images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
+                alt=""
+              />
+            </div>
+            <div class="card-right bg-primary">
+              <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+              <p class="multiline-ellipsis-3">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
+                eos voluptatem iusto delectus, minus sapiente! Distinctio atque
+                dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
+                aspernatur dolore nulla cumque odio.
+              </p>
+              <div class="card-progress">
+                <progress class="accent-color" value="32" max="100"></progress>
+                <span class="percent">32%</span>
+              </div>
+
+              <button @click="onUnlock">Continue ...</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useSound } from "../../../src/composable/useSound.ts";
+
+// Play sound when btn is clicked
+const soundStore = useSound();
+const onUnlock = () => {
+  soundStore.playSound();
+};
+</script>
 
 <style lang="scss">
 .course-search {
@@ -19,31 +55,150 @@
     margin: 0 0.5rem;
     margin-bottom: 2rem;
     .form-search {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      border-right: 0.5px solid var(--border-color);
+      border-top: 1px solid var(--border-color);
+      border-left: 2px solid var(--border-color);
+      border-bottom: 5px solid var(--border-color);
+      border-radius: 5px;
+      input {
+        width: 90%;
+        max-width: 95%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        color: var(--text-color);
+      }
+      button {
+        margin: 0;
+        border: none;
+        background-color: transparent;
+        i {
+          font-size: 1.05rem;
+        }
+      }
+    }
+    .search-result {
+      h5 {
+        margin-top: 1rem;
+        margin-left: 1rem;
+        font-size: 1.2rem;
+      }
+      .results {
         display: flex;
-        justify-content: space-between;
-        font-size: 1.1rem;
-        padding: 0.5rem;
-        border-right: 0.5px solid var(--border-color);
-        border-top: 1px solid var(--border-color);
-        border-left: 2px solid var(--border-color);
-        border-bottom: 5px solid var(--border-color);
-        border-radius: 5px;
-        input {
-            width: 90%;
-            max-width: 95%;
-            background-color: transparent;
-            outline: none;
-            border: none;
-            color: var(--text-color);
-        }
-        button {
-            margin: 0;
-            border: none;
-            background-color: transparent;
-            i {
-                font-size: 1.05rem;
+        flex-wrap: wrap;
+        .card-item {
+          width: 25%;
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+          .thumbnail {
+            width: 100%;
+            height: 100%;
+            padding: 0.7rem;
+            transition: all 0.9s ease;
+            filter: grayscale(1);
+            img {
+              object-fit: cover;
+              width: 100%;
+              min-height: 180px;
+              height: 100%;
+              border-radius: 5px;
             }
+          }
+          .card-right {
+            width: 100%;
+            text-align: start;
+            transition: all 0.35s ease;
+            padding: 0 1rem;
+            h3 {
+              font-size: 1.3rem;
+              line-height: 1.8rem;
+              margin-bottom: 0.2rem;
+            }
+            p {
+              font-size: 0.8rem;
+              line-height: 1.2rem;
+              opacity: 0.7;
+            }
+
+            .percent {
+              font-size: 0.6rem;
+              opacity: 0.7;
+              margin-left: 2px;
+            }
+            progress {
+              height: 10px;
+              margin-bottom: 1.5px;
+              outline: none;
+              opacity: 0.7;
+            }
+          }
         }
+        .card-item:hover .card-right {
+          transform: translateY(-50%);
+          padding-left: 1.5rem;
+          border-radius: 5px;
+        }
+        .card-item:hover .thumbnail {
+          filter: grayscale(0);
+          transform: rotateY(360deg);
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 734px) and (max-width: 889px) {
+  .course-search {
+    .search {
+      .search-result {
+        .results {
+          .card-item {
+            width: calc(100% / 3);
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (min-width: 534px) and (max-width: 734px) {
+  .course-search {
+    .search {
+      .search-result {
+        .results {
+          .card-item {
+            width: calc(100% / 2);
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 534px) {
+  .course-search {
+    .search {
+      .search-result {
+        .results {
+          .card-item {
+            flex-direction: row;
+            width: calc(100% / 1);
+            .card-right {
+              padding-left: 0;
+              padding-top: 1rem;
+              button {
+                font-size: 0.6rem !important;
+              }
+            }
+          }
+          .card-item:hover .card-right {
+            transform: translateY(0);
+            padding-left: 0.5rem;
+          }
+        }
+      }
     }
   }
 }

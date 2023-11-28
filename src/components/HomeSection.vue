@@ -3,14 +3,14 @@
     <HeroSection />
     <CoursesHomeSection />
     <NewSection />
-    <BlogsSection />
+    <BlogsHomeSection />
   </div>
 </template>
 
 <script setup lang="ts">
 import HeroSection from "./ChildSections/HeroSection.vue";
 import NewSection from "./ChildSections/NewSection.vue";
-import BlogsSection from "./ChildSections/BlogsSection.vue";
+import BlogsHomeSection from "./ChildSections/BlogsHomeSection.vue";
 import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import { onMounted } from "vue";
 const theme = localStorage.getItem("theme");
