@@ -157,18 +157,18 @@ const onDiscover = () => {
   }
   .hero-right,
   .hero-left {
-    width: 100%;
+    width: 100% !important;
   }
   .hero-right {
     img {
       transform: scaleX(-1);
       height: 300px;
-      padding: 2rem;
+      padding: 2rem !important;
       margin: 0 auto;
     }
   }
   .hero-left {
-    padding: 0 1rem 0 1rem;
+    padding: 0 1rem 0 1rem !important;
   }
 }
 </style>

@@ -104,15 +104,24 @@
             </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
-            <h3 class="detail-title">
-              Quiz ipsum dolor sit amet consectetur adipisicing elit.
-            </h3>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-              sequi, distinctio cupiditate repudiandae dolor corporis possimus
-              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
-              ad saepe perspiciatis.
-            </p>
+            <div class="quiz">
+              <h3 class="detail-title">
+                Quiz ipsum dolor sit amet consectetur adipisicing elit.
+              </h3>
+              <div v-for="q in 5" :key="q" class="question">
+                <h4 class="question-title">
+                  {{ q }}.Which game do you playing?
+                </h4>
+                <div class="question-answer">
+                  <div class="answer" v-for="n in 4" :key="n">
+                    <input type="radio" name="answer" /><span
+                      >Answer {{ n }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="question-submit"><button>Submit</button></div>
+            </div>
           </div>
           <div
             style="display: none"
@@ -138,6 +147,31 @@
                     Animi excepturi neque voluptatibus eaque nostrum eveniet
                     ipsa doloribus.
                   </p>
+                </div>
+                <div class="comment-react">
+                  <div><i class="fa-solid fa-heart"></i><span>1</span></div>
+                  <span>Reply</span>
+                </div>
+                <div class="comment-reply">
+                  <div class="comment-item">
+                    <div class="comment-top">
+                      <div class="comment-auth">
+                        <h4>JcLahi</h4>
+                      </div>
+                      <span class="comment-time">10/11/2003</span>
+                    </div>
+
+                    <div class="comment-text">
+                      <p>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing
+                        elit. Animi excepturi neque voluptatibus eaque nostrum
+                        eveniet ipsa doloribus.
+                      </p>
+                    </div>
+                    <div class="comment-react">
+                      <div><i class="fa-solid fa-heart"></i><span>1</span></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,7 +222,7 @@ function openCategory(evt: any, tabName: string) {
 .course-detail {
   .course-detail-wrapper {
     display: flex;
-    height: calc(100vh - 79.25px);
+    height: calc(110vh);
     .lesson-right {
       width: 78%;
       height: 100%;
@@ -206,6 +240,41 @@ function openCategory(evt: any, tabName: string) {
         padding: 6px 12px;
         border: 1px solid #ccc;
         border-top: none;
+      }
+      #quiz {
+        .question {
+          margin: 1rem 0;
+          .question-title {
+            letter-spacing: 0.03rem;
+          }
+          .question-answer {
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            .answer {
+              padding: 0.1rem;
+              display: flex;
+              align-items: center;
+              font-weight: 400;
+              span {
+                letter-spacing: 0.04rem;
+                font-size: 0.9rem;
+                margin-left: 0.3rem;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+        .question-submit {
+          display: flex;
+          justify-content: center;
+          button {
+            border-left: 1px solid;
+            width: 100px;
+            padding: 0.5rem ;
+          }
+        }
+      }
+      #comments {
         .form-comment {
           border: 1px solid;
           border-left: 1px solid;
@@ -256,6 +325,37 @@ function openCategory(evt: any, tabName: string) {
               border: 1px solid;
               p {
                 font-size: 0.8rem;
+              }
+            }
+            .comment-react {
+              margin-left: 0.5rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              div {
+                display: flex;
+                align-items: center;
+              }
+              i {
+                color: red;
+                margin-right: 0.2rem;
+              }
+              span {
+                font-size: 0.8rem;
+                font-weight: bold;
+                margin-right: 0.4rem;
+                opacity: 0.7;
+              }
+              span:hover {
+                opacity: 1;
+                cursor: pointer;
+              }
+            }
+            .comment-reply {
+              margin-left: 1rem;
+              .comment-item {
+                background-color: var(--bg-reply);
+                padding: 0.5rem 1rem;
               }
             }
           }
