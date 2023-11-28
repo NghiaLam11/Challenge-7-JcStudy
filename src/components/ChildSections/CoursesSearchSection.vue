@@ -16,6 +16,7 @@
 <style lang="scss">
 .course-search {
   .search {
+    margin: 0 0.5rem;
     margin-bottom: 2rem;
     .form-search {
         display: flex;

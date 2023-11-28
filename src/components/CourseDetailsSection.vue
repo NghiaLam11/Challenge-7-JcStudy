@@ -182,8 +182,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
+
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
 const collapseIconElementUp = ref();
@@ -216,6 +217,13 @@ function openCategory(evt: any, tabName: string) {
   tab.style.display = "block";
   evt.currentTarget.className += " active";
 }
+onMounted(() => {
+  let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
+
+  if (isMobile) {
+    collapseListElement.value[0].style.display = "none";
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -270,7 +278,7 @@ function openCategory(evt: any, tabName: string) {
           button {
             border-left: 1px solid;
             width: 100px;
-            padding: 0.5rem ;
+            padding: 0.5rem;
           }
         }
       }
@@ -515,6 +523,67 @@ function openCategory(evt: any, tabName: string) {
     }
     ::-webkit-scrollbar {
       display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .course-detail {
+    .course-detail-wrapper {
+      flex-direction: column;
+      .lesson-left,
+      .lesson-right {
+        width: 100%;
+      }
+      .lesson-left {
+        overflow-y: unset;
+        height: unset;
+        border: none;
+        .course-lesson {
+          display: flex;
+          .overview {
+            width: 25%;
+            margin: 0 0.2rem;
+            button {
+              margin-top: 0;
+            }
+          }
+          .chapter-collapse {
+            height: 100%;
+            width: 25%;
+            margin: 0 0.2rem;
+            position: relative;
+            .lesson-list {
+              position: absolute;
+              z-index: 3;
+              left: -2px;
+              right: 0;
+              background-color: var(--bg-secondary);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 534px) {
+  .course-lesson {
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    .overview {
+      width: calc(50% - 0.5rem) !important;
+    }
+    .chapter-collapse {
+      width: calc(50% - 0.5rem) !important;
+    }
+  }
+  .lesson-right,
+  .lesson-left {
+    padding: 0.5rem !important;
+  }
+  .lesson-right {
+    .lesson-category {
+      display: flex;
     }
   }
 }

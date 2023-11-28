@@ -122,6 +122,7 @@ const breakpoints = ref({
     position: relative;
     // padding: 1px 1px 0.4rem 0.2rem;
     border-radius: 5px;
+    padding: 0.5rem;
     .blur {
       position: absolute;
       height: calc(100%);

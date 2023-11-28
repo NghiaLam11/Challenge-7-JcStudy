@@ -44,12 +44,16 @@ onMounted(() => {
       }, 600);
     }
   );
-
 });
 </script>
 
 <style scoped lang="scss">
 .header {
   margin-bottom: 5.5rem;
+}
+@media screen and (max-width: 768px) {
+  .header {
+    margin-bottom: 0rem;
+  }
 }
 </style>

@@ -20,9 +20,6 @@
   .nav-link:hover {
     color: var(--primary-color) !important;
   }
-  .bg-primary {
-    background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
-  }
   .accent-color {
     accent-color: var(--accent-color);
   }
@@ -79,8 +76,5 @@
       rgb(15, 23, 41, 0.8),
       rgb(15, 23, 41, 0)
     );
-  }
-  .bg-gallery {
-    background-color: #e2e8f0;
   }
 }
