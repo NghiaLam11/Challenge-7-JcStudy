@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/HomeView.vue";
 import Blogs from "./views/BlogsView.vue";
 import Contact from "./views/ContactView.vue";
+import Utilities from "./views/UtilitiesView.vue";
 import Courses from "./views/CoursesView.vue";
 import CourseDetails from "./views/CourseDetailsView.vue";
 import SignUp from "./views/SignUpView.vue";
@@ -10,6 +11,7 @@ const routes = [
   { path: "/", component: Home },
   { path: "/contact", component: Contact },
   { path: "/blogs", component: Blogs },
+  { path: "/utilities", component: Utilities },
   { path: "/courses", component: Courses },
   { path: "/courses/:idCourse/:chapter/:idLesson", component: CourseDetails },
   { path: "/signin", component: SignIn },

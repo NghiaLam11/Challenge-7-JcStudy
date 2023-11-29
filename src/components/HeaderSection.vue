@@ -19,8 +19,8 @@
             >
           </li>
           <li class="nav-item">
-            <router-link to="/notes" active-class="active" class="nav-link"
-              >Notes</router-link
+            <router-link to="/utilities" active-class="active" class="nav-link"
+              >Utilities</router-link
             >
           </li>
           <li class="nav-item">
@@ -81,8 +81,8 @@
             >
           </li>
           <li class="nav-item-mobile">
-            <router-link to="/news" active-class="active" class="nav-link"
-              ><i class="far fa-newspaper"></i> Notes</router-link
+            <router-link to="/utilities" active-class="active" class="nav-link"
+              ><i class="far fa-newspaper"></i> Utilities</router-link
             >
           </li>
           <li class="nav-item-mobile">

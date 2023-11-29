@@ -6,6 +6,8 @@
   --border-color: #555555;
   --bg-secondary: #d1d5db;
   --bg-reply: #e5e7eb;
+  --utility-color-first: #fbbf24;
+  --utility-color-second: #fde047;
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: var(--text-color);
   .gradient-color-text {
@@ -43,6 +45,8 @@
   --text-color: rgb(250, 250, 250);
   --bg-secondary: #1f2937;
   --bg-reply: #334155;
+  --utility-color-first: #34d399;
+  --utility-color-second: #5eead4;
 
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: var(--text-color) !important;
