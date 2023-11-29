@@ -409,8 +409,12 @@ onMounted(() => {
       overflow-y: scroll;
       border-right: 2px solid;
       padding: 0 1rem;
+      hr {
+        margin: 1rem 0;
+      }
       .course-text {
         padding: 0.5rem 0;
+        margin-top: 1rem;
         h3 {
           letter-spacing: 0.05rem;
           font-size: 1.5rem;
@@ -436,6 +440,7 @@ onMounted(() => {
       }
       .course-lesson {
         padding: 0.5rem 0;
+        margin-top: 1rem;
 
         .overview {
           button {

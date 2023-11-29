@@ -26,18 +26,19 @@
   .footer-bg-color {
     background-color: var(--footer-color);
   }
-  .bg-gallery {
-    background-color: #0f172a;
-  }
   .thumbnail {
     filter: grayscale(0) !important;
+  }
+  .bg-primary {
+    background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
+    color: var(--text-color);
   }
 }
 
 .dark {
   --primary-color: #38e54d;
   --accent-color: #84ff00;
-  --footer-color: #020617;
+  --footer-color: rgb(3, 6, 23);
   --border-color: #cecece;
   --text-color: rgb(250, 250, 250);
   --bg-secondary: #1f2937;

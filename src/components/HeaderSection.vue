@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="header">
+    <section class="header" ref="headerElement">
       <nav class="nav container">
         <ul class="nav-list">
           <li class="nav-logo">
@@ -174,10 +174,19 @@ onMounted(() => {
     onLightMode();
   }
 });
+const headerElement = ref();
+const onScroll = () => {
+  console.log(window.scrollY);
+  if (window.scrollY >= 40) {
+    headerElement.value.style.backgroundColor = "var(--footer-color)";
+  } else {
+    headerElement.value.style.backgroundColor = "transparent";
+  }
+};
+window.addEventListener("scroll", onScroll);
 </script>
 
 <style scoped lang="scss">
-
 .header {
   position: fixed;
   top: 0;
