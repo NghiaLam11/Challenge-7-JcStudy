@@ -27,6 +27,10 @@
   -webkit-line-clamp: 1; /* start showing ellipsis when 1rd line is reached */
   @include ellipsisText();
 }
+.multiline-ellipsis-10 {
+  -webkit-line-clamp: 10; /* start showing ellipsis when 10rd line is reached */
+  @include ellipsisText();
+}
 
 button {
   cursor: pointer;

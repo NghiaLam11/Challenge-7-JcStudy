@@ -1,7 +1,7 @@
 <template>
   <div class="utilities">
     <div class="utilities-container container">
-      <div class="utilities-group">
+      <div class="utilities-list">
         <div class="utilities-item">
           <div>
             <span>Notes</span>
@@ -31,6 +31,26 @@
           <span>+</span>
         </div>
       </div>
+      <div class="utilities-group">
+        <div class="utilities-notes">
+          <h3>Notes</h3>
+          <div class="notes-list">
+            <div v-for="n in 12" :key="n" class="notes-item">
+              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+              <p class="multiline-ellipsis-10">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                Voluptate eligendi eum minus perferendis excepturi ea
+                voluptatibus vero quis eaque, autem maxime nihil in? Recusandae
+                ab repellendus perferendis magni ullam tempora. -Lorem, ipsum
+                dolor sit amet consectetur adipisicing elit. Ullam beatae at
+                aliquid veritatis itaque placeat ipsam pariatur sequi quae nihil
+                dolores nisi tempore ut, ex doloribus repellat temporibus quia
+                odio!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,7 +61,7 @@
   min-height: 100vh;
   padding-top: 3rem;
   .utilities-container {
-    .utilities-group {
+    .utilities-list {
       display: flex;
       gap: 1rem;
       .utilities-item {
@@ -81,6 +101,39 @@
         cursor: pointer;
         span {
           transform: translateY(0);
+        }
+      }
+    }
+    .utilities-group {
+      margin: 1rem 0;
+      .utilities-notes {
+        h3 {
+          margin-bottom: 0.5rem;
+        }
+        .notes-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          .notes-item {
+            width: calc(100% / 6 - 1rem);
+            border: 1px solid;
+            padding: 1rem;
+            border-radius: 7px;
+            box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.2);
+            height: 100%;
+            h4 {
+              font-size: 1.1rem;
+              line-height: 1.5rem;
+              letter-spacing: 1px;
+              margin-top: 0.5rem;
+              margin-bottom: 0.7rem;
+            }
+            p {
+              font-size: 0.8rem;
+              line-height: 1.1rem;
+            }
+          }
         }
       }
     }
