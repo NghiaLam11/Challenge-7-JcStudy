@@ -35,7 +35,7 @@
         <div class="utilities-notes">
           <h3>Notes</h3>
           <div class="notes-list">
-            <div v-for="n in 12" :key="n" class="notes-item">
+            <div v-for="n in 6" :key="n" class="notes-item">
               <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
               <p class="multiline-ellipsis-10">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
@@ -47,6 +47,14 @@
                 dolores nisi tempore ut, ex doloribus repellat temporibus quia
                 odio!
               </p>
+            </div>
+          </div>
+        </div>
+        <div class="utilities-timetable">
+          <h3>Timetable</h3>
+          <div class="timetable-list">
+            <div v-for="n in 6" :key="n" class="timetable-item">
+              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
             </div>
           </div>
         </div>
@@ -120,7 +128,7 @@
             border: 1px solid;
             padding: 1rem;
             border-radius: 7px;
-            box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.2);
+            box-shadow: -1px 2px 7px 1px rgba(0, 0, 0, 0.1);
             height: 100%;
             h4 {
               font-size: 1.1rem;
@@ -132,6 +140,41 @@
             p {
               font-size: 0.8rem;
               line-height: 1.1rem;
+            }
+          }
+          .notes-item:hover {
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+          }
+        }
+      }
+
+      .utilities-timetable {
+        h3 {
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        .timetable-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          .timetable-item {
+            height: 100%;
+            padding: 1rem;
+            border: 1px solid;
+            border-radius: 7px;
+            width: calc(100% / 5 - 1rem);
+            transition: all 0.25s ease;
+            h4 {
+              letter-spacing: 0.75px;
+              transition: all 0.25s ease;
+            }
+          }
+          .timetable-item:hover {
+            border: 1px solid var(--primary-color);
+            cursor: pointer;
+            h4 {
+              color: var(--primary-color);
             }
           }
         }
