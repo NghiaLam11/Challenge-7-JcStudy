@@ -58,6 +58,24 @@
             </div>
           </div>
         </div>
+        <div class="utilities-task">
+          <h3>Task</h3>
+          <div class="task-list">
+            <div v-for="n in 6" :key="n" class="task-item">
+              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+              <div class="task-group">
+                <div v-for="num in 6" :key="num" class="task-check">
+                  <input
+                    :id="`checkbox${num}`"
+                    class="checkbox"
+                    type="checkbox"
+                  />
+                  <label :for="`checkbox${num}`">Tasking to do {{ num }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -130,6 +148,7 @@
             border-radius: 7px;
             box-shadow: -1px 2px 7px 1px rgba(0, 0, 0, 0.1);
             height: 100%;
+            transition: all 0.25s ease;
             h4 {
               font-size: 1.1rem;
               line-height: 1.5rem;
@@ -143,8 +162,13 @@
             }
           }
           .notes-item:hover {
-            border: 2px solid var(--primary-color);
+            border: 1px solid var(--primary-color);
             cursor: pointer;
+            transform: translateY(-3px);
+
+            h4 {
+              color: var(--primary-color);
+            }
           }
         }
       }
@@ -173,6 +197,61 @@
           .timetable-item:hover {
             border: 1px solid var(--primary-color);
             cursor: pointer;
+            h4 {
+              color: var(--primary-color);
+            }
+          }
+        }
+      }
+
+      .utilities-task {
+        h3 {
+          margin-bottom: 0.5rem;
+          margin-top: 1rem;
+        }
+        .task-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+
+          .task-item {
+            width: calc(100% / 6 - 1rem);
+            border: 1px solid;
+            padding: 1rem;
+            border-radius: 7px;
+            box-shadow: -1px 2px 7px 1px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            max-height: 400px;
+            transition: all 0.25s ease;
+
+            h4 {
+              font-size: 1.1rem;
+              line-height: 1.5rem;
+              letter-spacing: 1px;
+              margin-top: 0.5rem;
+              margin-bottom: 0.7rem;
+            }
+            .task-group {
+              .task-check {
+                display: flex;
+                align-items: center;
+                padding: 0.3rem 0.2rem;
+                label {
+                  cursor: pointer;
+                  margin-left: 0.2rem;
+                  font-size: 0.8rem;
+                  font-weight: 500;
+                }
+                .checkbox {
+                  accent-color: var(--accent-color);
+                }
+              }
+            }
+          }
+          .task-item:hover {
+            border: 1px solid var(--primary-color);
+            cursor: pointer;
+            transform: translateY(-3px);
             h4 {
               color: var(--primary-color);
             }
