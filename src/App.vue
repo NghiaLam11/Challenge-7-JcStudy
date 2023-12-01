@@ -51,7 +51,7 @@ onMounted(() => {
 .header {
   margin-bottom: 5.5rem;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 889px) {
   .header {
     margin-bottom: 0rem;
   }

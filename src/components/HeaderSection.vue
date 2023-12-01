@@ -176,7 +176,6 @@ onMounted(() => {
 });
 const headerElement = ref();
 const onScroll = () => {
-  console.log(window.scrollY);
   if (window.scrollY >= 40) {
     headerElement.value.style.backgroundColor = "var(--footer-color)";
   } else {

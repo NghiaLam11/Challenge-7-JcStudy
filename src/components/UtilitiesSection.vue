@@ -3,29 +3,29 @@
     <div class="utilities-container container">
       <div class="utilities-list">
         <div class="utilities-item">
-          <div>
-            <span>Notes</span>
+          <div class="item">
+            <span class="text">Notes</span>
             <i class="fa-solid fa-clipboard"></i>
           </div>
           <span>+</span>
         </div>
         <div class="utilities-item">
-          <div>
-            <span>Timetable</span>
+          <div class="item">
+            <span class="text">Timetable</span>
             <i class="far fa-calendar-alt"></i>
           </div>
           <span>+</span>
         </div>
         <div class="utilities-item">
-          <div>
-            <span>Task</span>
+          <div class="item">
+            <span class="text">Task</span>
             <i class="fas fa-clipboard-list"></i>
           </div>
           <span>+</span>
         </div>
         <div class="utilities-item">
-          <div>
-            <span>Flashcard</span>
+          <div class="item">
+            <span class="text">Flashcard</span>
             <i class="fas fa-dice-d6"></i>
           </div>
           <span>+</span>
@@ -62,16 +62,28 @@
           <h3>Task</h3>
           <div class="task-list">
             <div v-for="n in 6" :key="n" class="task-item">
+              <div class="completed-task multiline-ellipsis-1">
+                Completed <span>{{ n }}</span
+                >/<span>10 tasks</span>
+              </div>
               <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+
               <div class="task-group">
                 <div v-for="num in 6" :key="num" class="task-check">
-                  <input
-                    :id="`checkbox${num}`"
-                    class="checkbox"
-                    type="checkbox"
-                  />
-                  <label :for="`checkbox${num}`">Tasking to do {{ num }}</label>
+                  <input class="checkbox" type="checkbox" />
+                  <label>Tasking to do {{ num }}</label>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="utilities-flashcard">
+          <h3>Flashcard</h3>
+          <div class="flashcard-list">
+            <div v-for="n in 6" :key="n" class="flashcard-item">
+              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+              <div class="count-card">
+                <span>{{ n }} cards</span>
               </div>
             </div>
           </div>
@@ -104,7 +116,9 @@
         );
         transition: all 0.3s linear;
         overflow: hidden;
-        div {
+        div.item {
+          display: flex;
+          align-items: center;
           span,
           i {
             font-size: 1.1rem;
@@ -114,7 +128,7 @@
             margin: 0 0.2rem;
           }
         }
-        span {
+        span:not(.text) {
           transform: translateY(150%);
           font-weight: 300;
           font-size: 2rem;
@@ -231,6 +245,11 @@
               margin-top: 0.5rem;
               margin-bottom: 0.7rem;
             }
+            .completed-task {
+              font-size: 0.7rem;
+              font-weight: 500;
+              color: var(--primary-color);
+            }
             .task-group {
               .task-check {
                 display: flex;
@@ -258,7 +277,169 @@
           }
         }
       }
+
+      .utilities-flashcard {
+        h3 {
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+        }
+        .flashcard-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          .count-card {
+            font-size: 0.8rem;
+            font-weight: 500;
+          }
+          .flashcard-item {
+            height: 100%;
+            padding: 1rem;
+            border: 1px solid;
+            border-radius: 7px;
+            width: calc(100% / 5 - 1rem);
+            transition: all 0.25s ease;
+            h4 {
+              letter-spacing: 0.75px;
+              transition: all 0.25s ease;
+            }
+          }
+          .flashcard-item:hover {
+            border: 1px solid var(--primary-color);
+            cursor: pointer;
+            h4 {
+              color: var(--primary-color);
+            }
+          }
+        }
+      }
     }
+  }
+}
+
+@media screen and (min-width: 734px) and (max-width: 1020px) {
+  .utilities {
+    padding: 1rem;
+  }
+  .utilities-notes,
+  .utilities-task,
+  .utilities-flashcard,
+  .utilities-timetable {
+    padding: 0.5rem;
+  }
+  .notes-list,
+  .flashcard-list,
+  .timetable-list,
+  .task-list {
+    overflow-x: scroll !important;
+    flex-wrap: nowrap !important;
+    padding: 0.5rem 0;
+  }
+  .utilities-list {
+    padding: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .utilities-item {
+    min-width: calc(100% / 2 - 0.5rem) !important;
+    padding: 0.5rem 1.5rem !important;
+  }
+  .utilities-item {
+    min-width: calc(100% / 3);
+    margin-bottom: 0.5rem;
+  }
+  .flashcard-item,
+  .timetable-item {
+    min-width: calc(100% / 3);
+    margin-bottom: 0.5rem;
+  }
+
+  .notes-item,
+  .task-item {
+    min-width: calc(100% / 4);
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 534px) and (max-width: 734px) {
+  .utilities {
+    padding: 1rem;
+  }
+  .utilities-notes,
+  .utilities-task,
+  .utilities-flashcard,
+  .utilities-timetable {
+    padding: 0.5rem;
+  }
+  .notes-list,
+  .flashcard-list,
+  .timetable-list,
+  .task-list {
+    overflow-x: scroll !important;
+    flex-wrap: nowrap !important;
+    padding: 0.5rem 0;
+  }
+  .utilities-list {
+    padding: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .utilities-item {
+    min-width: calc(100% / 2 - 0.5rem) !important;
+    padding: 0.5rem 1.5rem !important;
+  }
+  .flashcard-item,
+  .timetable-item {
+    min-width: calc(100% / 2);
+    margin-bottom: 0.5rem;
+  }
+
+  .notes-item,
+  .task-item {
+    min-width: calc(100% / 3);
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 534px) {
+  .utilities {
+    padding-top: 1rem !important;
+  }
+  .utilities-notes,
+  .utilities-task,
+  .utilities-flashcard,
+  .utilities-timetable {
+    padding: 0.5rem;
+  }
+  .notes-list,
+  .flashcard-list,
+  .timetable-list,
+  .task-list {
+    overflow-x: scroll !important;
+    flex-wrap: nowrap !important;
+    padding: 0.5rem 0;
+  }
+  .utilities-list {
+    padding: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .utilities-item {
+    min-width: calc(100% / 2 - 0.5rem) !important;
+    padding: 0.8rem 0.5rem !important;
+    span, i {
+      font-size: 0.7rem !important;
+    }
+  }
+  .flashcard-item,
+  .timetable-item {
+    min-width: calc(100% / 1);
+    margin-bottom: 0.5rem;
+  }
+
+  .notes-item,
+  .task-item {
+    min-width: calc(100% / 1.5);
+    margin-bottom: 0.5rem;
   }
 }
 </style>
