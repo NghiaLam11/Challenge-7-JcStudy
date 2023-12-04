@@ -47,7 +47,7 @@
             </div>
           </li>
           <li class="nav-auth" @click="onAuth">
-            <router-link to="/"
+            <router-link to="/auth"
               ><img src="../images/peep-82.png" alt=""
             /></router-link>
           </li>
