@@ -1,5 +1,6 @@
 <template>
   <div class="edit-profile">
+    <div class="blur" @click="onBack"></div>
     <div class="edit-container">
       <form class="edit-form">
         <div class="input-form">
@@ -19,7 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineEmits } from "vue";
+const emits = defineEmits(["onOpen"]);
+const onBack = () => {
+  emits("onOpen");
+};
 const characterElement = ref();
 const characters = ref([
   "/src/images/peep-82.png",
@@ -54,18 +59,37 @@ const onPrevCharacter = () => {
 
 <style lang="scss" scope>
 .edit-profile {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 99;
+  }
   .edit-container {
     background-color: var(--footer-color);
     padding: 2rem;
+    position: fixed;
+    top: calc(50% - 253px / 2);
+    z-index: 100;
+    animation: fadeIn 0.7s ease;
+    transition: all 0.4s ease;
+    @keyframes fadeIn {
+      from {
+        opacity: 0.2;
+        transform: scale(0.1);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
     button {
       width: 80px !important;
       padding: 0.2rem 0.1rem;

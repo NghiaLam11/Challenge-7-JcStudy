@@ -2,7 +2,9 @@
   <div class="auth">
     <div class="container auth-container">
       <div class="auth-top">
-        <div class="auth-edit"><i class="fas fa-hammer"></i></div>
+        <div class="auth-edit" @click="onOpenFormEdit">
+          <i class="fas fa-hammer"></i>
+        </div>
 
         <div class="auth-text">
           <h4>Jcstudy-er</h4>
@@ -31,7 +33,10 @@
         <div class="courses-unclock"><CoursesUnlock /></div>
       </div>
     </div>
-    <EditProfileSection />
+    <EditProfileSection
+      @onOpen="onCloseFormEdit"
+      v-show="isToggleFormEdit"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -67,6 +72,13 @@ const { lineChartProps } = useLineChart({
   chartData,
   options,
 });
+const isToggleFormEdit = ref(false);
+const onCloseFormEdit = () => {
+  isToggleFormEdit.value = !isToggleFormEdit.value;
+};
+const onOpenFormEdit = () => {
+  isToggleFormEdit.value = !isToggleFormEdit.value;
+};
 </script>
 <style lang="scss">
 .auth {
