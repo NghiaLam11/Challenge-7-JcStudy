@@ -33,10 +33,7 @@
         <div class="courses-unclock"><CoursesUnlock /></div>
       </div>
     </div>
-    <EditProfileSection
-      @onOpen="onCloseFormEdit"
-      v-show="isToggleFormEdit"
-    />
+    <EditProfileSection @onOpen="onCloseFormEdit" v-show="isToggleFormEdit" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -62,6 +59,7 @@ const chartData = computed(() => ({
       label: "Time (minutes)",
       data: data.value,
       backgroundColor: ["#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF"],
+      borderColor: "#1f2937",
     },
   ],
 }));
@@ -226,6 +224,11 @@ const onOpenFormEdit = () => {
   .auth-top {
     padding: 3rem 1rem !important;
     border-radius: 10px !important;
+    .auth-edit {
+      font-size: 0.9rem !important;
+      top: 10px !important;
+      right: 14px !important;
+    }
     .auth-text {
       h4 {
         font-size: 1rem !important;
@@ -265,4 +268,5 @@ const onOpenFormEdit = () => {
     padding: 0rem !important;
   }
 }
+
 </style>

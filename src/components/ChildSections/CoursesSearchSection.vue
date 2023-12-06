@@ -1,5 +1,5 @@
 <template>
-  <div class="course-search">
+  <div class="course-search container">
     <div class="search">
       <form class="form-search">
         <input placeholder="Ex: Software" type="text" />

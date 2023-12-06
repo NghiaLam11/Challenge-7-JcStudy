@@ -1,5 +1,6 @@
 <template>
   <div class="blogs">
+    <CoursesSearchSection />
     <div class="blogs-container container">
       <div class="card-item" v-for="n in 8" :key="n">
         <div class="thumbnail">
@@ -33,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import CoursesSearchSection from "./ChildSections/CoursesSearchSection.vue";
 import { useSound } from "../composable/useSound.ts";
 
 // Play sound when btn is clicked

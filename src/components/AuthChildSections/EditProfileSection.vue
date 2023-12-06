@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 const emits = defineEmits(["onOpen"]);
 const onBack = () => {
   emits("onOpen");
@@ -138,6 +138,33 @@ const onPrevCharacter = () => {
         }
       }
     }
+  }
+}
+@media screen and (min-width: 534px) and (max-width: 889px) {
+  .edit-container {
+    top: 25% !important;
+  }
+}
+@media screen and (max-width: 534px) {
+  .edit-form {
+    flex-direction: column !important;
+    .select-character,
+    .input-form {
+      width: 100% !important;
+    }
+    .select-character {
+      i {
+        margin: 0 1rem !important;
+      }
+    }
+  }
+  .edit-profile .edit-container button {
+    width: 100% !important;
+    border-left: 1px solid;
+  }
+  .edit-profile .edit-container button:active {
+    transform: translateY(4px) !important;
+    margin-bottom: 4px;
   }
 }
 </style>
