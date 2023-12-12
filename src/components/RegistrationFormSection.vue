@@ -76,6 +76,47 @@
                 <button type="button">Create</button>
               </div>
             </div>
+            <div class="chapter-courses">
+              <div class="chapter-title">
+                <h3>Chapter 1</h3>
+              </div>
+              <div class="chapter-list">
+                <div class="chapter-item" v-for="n in 3" :key="n">
+                  <div class="chapter-number">{{ n }}</div>
+                  <div class="chapter-img">
+                    <img
+                      src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
+                      alt=""
+                    />
+                  </div>
+                  <div class="chapter-video">
+                    <video controls>
+                      <source
+                        src="../videos/video-1645947165.mp4"
+                        type="video/mp4"
+                      />
+                      <source src="movie.ogg" type="video/ogg" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <div class="chapter-text">
+                    <h4>Lorem ilsum uilo tileo</h4>
+                    <p class="multiline-ellipsis-1">
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                      Id cupiditate, in, dicta dolore reiciendis quam expedita,
+                      obcaecati aut consequuntur eos eveniet! Magni fuga est
+                      libero aut velit, non iste praesentium.
+                    </p>
+                  </div>
+                  <div class="chapter-btn">
+                    <button type="button">Edit</button>
+                  </div>
+                </div>
+              </div>
+              <div class="btn-add">
+                <button type="button">+</button>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -85,6 +126,7 @@
 
 <style lang="scss">
 .registration {
+  user-select: none;
   .regis-form {
     .form-file {
       display: flex;
@@ -230,6 +272,7 @@
       padding-top: 0;
       .create-chapter {
         border: 1px solid;
+        border-radius: 3px;
         padding: 1rem;
         .amount-chapter {
           display: flex;
@@ -246,7 +289,7 @@
               border: none;
               padding: 0.2rem 0.4rem;
               color: var(--text-color);
-              margin: 0 0.2rem;
+              margin: 0 0.3rem;
             }
             input::placeholder {
               opacity: 0.5;
@@ -260,6 +303,96 @@
             button:hover {
               color: var(--primary-color);
               border-color: var(--primary-color) !important;
+            }
+          }
+        }
+        .chapter-courses {
+          // display: none;
+          border: 1px solid;
+          margin: 1.5rem 0;
+          border-radius: 5px;
+
+          .chapter-title {
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 4px solid var(--border-color);
+          }
+          .chapter-list {
+            .chapter-item {
+              display: flex;
+              align-items: center;
+              border: 1px solid;
+              margin: 1rem;
+              padding: 0.5rem;
+              border-radius: 5px;
+              box-shadow: 1px 1px 4px 0px var(--border-color);
+              .chapter-number {
+                width: 5%;
+                text-align: center;
+                font-weight: 700;
+              }
+              .chapter-img {
+                width: 20%;
+                height: 60px;
+                margin: 0 0.3rem;
+                overflow: hidden;
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 3px;
+                }
+              }
+              .chapter-video {
+                width: 20%;
+                height: 60px;
+                margin: 0 0.5rem;
+                border-radius: 3px;
+                overflow: hidden;
+                background-color: black;
+                video {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+              .chapter-text {
+                padding: 0 1rem;
+                h4 {
+                  margin-left: 0.2rem;
+                  letter-spacing: 0.5px;
+                }
+                p {
+                  font-size: 0.8rem;
+                  letter-spacing: 0.5px;
+                  opacity: 0.6;
+                }
+              }
+              .chapter-btn {
+                margin-right: 0.5rem;
+                button {
+                  border-left: 1px solid;
+                  width: 80px;
+                }
+              }
+            }
+          }
+          .btn-add {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            button {
+              border: 0;
+              font-size: 1.5rem !important;
+              font-weight: 300;
+              width: 100px;
+              transition: transform 0.3s ease;
+              background-color: var(--bg-secondary);
+            }
+            button:hover {
+              color: var(--primary-color);
+              transform: scale(1.1);
+            }
+            button:active {
+              transform: scale(1);
             }
           }
         }
