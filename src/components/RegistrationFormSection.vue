@@ -39,6 +39,45 @@
           <input type="text" placeholder="Title..." />
           <textarea placeholder="Description..." cols="30" rows="5"></textarea>
         </div>
+        <div class="form-group">
+          <div class="custom-select">
+            <select>
+              <option value="0">Industry</option>
+              <option value="1">Audi</option>
+              <option value="2">BMW</option>
+              <option value="3">Citroen</option>
+              <option value="4">Ford</option>
+              <option value="5">Honda</option>
+              <option value="6">Jaguar</option>
+              <option value="7">Land Rover</option>
+              <option value="8">Mercedes</option>
+              <option value="9">Mini</option>
+              <option value="10">Nissan</option>
+              <option value="11">Toyota</option>
+              <option value="12">Volvo</option>
+            </select>
+          </div>
+          <div class="tags">
+            <input type="text" placeholder="Tags..." />
+          </div>
+          <div class="price">
+            <input type="number" placeholder="Price..." />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="create-chapter">
+            <div class="amount-chapter">
+              <div class="amount-left">
+                <span>Create</span><input placeholder="0" type="number" /><span
+                  >chapter</span
+                >
+              </div>
+              <div class="amount-right">
+                <button type="button">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </section>
@@ -105,7 +144,7 @@
     }
     .form-group:nth-child(2) {
       padding: 1rem;
-      padding-top: 0;
+      // padding-top: 0;
       display: flex;
       flex-direction: column;
       input,
@@ -124,6 +163,106 @@
       input:hover,
       textarea:hover {
         border-bottom: 1px solid;
+      }
+    }
+    .form-group:nth-child(3) {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      padding-top: 0;
+      .custom-select,
+      .tags,
+      .price {
+        width: calc(100% / 3);
+      }
+      .custom-select {
+        select {
+          width: 100%;
+          padding: 0.5rem;
+          background-color: rgb(255, 255, 255, 0.1);
+          color: inherit;
+          margin-bottom: 0.8rem;
+          border: 1px solid;
+          border-radius: 3px;
+          border-bottom: 0.3rem solid;
+          font-size: 0.9rem;
+          outline: none;
+          transition: border 0.35s ease;
+          option {
+            background-color: var(--bg-secondary);
+            color: var(--text-color);
+            padding: 3rem;
+          }
+        }
+      }
+      .tags,
+      .price {
+        input {
+          width: 100%;
+          padding: 0.5rem;
+          padding-right: 2rem;
+          background-color: rgb(255, 255, 255, 0.1);
+          color: inherit;
+          margin-bottom: 0.8rem;
+          border: 1px solid;
+          border-radius: 3px;
+          border-bottom: 0.3rem solid;
+          font-size: 0.9rem;
+          outline: none;
+          transition: border 0.35s ease;
+        }
+        input:hover {
+          border-bottom: 1px solid;
+        }
+      }
+      .price {
+        position: relative;
+      }
+      .price::after {
+        content: "$";
+        position: absolute;
+        top: 7px;
+        right: 10px;
+      }
+    }
+    .form-group:nth-child(4) {
+      padding: 1rem;
+      padding-top: 0;
+      .create-chapter {
+        border: 1px solid;
+        padding: 1rem;
+        .amount-chapter {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .amount-left {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            input {
+              width: 3rem;
+              background-color: var(--bg-secondary);
+              outline: none;
+              border: none;
+              padding: 0.2rem 0.4rem;
+              color: var(--text-color);
+              margin: 0 0.2rem;
+            }
+            input::placeholder {
+              opacity: 0.5;
+            }
+          }
+          .amount-right {
+            button {
+              border-left: 1px solid;
+              transition: border 0.35s ease;
+            }
+            button:hover {
+              color: var(--primary-color);
+              border-color: var(--primary-color) !important;
+            }
+          }
+        }
       }
     }
   }
