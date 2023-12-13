@@ -590,6 +590,15 @@ onMounted(() => {
     .lesson-category {
       display: flex;
     }
+    .lesson-detail {
+      h3 {
+        font-size: 1rem !important;
+      }
+      p {
+        font-size: 0.8rem !important;
+      }
+    }
   }
+
 }
 </style>

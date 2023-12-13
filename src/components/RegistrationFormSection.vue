@@ -76,9 +76,9 @@
                 <button type="button">Create</button>
               </div>
             </div>
-            <div class="chapter-courses">
+            <div class="chapter-courses" v-for="c in 2" :key="c">
               <div class="chapter-title">
-                <h3>Chapter 1</h3>
+                <h3>Chapter {{ c }}</h3>
               </div>
               <div class="chapter-list">
                 <div class="chapter-item" v-for="n in 3" :key="n">
@@ -95,12 +95,10 @@
                         src="../videos/video-1645947165.mp4"
                         type="video/mp4"
                       />
-                      <source src="movie.ogg" type="video/ogg" />
-                      Your browser does not support the video tag.
                     </video>
                   </div>
                   <div class="chapter-text">
-                    <h4>Lorem ilsum uilo tileo</h4>
+                    <h4 class="multiline-ellipsis-1">Lorem ilsum uilo tileo</h4>
                     <p class="multiline-ellipsis-1">
                       Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                       Id cupiditate, in, dicta dolore reiciendis quam expedita,
@@ -118,6 +116,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="form-btn">
+          <button type="button">Send it!</button>
         </div>
       </form>
     </div>
@@ -202,8 +203,8 @@
         outline: none;
         transition: border 0.35s ease;
       }
-      input:hover,
-      textarea:hover {
+      input:focus,
+      textarea:focus {
         border-bottom: 1px solid;
       }
     }
@@ -216,6 +217,7 @@
       .tags,
       .price {
         width: calc(100% / 3);
+        margin-bottom: 0.8rem;
       }
       .custom-select {
         select {
@@ -223,7 +225,6 @@
           padding: 0.5rem;
           background-color: rgb(255, 255, 255, 0.1);
           color: inherit;
-          margin-bottom: 0.8rem;
           border: 1px solid;
           border-radius: 3px;
           border-bottom: 0.3rem solid;
@@ -245,7 +246,6 @@
           padding-right: 2rem;
           background-color: rgb(255, 255, 255, 0.1);
           color: inherit;
-          margin-bottom: 0.8rem;
           border: 1px solid;
           border-radius: 3px;
           border-bottom: 0.3rem solid;
@@ -253,7 +253,7 @@
           outline: none;
           transition: border 0.35s ease;
         }
-        input:hover {
+        input:focus {
           border-bottom: 1px solid;
         }
       }
@@ -311,6 +311,7 @@
           border: 1px solid;
           margin: 1.5rem 0;
           border-radius: 5px;
+          background-color: var(--footer-color);
 
           .chapter-title {
             text-align: center;
@@ -325,7 +326,6 @@
               margin: 1rem;
               padding: 0.5rem;
               border-radius: 5px;
-              box-shadow: 1px 1px 4px 0px var(--border-color);
               .chapter-number {
                 width: 5%;
                 text-align: center;
@@ -375,6 +375,10 @@
                 }
               }
             }
+            .chapter-item:hover {
+              box-shadow: 1px 1px 3px 0px var(--border-color);
+              cursor: pointer;
+            }
           }
           .btn-add {
             text-align: center;
@@ -396,6 +400,88 @@
             }
           }
         }
+      }
+    }
+    .form-btn {
+      text-align: center;
+      margin: 1rem 0 2rem 0;
+      button {
+        border-left: 1px solid;
+        padding: 0.5rem 3rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      button:hover {
+        color: var(--primary-color);
+        border-color: var(--primary-color) !important;
+      }
+      button:active {
+        margin-bottom: 4px;
+        transform: translateY(4px);
+      }
+    }
+  }
+}
+@media screen and (min-width: 534px) and (max-width: 734px) {
+  .form-file {
+    gap: 1rem !important;
+  }
+  .chapter-courses {
+    .chapter-list {
+      .chapter-item {
+        .chapter-img {
+          width: 100% !important;
+        }
+        .chapter-video {
+          width: 100% !important;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 534px) {
+  .form-file {
+    flex-direction: column;
+    gap: 1rem !important;
+    .file-thumbnail {
+      width: 100% !important;
+      height: 200px !important;
+    }
+  }
+  .form-group:nth-child(3) {
+    flex-direction: column;
+    .price, .tags, .custom-select {
+      width: 100% !important;
+      margin-bottom: 0.1rem !important; 
+    }
+  }
+  .chapter-courses {
+    .chapter-list {
+      .chapter-item {
+        margin: 0.5rem !important;
+        .chapter-img {
+          width: 100% !important;
+        }
+        .chapter-video {
+          width: 100% !important;
+          margin: 0 0.1rem !important;
+        }
+        .chapter-text {
+          padding: 0 0.3rem !important;
+        }
+        .chapter-btn {
+          margin-right: 0.1rem !important;
+          button {
+            font-size: 0.6rem !important;
+            width: 50px !important;
+          }
+        }
+      }
+    }
+    .btn-add {
+      margin-bottom: 1rem !important;
+      button {
+        width: 50px !important;
       }
     }
   }
