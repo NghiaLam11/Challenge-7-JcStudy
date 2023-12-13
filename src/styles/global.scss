@@ -58,3 +58,9 @@ textarea::placeholder {
 .carousel-next {
   font-size: 1rem !important;
 }
+
+@media screen and (max-width: 534px) {
+  button {
+    font-size: 0.6rem !important;
+  }
+}

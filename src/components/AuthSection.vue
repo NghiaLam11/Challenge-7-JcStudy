@@ -223,6 +223,9 @@ const onOpenFormEdit = () => {
   }
 }
 @media screen and (max-width: 534px) {
+  .auth {
+    padding: 1rem !important;
+  }
   .auth-top {
     padding: 3rem 1rem !important;
     border-radius: 10px !important;
@@ -248,7 +251,8 @@ const onOpenFormEdit = () => {
   }
   .auth-bottom {
     border-radius: 10px !important;
-    margin-top: 2rem !important;
+    margin-top: 1rem !important;
+    padding: 0.5rem !important;
   }
   .statistic {
     padding: 0.3rem !important;
@@ -268,6 +272,21 @@ const onOpenFormEdit = () => {
   }
   .courses-unclock {
     padding: 0rem !important;
+  }
+  .regis-moderate {
+    margin: 1rem 0 !important;
+    padding: 0.5rem !important;
+    border-radius: 10px !important;
+  }
+  .btn-regis {
+    padding: 1rem !important;
+    margin-top: 1rem !important;
+    p {
+      font-size: 0.7rem !important;
+    }
+    .plus {
+      margin-left: 0.5rem !important;
+    }
   }
 }
 </style>

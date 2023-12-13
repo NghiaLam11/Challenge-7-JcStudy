@@ -23,7 +23,10 @@
             </div>
             <button @click="onUnlock">Continue</button>
           </div>
-          <img src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg" alt="" />
+          <img
+            src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
+            alt=""
+          />
         </div>
       </Slide>
     </Carousel>
@@ -79,7 +82,6 @@ import { ref } from "vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
-
 
 // Play sound when btn is clicked
 const soundStore = useSound();
@@ -249,4 +251,37 @@ const breakpoints = ref({
   }
 }
 // ------------------------------- END COURSES GALLERY CSS STYLE------------------------------------------------
+
+@media screen and (min-width: 534px) and (max-width: 734px) {
+}
+@media screen and (max-width: 534px) {
+  .card-gallery {
+    .card-text {
+      button {
+        font-size: 0.6rem !important;
+        width: 100px !important;
+      }
+      h3 {
+        font-size: 1.2rem !important;
+        padding-bottom: 0rem !important;
+        margin: 0 !important;
+        transform: translateY(7px);
+      }
+      p {
+        opacity: 0.7 !important;
+        font-size: 0.8rem !important;
+        width: 90% !important;
+        line-height: 1.1rem !important;
+        -webkit-line-clamp: 2 !important;
+        // padding-bottom: 0.6rem !important;
+      }
+    }
+  }
+  .card-right {
+    .card-progress {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
 </style>

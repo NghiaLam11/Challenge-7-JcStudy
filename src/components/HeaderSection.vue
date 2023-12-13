@@ -58,7 +58,7 @@
       <ul class="nav-list">
         <i @click="onOpenNavMobile" class="fas fa-bars"></i>
         <li class="nav-auth" @click="onAuth">
-          <router-link to="/"
+          <router-link to="/auth"
             ><img src="../images/peep-82.png" alt=""
           /></router-link>
         </li>
