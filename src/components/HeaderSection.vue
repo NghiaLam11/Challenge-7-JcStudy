@@ -380,7 +380,7 @@ window.addEventListener("scroll", onScroll);
       align-items: center;
       justify-content: space-between;
       list-style: none;
-      padding: 1rem 2rem;
+      padding: 1rem;
       i {
         font-size: 1.5rem;
       }

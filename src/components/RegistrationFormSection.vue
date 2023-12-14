@@ -112,7 +112,7 @@
                 </div>
               </div>
               <div class="btn-add">
-                <button type="button">+</button>
+                <button type="button" @click="onOpenAddLesson">+</button>
               </div>
             </div>
           </div>
@@ -121,11 +121,24 @@
           <button type="button">Send it!</button>
         </div>
       </form>
+      <AddChapterLesson v-if="isToggleForm" @on-cancel="onCancelAddLesson"/>
     </div>
   </section>
 </template>
 
-<style lang="scss">
+<script lang="ts" setup>
+import { ref } from "vue"
+import AddChapterLesson from "../components/RegistrationChildSections/AddChapterLesson.vue";
+const isToggleForm = ref(false);
+const onCancelAddLesson = () => {
+  isToggleForm.value = !isToggleForm.value;
+}
+const onOpenAddLesson = () => {
+  isToggleForm.value = !isToggleForm.value;
+}
+</script>
+
+<style lang="scss" scoped>
 .registration {
   user-select: none;
   .regis-form {
@@ -450,9 +463,11 @@
   }
   .form-group:nth-child(3) {
     flex-direction: column;
-    .price, .tags, .custom-select {
+    .price,
+    .tags,
+    .custom-select {
       width: 100% !important;
-      margin-bottom: 0.1rem !important; 
+      margin-bottom: 0.1rem !important;
     }
   }
   .chapter-courses {

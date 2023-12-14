@@ -154,6 +154,7 @@ const onDiscover = () => {
 @media screen and (max-width: 538px) {
   .hero {
     flex-direction: column-reverse;
+    margin-bottom: 2rem;
   }
   .hero-right,
   .hero-left {
