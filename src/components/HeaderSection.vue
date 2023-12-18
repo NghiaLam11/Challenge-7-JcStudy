@@ -47,8 +47,22 @@
             </div>
           </li>
           <li class="nav-auth" @click="onAuth">
+            <!-- <router-link
+              :to="signupMode === 'anonymus' ? '/auth-anonymus' : '/auth'"
+              ><img
+                :src="
+                  signupMode === 'anonymus'
+                    ? '/src/images/peep-96.png'
+                    : '/src/images/peep-94.png'
+                "
+                alt=""
+            /></router-link> -->
             <router-link to="/auth"
-              ><img src="../images/peep-82.png" alt=""
+              ><img
+                src="
+                  /src/images/peep-94.png
+                "
+                alt=""
             /></router-link>
           </li>
         </ul>
@@ -115,7 +129,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useSound } from "../composable/useSound";
-
 const isToggleMode = ref(false);
 const htmlElements = document.querySelector("html");
 const onDarkMode = () => {

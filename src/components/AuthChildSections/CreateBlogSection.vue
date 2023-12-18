@@ -4,19 +4,19 @@
       <div class="btn-regis">
         <router-link to="/course-register">
           <p class="plus">+</p>
-          <p>Register your course!</p>
+          <p>Create your blog!</p>
         </router-link>
       </div>
       <div class="regis-moderate">
         <div class="content-moderate">
-          <CoursesModerationSection />
+          <BlogsModerationSection />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import CoursesModerationSection from "./CoursesModerationSection.vue";
+import BlogsModerationSection from "./BlogsModerationSection.vue";
 </script>
 <style lang="scss">
 .registration {

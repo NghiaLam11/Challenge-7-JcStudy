@@ -15,6 +15,7 @@
         </div>
       </div>
       <RegistrationSection />
+      <CreateBlogSection />
       <div class="auth-bottom">
         <div class="statistic">
           <div class="statistic-group">
@@ -42,6 +43,7 @@ import { ref, computed } from "vue";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
 import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
 import RegistrationSection from "./AuthChildSections/RegistrationSection.vue";
+import CreateBlogSection from "./AuthChildSections/CreateBlogSection.vue";
 import { Chart, registerables } from "chart.js";
 import { LineChart, useLineChart } from "vue-chart-3";
 Chart.register(...registerables);

@@ -24,7 +24,7 @@
               reprehenderit laboriosam? Sit et possimus assumenda! Quas
               aspernatur dolore nulla cumque odio.
             </p>
-            <button @click="onUnlock">Unlock (Free)</button>
+            <button @click="onToggleUnlock">Unlock (Free)</button>
           </div>
         </div>
       </Slide>
@@ -34,20 +34,22 @@
         <Pagination />
       </template>
     </Carousel>
+    <UnlockForm v-if="isToggleUnlock" @on-toggle-unlock="onToggleUnlock" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import UnlockForm from "../HomeChildSections/UnlockForm.vue";
 import { ref } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 
-
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-
 // Play sound when btn is clicked
 const soundStore = useSound();
-const onUnlock = () => {
+const isToggleUnlock = ref(false);
+const onToggleUnlock = () => {
+  isToggleUnlock.value = !isToggleUnlock.value;
   soundStore.playSound();
 };
 

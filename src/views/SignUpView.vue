@@ -13,6 +13,7 @@
             type="email"
             placeholder="Ex: jcstudy123@gmail.com"
             class="email"
+            id="email"
           />
         </div>
         <div class="form-group">
@@ -24,6 +25,7 @@
             type="password"
             placeholder="Ex: jcstudy123"
             class="password"
+            id="password"
           />
           <div class="toggle-password">
             <input
@@ -46,8 +48,8 @@
             ></router-link
           >
           <i> or </i>
-          <router-link to="/"
-            ><span class="nav-link">Visit and go!</span></router-link
+          <span @click="onAnonymus"
+            ><span class="nav-link">Visit and go!</span></span
           >
         </div>
       </form>
@@ -82,13 +84,20 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 const email = ref("");
 const password = ref("");
 const name = ref("JcLearn-er");
 const onSubmit = () => {
   console.log(name.value, password.value, email.value);
+  
 };
 
+const router = useRouter();
+const onAnonymus = () => {
+  localStorage.setItem("signupMode", "anonymus");
+  router.push("/");
+};
 // Feature reveal the password
 const isTogglePassword = ref(false);
 const passwordElement = ref();

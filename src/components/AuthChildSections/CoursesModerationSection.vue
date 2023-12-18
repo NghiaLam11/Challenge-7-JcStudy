@@ -1,6 +1,6 @@
 <template>
   <div class="courses">
-    <div class="topic">Content Moderation</div>
+    <div class="topic">Courses Moderation</div>
     <Carousel
       :items-to-show="2"
       :snap-align="'start'"

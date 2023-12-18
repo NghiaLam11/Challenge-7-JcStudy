@@ -13,6 +13,9 @@ import NewSection from "./ChildSections/NewSection.vue";
 import BlogsHomeSection from "./ChildSections/BlogsHomeSection.vue";
 import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import { onMounted } from "vue";
+
+
+
 const theme = localStorage.getItem("theme");
 onMounted(() => {
   // Set color of the carousel icon when render
