@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/HomeView.vue";
 import Blogs from "./views/BlogsView.vue";
+import CreateBlog from "./views/CreateBlogView.vue";
 import Auth from "./views/AuthView.vue";
 import AuthAnonymus from "./views/AuthAnonymusView.vue";
 import Contact from "./views/ContactView.vue";
@@ -16,6 +17,7 @@ const routes = [
   { path: "/auth", component: Auth },
   { path: "/auth-anonymus", component: AuthAnonymus },
   { path: "/blogs", component: Blogs },
+  { path: "/create-blog", component: CreateBlog },
   { path: "/utilities", component: Utilities },
   { path: "/courses", component: Courses },
   { path: "/course-register", component: RegistrationForm },

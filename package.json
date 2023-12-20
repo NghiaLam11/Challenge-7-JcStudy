@@ -9,10 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueup/vue-quill": "^1.2.0",
     "chart.js": "^3.9.1",
     "firebase": "^10.7.1",
     "gsap": "^3.12.2",
     "pinia": "^2.1.7",
+    "quill-blot-formatter": "^1.0.5",
     "vue": "^3.3.4",
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.2.5",

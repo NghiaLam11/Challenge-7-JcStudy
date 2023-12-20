@@ -64,3 +64,72 @@ textarea::placeholder {
     font-size: 0.6rem !important;
   }
 }
+
+.content-editor {
+  blockquote {
+    border-left: 3px solid white !important;
+    padding: 1rem 1.5rem;
+    background-image: linear-gradient(
+      to right,
+      var(--footer-color),
+      transparent
+    );
+  }
+
+  pre.ql-syntax {
+    background-color: var(--footer-color);
+    padding: 1rem 1.5rem;
+    font-family: monospace;
+    font-size: 1.05rem;
+    color: var(--primary-color);
+  }
+  .ql-align-right {
+    text-align: end;
+  }
+  .ql-align-justify {
+    text-align: justify;
+  }
+  .ql-align-center {
+    text-align: center;
+  }
+  .ql-font-monospace {
+    font-family: monospace;
+  }
+  .ql-font-serif {
+    font-family: serif;
+  }
+  .ql-indent-1 {
+    padding-left: 1rem;
+  }
+  .ql-indent-2 {
+    padding-left: 2rem;
+  }
+  .ql-indent-3 {
+    padding-left: 3rem;
+  }
+  .ql-indent-4 {
+    padding-left: 4rem;
+  }
+  .ql-indent-5 {
+    padding-left: 5rem;
+  }
+  .ql-indent-6 {
+    padding-left: 6rem;
+  }
+  .ql-indent-7 {
+    padding-left: 7rem;
+  }
+  .ql-indent-8 {
+    padding-left: 8rem;
+  }
+
+  p {
+    line-height: 1.3rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+  ul,
+  ol {
+    padding-left: 2rem;
+  }
+}

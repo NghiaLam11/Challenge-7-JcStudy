@@ -82,7 +82,7 @@ const onOpenFormEdit = () => {
   isToggleFormEdit.value = !isToggleFormEdit.value;
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .auth {
   padding: 2rem;
   .auth-container {
