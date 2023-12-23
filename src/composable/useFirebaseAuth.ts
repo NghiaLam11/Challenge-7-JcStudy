@@ -1,9 +1,9 @@
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  signInAnonymously,
 } from "firebase/auth";
 
 import { auth } from "../firebase";
@@ -45,18 +45,25 @@ export const useSignoutAuth = () => {
     });
 };
 
+export const useAnonymusAuth = () => {
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("Anonymously signed")
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      // ...
+    });
+};
+
 export const useStateChangedAuth = () => {
   onAuthStateChanged(auth, (user: any) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
       const uid = user.uid;
       console.log(user, uid, "Changed auth");
-      // ...
+      return user;
     } else {
-      // User is signed out
-      // ...
-
       console.log(user);
     }
   });

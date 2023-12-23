@@ -10,21 +10,39 @@
           <img src="../images/peep-54.png" alt="" />
         </div>
       </div>
+      <div class="btn-signout">
+        <button type="button" @click="onSignout">Sign out</button>
+      </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useRouter } from 'vue-router';
+import { useSignoutAuth } from '../composable/useFirebaseAuth';
+const router = useRouter();
+const onSignout = () => {
+  useSignoutAuth();
+  setTimeout(() => {
+    router.push("/signin");
+  }, 500);
+};
+</script>
 
 <style lang="scss" scoped>
 .auth-anonymus {
-    padding: 1rem;
+  padding: 1rem;
+  .btn-signout {
+    margin: 1rem 0;
+    text-align: center;
+  }
   .auth-top {
     display: flex;
     align-items: center;
     padding: 5rem 1rem;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.4);
     border-radius: 50px;
+
     .auth-text {
       width: 50%;
       text-align: center;

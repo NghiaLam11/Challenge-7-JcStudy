@@ -16,14 +16,36 @@ import FooterSection from "./components/FooterSection.vue";
 import ChangeRouteSection from "./components/ChangeRouteSection.vue";
 import { onMounted, watch, ref } from "vue";
 import { useEffectChangeRoute } from "./composable/useEffectChangeRoute";
-// import { useRouter } from "vue-router";
-import { useRoute } from "vue-router";
-import { useStateChangedAuth } from "./composable/useFirebaseAuth";
+import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const isSpecialPage = ref(false);
 const effectStore = useEffectChangeRoute();
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+const isStopChangeRoute = ref(false);
 
-useStateChangedAuth();
+const router = useRouter();
+onAuthStateChanged(auth, (user: any) => {
+  if (user) {
+    const uid = user.uid;
+
+    console.log(user, uid, "Changed auth HAHAH");
+  } else {
+    isStopChangeRoute.value = true;
+    router.push("/signup");
+    console.log(user, "NULL");
+  }
+});
+
+router.beforeEach((to, from) => {
+  if (
+    (isStopChangeRoute.value === false && to.fullPath === "/signin") ||
+    (isStopChangeRoute.value === false && to.fullPath === "/signup")
+  ) {
+    router.push("/");
+    console.log(from.fullPath, to.fullPath, isStopChangeRoute.value);
+  }
+});
 
 onMounted(() => {
   const navHiddenElement: any = document.querySelector(".nav-hidden");

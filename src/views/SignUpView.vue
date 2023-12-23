@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useSignupAuth } from "../composable/useFirebaseAuth";
+import { useSignupAuth, useAnonymusAuth } from "../composable/useFirebaseAuth";
 const router = useRouter();
 const email = ref("");
 const password = ref("");
@@ -99,7 +99,7 @@ const onSubmit = () => {
 };
 
 const onAnonymus = () => {
-  localStorage.setItem("signupMode", "anonymus");
+  useAnonymusAuth();
   router.push("/");
 };
 // Feature reveal the password

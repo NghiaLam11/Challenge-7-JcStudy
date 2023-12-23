@@ -29,7 +29,10 @@
             >
           </li>
           <li class="nav-item">
-            <router-link to="/create-blog" active-class="active" class="nav-link"
+            <router-link
+              to="/create-blog"
+              active-class="active"
+              class="nav-link"
               >Contact</router-link
             >
           </li>
@@ -47,23 +50,22 @@
             </div>
           </li>
           <li class="nav-auth" @click="onAuth">
-            <!-- <router-link
-              :to="signupMode === 'anonymus' ? '/auth-anonymus' : '/auth'"
+            <router-link :to="isAnonymous ? '/auth-anonymus' : '/auth'"
               ><img
                 :src="
-                  signupMode === 'anonymus'
+                  isAnonymous
                     ? '/src/images/peep-96.png'
                     : '/src/images/peep-94.png'
                 "
                 alt=""
-            /></router-link> -->
-            <router-link to="/auth"
+            /></router-link>
+            <!-- <router-link to="/auth"
               ><img
                 src="
                   /src/images/peep-94.png
                 "
                 alt=""
-            /></router-link>
+            /></router-link> -->
           </li>
         </ul>
       </nav>
@@ -129,6 +131,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useSound } from "../composable/useSound";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+const isAnonymous = ref(false);
+onAuthStateChanged(auth, (user: any) => {
+  if (user) {
+    const uid = user.uid;
+    console.log(user, uid, "Changed auth");
+    isAnonymous.value = user.isAnonymous;
+  } else {
+    console.log(user);
+  }
+});
+
 const isToggleMode = ref(false);
 const htmlElements = document.querySelector("html");
 const onDarkMode = () => {
