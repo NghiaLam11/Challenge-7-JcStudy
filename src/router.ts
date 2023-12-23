@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/HomeView.vue";
 import Blogs from "./views/BlogsView.vue";
+import BlogDetails from "./views/BlogDetailsView.vue";
 import CreateBlog from "./views/CreateBlogView.vue";
 import Auth from "./views/AuthView.vue";
 import AuthAnonymus from "./views/AuthAnonymusView.vue";
 import Contact from "./views/ContactView.vue";
-import RegistrationForm from "./views/RegistrationFormView.vue";
+import CreateCourse from "./views/CreateCourseView.vue";
 import Utilities from "./views/UtilitiesView.vue";
 import Courses from "./views/CoursesView.vue";
 import CourseDetails from "./views/CourseDetailsView.vue";
@@ -17,10 +18,11 @@ const routes = [
   { path: "/auth", component: Auth },
   { path: "/auth-anonymus", component: AuthAnonymus },
   { path: "/blogs", component: Blogs },
+  { path: "/blogs/:title", component: BlogDetails },
   { path: "/create-blog", component: CreateBlog },
   { path: "/utilities", component: Utilities },
   { path: "/courses", component: Courses },
-  { path: "/course-register", component: RegistrationForm },
+  { path: "/create-course", component: CreateCourse },
   { path: "/courses/:idCourse/:chapter/:idLesson", component: CourseDetails },
   { path: "/signin", component: SignIn },
   { path: "/signup", component: SignUp },

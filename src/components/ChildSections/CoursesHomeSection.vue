@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import UnlockForm from "../HomeChildSections/UnlockForm.vue";
+import UnlockForm from "./UnlockForm.vue";
 import { ref } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 

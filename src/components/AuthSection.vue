@@ -14,7 +14,7 @@
           <img src="../images/peep-54.png" alt="" />
         </div>
       </div>
-      <RegistrationSection />
+      <CoursesRegisterSection />
       <CreateBlogSection />
       <div class="auth-bottom">
         <div class="statistic">
@@ -34,18 +34,24 @@
         <div class="chart"><LineChart v-bind="lineChartProps" /></div>
         <div class="courses-unclock"><CoursesUnlock /></div>
       </div>
+      <div class="btn-signout">
+        <button type="button" @click="onSignout">Sign out</button>
+      </div>
     </div>
     <EditProfileSection @onOpen="onCloseFormEdit" v-show="isToggleFormEdit" />
   </div>
 </template>
 <script lang="ts" setup>
 import { ref, computed } from "vue";
+import { useSignoutAuth } from "../composable/useFirebaseAuth";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
 import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
-import RegistrationSection from "./AuthChildSections/RegistrationSection.vue";
-import CreateBlogSection from "./AuthChildSections/CreateBlogSection.vue";
+import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.vue";
+import CreateBlogSection from "./AuthChildSections/BlogsRegisterSection.vue";
+
 import { Chart, registerables } from "chart.js";
 import { LineChart, useLineChart } from "vue-chart-3";
+import { useRouter } from "vue-router";
 Chart.register(...registerables);
 
 const data = ref([30, 40, 30, 70, 5]);
@@ -81,11 +87,21 @@ const onCloseFormEdit = () => {
 const onOpenFormEdit = () => {
   isToggleFormEdit.value = !isToggleFormEdit.value;
 };
+const router = useRouter();
+const onSignout = () => {
+  useSignoutAuth();
+  setTimeout(() => {
+    router.push("/signin");
+  }, 500);
+};
 </script>
 <style lang="scss" scoped>
 .auth {
   padding: 2rem;
   .auth-container {
+    .btn-signout {
+      text-align: center;
+    }
     .auth-top {
       display: flex;
       align-items: center;

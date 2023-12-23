@@ -189,9 +189,9 @@ onMounted(() => {
 });
 const headerElement = ref();
 const onScroll = () => {
-  if (window.scrollY >= 40) {
+  if (window.scrollY >= 40 && headerElement.value !== null) {
     headerElement.value.style.backgroundColor = "var(--footer-color)";
-  } else {
+  } else if (window.scrollY < 40 && headerElement.value !== null) {
     headerElement.value.style.backgroundColor = "transparent";
   }
 };

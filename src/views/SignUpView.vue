@@ -85,15 +85,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSignupAuth } from "../composable/useFirebaseAuth";
+const router = useRouter();
 const email = ref("");
 const password = ref("");
 const name = ref("JcLearn-er");
 const onSubmit = () => {
   console.log(name.value, password.value, email.value);
-  
+  useSignupAuth(email.value, password.value);
+  setTimeout(() => {
+    router.push("/");
+  }, 500);
 };
 
-const router = useRouter();
 const onAnonymus = () => {
   localStorage.setItem("signupMode", "anonymus");
   router.push("/");

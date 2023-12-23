@@ -18,11 +18,13 @@ import { onMounted, watch, ref } from "vue";
 import { useEffectChangeRoute } from "./composable/useEffectChangeRoute";
 // import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
+import { useStateChangedAuth } from "./composable/useFirebaseAuth";
 const route = useRoute();
 const isSpecialPage = ref(false);
 const effectStore = useEffectChangeRoute();
 
-// const router = useRouter();
+useStateChangedAuth();
+
 onMounted(() => {
   const navHiddenElement: any = document.querySelector(".nav-hidden");
   const navCloseElement: any = document.querySelector(".nav-close");

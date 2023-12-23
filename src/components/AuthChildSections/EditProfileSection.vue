@@ -57,7 +57,7 @@ const onPrevCharacter = () => {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .edit-profile {
   display: flex;
   justify-content: center;

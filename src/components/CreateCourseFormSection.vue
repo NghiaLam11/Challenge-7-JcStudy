@@ -128,7 +128,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import AddChapterLesson from "../components/RegistrationChildSections/AddChapterLesson.vue";
+import AddChapterLesson from "../components/CreateCourseChildSections/AddChapterLesson.vue";
 const isToggleForm = ref(false);
 const onCancelAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
