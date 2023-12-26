@@ -86,16 +86,33 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useSignupAuth, useAnonymusAuth } from "../composable/useFirebaseAuth";
+import { useAddUserStore } from "../composable/useFirebaseStore";
+// import { User } from "../types/types";
 const router = useRouter();
+
 const email = ref("");
 const password = ref("");
 const name = ref("JcLearn-er");
 const onSubmit = () => {
   console.log(name.value, password.value, email.value);
   useSignupAuth(email.value, password.value);
-  setTimeout(() => {
-    router.push("/");
-  }, 500);
+  const user = ref<any>({
+    name: name.value,
+    bio: "This is bio",
+    password: password.value,
+    email: email.value,
+    avatar:
+      "https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-76.png?alt=media&token=793c0ed3-49bf-4866-af10-a8a81d8cd690",
+    streak: 0,
+    studyTime: [3, 6, 9, 7, 10],
+    dayStudy: ["10/11", "10/12", "10/13", "10/14", "10/15"],
+    coursesCompleted: [],
+    coursesRegister: [],
+    coursesUnlock: [],
+    blogsRegister: [],
+  });
+
+  useAddUserStore(user.value);
 };
 
 const onAnonymus = () => {

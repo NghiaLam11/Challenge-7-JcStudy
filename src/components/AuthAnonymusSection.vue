@@ -3,8 +3,8 @@
     <div class="container">
       <div class="auth-top">
         <div class="auth-text">
-          <h4>Jcstudy-er</h4>
-          <p>This is my bio!</p>
+          <h4>Jcanonymus-er</h4>
+          <p>i'm an anonymus!</p>
         </div>
         <div class="auth-avatar">
           <img src="../images/peep-54.png" alt="" />
@@ -18,14 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
 import { useSignoutAuth } from '../composable/useFirebaseAuth';
-const router = useRouter();
 const onSignout = () => {
   useSignoutAuth();
-  setTimeout(() => {
-    router.push("/signin");
-  }, 500);
 };
 </script>
 

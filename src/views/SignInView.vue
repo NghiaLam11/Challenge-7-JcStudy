@@ -13,6 +13,7 @@
             type="email"
             placeholder="Ex: jcstudy123@gmail.com"
             class="email"
+            id="email"
           />
         </div>
         <div class="form-group">
@@ -70,17 +71,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useSigninAuth } from "../composable/useFirebaseAuth";
-import { useRouter } from "vue-router";
+// import { useErrorStore } from "../composable/useError";
+// import { useRouter } from "vue-router";
+// const errorStore = useErrorStore();
 const email = ref("");
 const password = ref("");
 const name = ref("JcLearn-er");
-const router = useRouter()
+// const router = useRouter();
 const onSubmit = () => {
   console.log(name.value, password.value, email.value);
   useSigninAuth(email.value, password.value);
-  setTimeout(() => {
-    router.push("/");
-  }, 500);
+  // if (!errorStore.isError && errorStore.errorMessage === "") {
+  //   router.push("/");
+  // }
+
 };
 
 // Feature reveal the password

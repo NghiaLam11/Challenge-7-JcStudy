@@ -7,6 +7,8 @@ import {
 } from "firebase/auth";
 
 import { auth } from "../firebase";
+import { useErrorStore } from "./useError";
+
 export const useSignupAuth = (email: string, password: string) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -14,8 +16,11 @@ export const useSignupAuth = (email: string, password: string) => {
       const user = userCredential.user;
       console.log(user, "signed up");
     })
-    .catch((error) => {
+    .catch((error: any) => {
+      const errorStore = useErrorStore();
       const errorMessage = error.message;
+      errorStore.errorMessage = errorMessage;
+      errorStore.onToggleError();
       console.log(errorMessage);
     });
 };
@@ -28,7 +33,10 @@ export const useSigninAuth = (email: string, password: string) => {
       console.log(user);
     })
     .catch((error) => {
+      const errorStore = useErrorStore();
       const errorMessage = error.message;
+      errorStore.errorMessage = errorMessage;
+      errorStore.onToggleError();
       console.log(errorMessage);
     });
 };
@@ -48,7 +56,7 @@ export const useSignoutAuth = () => {
 export const useAnonymusAuth = () => {
   signInAnonymously(auth)
     .then(() => {
-      console.log("Anonymously signed")
+      console.log("Anonymously signed");
     })
     .catch((error) => {
       const errorMessage = error.message;

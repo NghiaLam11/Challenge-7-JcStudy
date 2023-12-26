@@ -27,16 +27,16 @@ export interface Quiz {
 }
 
 export interface CourseChapter {
-    title: string;
-    desc: string;
-    thumbnailImg: string;
-    thumbnailVideo: string;
-    industry: string;
-    tags: string;
-    price: number;
-    comments: Comment[];
-    quiz: Quiz;
-  }
+  title: string;
+  desc: string;
+  thumbnailImg: string;
+  thumbnailVideo: string;
+  industry: string;
+  tags: string;
+  price: number;
+  comments: Comment[];
+  quiz: Quiz;
+}
 
 export interface Chapter {
   title: string;
@@ -56,19 +56,70 @@ export interface Course {
   price: number;
   comments: Comment[];
   quiz: Quiz;
-  chapters: Chapter[]
-  isCompleted: boolean;
-  isUnlock: boolean;
+  chapters: Chapter[];
+  id: string;
 }
 
 export interface User {
   name: string;
+  id: string;
   email: string;
   password: string;
   bio: string;
   avatar: string;
-  coursesCompleted: Course[];
-  coursesUnlock: Course[];
-  coursesRegister: Course[];
-  blogsRegister: Course[];
+  streak: number;
+  studyTime: number[];
+  dayStudy: string[];
+  coursesCompleted: {
+    title: string;
+    desc: string;
+    thumbnailImg: string;
+    thumbnailVideo: string;
+    industry: string;
+    tags: string;
+    price: number;
+    comments: Comment[];
+    quiz: Quiz;
+    chapters: Chapter[];
+    isCompleted: boolean;
+    isUnlock: boolean;
+  }[];
+  coursesUnlock: {
+    title: string;
+    desc: string;
+    thumbnailImg: string;
+    thumbnailVideo: string;
+    industry: string;
+    tags: string;
+    price: number;
+    comments: Comment[];
+    quiz: Quiz;
+    chapters: Chapter[];
+    isCompleted: boolean;
+    isUnlock: boolean;
+  }[];
+  coursesRegister: {
+    title: string;
+    desc: string;
+    thumbnailImg: string;
+    thumbnailVideo: string;
+    industry: string;
+    tags: string;
+    price: number;
+    comments: Comment[];
+    quiz: Quiz;
+    chapters: Chapter[];
+    isCompleted: boolean;
+    isUnlock: boolean;
+  }[];
+  blogsRegister: {
+    title: string;
+    author: string;
+    industry: string;
+    tags: string;
+    img: string;
+    content: string;
+    date: string;
+    statusRegister: string;
+  }[];
 }

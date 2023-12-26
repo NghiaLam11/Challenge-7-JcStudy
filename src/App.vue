@@ -8,42 +8,43 @@
     <section v-if="effectStore.isChange" class="change-route-section">
       <ChangeRouteSection />
     </section>
+    <section v-if="loaderStore.isLoading">
+      <LoaderSection />
+    </section>
+    <section v-if="errorStore.isError"><ErrorSection /></section>
   </div>
 </template>
 <script setup lang="ts">
 import NavBar from "./components/HeaderSection.vue";
 import FooterSection from "./components/FooterSection.vue";
 import ChangeRouteSection from "./components/ChangeRouteSection.vue";
+import LoaderSection from "./components/LoaderSection.vue";
+import ErrorSection from "./components/ErrorSection.vue";
 import { onMounted, watch, ref } from "vue";
 import { useEffectChangeRoute } from "./composable/useEffectChangeRoute";
+import { useLoaderStore } from "./composable/useLoader";
+import { useErrorStore } from "./composable/useError";
 import { useRoute, useRouter } from "vue-router";
-const route = useRoute();
-const isSpecialPage = ref(false);
-const effectStore = useEffectChangeRoute();
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useGetUserStore } from "./composable/useFirebaseStore";
+useGetUserStore();
+const route = useRoute();
+const errorStore = useErrorStore();
+const loaderStore = useLoaderStore();
+const isSpecialPage = ref(false);
+const effectStore = useEffectChangeRoute();
+
 const isStopChangeRoute = ref(false);
 
 const router = useRouter();
 onAuthStateChanged(auth, (user: any) => {
   if (user) {
-    const uid = user.uid;
-
-    console.log(user, uid, "Changed auth HAHAH");
+    isStopChangeRoute.value = false;
+    router.push("/");
   } else {
     isStopChangeRoute.value = true;
     router.push("/signup");
-    console.log(user, "NULL");
-  }
-});
-
-router.beforeEach((to, from) => {
-  if (
-    (isStopChangeRoute.value === false && to.fullPath === "/signin") ||
-    (isStopChangeRoute.value === false && to.fullPath === "/signup")
-  ) {
-    router.push("/");
-    console.log(from.fullPath, to.fullPath, isStopChangeRoute.value);
   }
 });
 
@@ -53,19 +54,25 @@ onMounted(() => {
   watch(
     () => route.fullPath,
     (newPath) => {
+      // Loading when changing the route
+      loaderStore.onToggleLoading();
       if (newPath === "/signin" || newPath === "/signup") {
         isSpecialPage.value = true;
         console.log("TRUE: " + newPath);
+        if (isStopChangeRoute.value === false) {
+          router.push("/");
+        }
       } else {
         isSpecialPage.value = false;
         console.log("FALSE: " + newPath);
       }
-
       // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {
         navCloseElement.style.transform = "scaleX(-1)";
-      }, 600);
+        // Unloading when changing the route
+        loaderStore.onToggleLoading();
+      }, 1000);
     }
   );
 });

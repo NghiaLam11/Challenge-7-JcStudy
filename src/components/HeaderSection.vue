@@ -54,8 +54,8 @@
               ><img
                 :src="
                   isAnonymous
-                    ? '/src/images/peep-96.png'
-                    : '/src/images/peep-94.png'
+                    ? '/src/images/peep-94.png'
+                    : userStore.user?.avatar
                 "
                 alt=""
             /></router-link>
@@ -133,6 +133,8 @@ import { onMounted, ref } from "vue";
 import { useSound } from "../composable/useSound";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useUserStore } from "../composable/useUser";
+const userStore = useUserStore();
 const isAnonymous = ref(false);
 onAuthStateChanged(auth, (user: any) => {
   if (user) {

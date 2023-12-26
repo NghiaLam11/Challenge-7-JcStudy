@@ -7,11 +7,11 @@
         </div>
 
         <div class="auth-text">
-          <h4>Jcstudy-er</h4>
-          <p>This is my bio!</p>
+          <h4>{{ userStore.user?.name }}</h4>
+          <p>{{ userStore.user?.bio }}</p>
         </div>
         <div class="auth-avatar">
-          <img src="../images/peep-54.png" alt="" />
+          <img :src="userStore.user?.avatar" alt="peep icon handsome" />
         </div>
       </div>
       <CoursesRegisterSection />
@@ -48,10 +48,10 @@ import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
 import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
 import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.vue";
 import CreateBlogSection from "./AuthChildSections/BlogsRegisterSection.vue";
-
+import { useUserStore } from "../composable/useUser";
 import { Chart, registerables } from "chart.js";
 import { LineChart, useLineChart } from "vue-chart-3";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 Chart.register(...registerables);
 
 const data = ref([30, 40, 30, 70, 5]);
@@ -80,6 +80,7 @@ const { lineChartProps } = useLineChart({
   chartData,
   options,
 });
+const userStore = useUserStore();
 const isToggleFormEdit = ref(false);
 const onCloseFormEdit = () => {
   isToggleFormEdit.value = !isToggleFormEdit.value;
@@ -87,12 +88,12 @@ const onCloseFormEdit = () => {
 const onOpenFormEdit = () => {
   isToggleFormEdit.value = !isToggleFormEdit.value;
 };
-const router = useRouter();
+// const router = useRouter();
 const onSignout = () => {
   useSignoutAuth();
-  setTimeout(() => {
-    router.push("/signin");
-  }, 500);
+  // setTimeout(() => {
+  //   router.push("/signup");
+  // }, 500);
 };
 </script>
 <style lang="scss" scoped>
