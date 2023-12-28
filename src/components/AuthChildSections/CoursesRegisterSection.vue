@@ -7,7 +7,10 @@
           <p>Register your course!</p>
         </router-link>
       </div>
-      <div class="regis-moderate">
+      <div
+        class="regis-moderate"
+        v-if="userStore.user?.coursesRegister.length > 0"
+      >
         <div class="content-moderate">
           <div class="courses">
             <div class="topic">Courses Moderation</div>
@@ -55,7 +58,8 @@
 import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-
+import { useUserStore } from "../../composable/useUser";
+const userStore = useUserStore();
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {

@@ -69,7 +69,6 @@ export interface User {
   avatar: string;
   streak: number;
   studyTime: number[];
-  dayStudy: string[];
   coursesCompleted: {
     title: string;
     desc: string;

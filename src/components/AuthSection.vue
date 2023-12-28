@@ -15,23 +15,27 @@
         </div>
       </div>
       <CoursesRegisterSection />
-      <CreateBlogSection />
+      <BlogsRegisterSection />
       <div class="auth-bottom">
         <div class="statistic">
           <div class="statistic-group">
-            <span class="topic">Streak:</span>
-            <span class="number"> 3</span>
+            <span class="topic">Streak: </span>
+            <span class="number"> {{ userStore.user?.streak }}</span>
           </div>
           <div class="statistic-group">
-            <span class="topic">Courses(unclock):</span>
-            <span class="number"> 5</span>
+            <span class="topic">Courses(unclock): </span>
+            <span class="number">
+              {{ userStore.user?.coursesUnlock.length }}</span
+            >
           </div>
           <div class="statistic-group">
-            <span class="topic">Courses(completed):</span>
-            <span class="number"> 1</span>
+            <span class="topic">Courses(completed): </span>
+            <span class="number">
+              {{ userStore.user?.coursesCompleted.length }}</span
+            >
           </div>
         </div>
-        <div class="chart"><LineChart v-bind="lineChartProps" /></div>
+        <ChartSection />
         <div class="courses-unclock"><CoursesUnlock /></div>
       </div>
       <div class="btn-signout">
@@ -42,44 +46,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useSignoutAuth } from "../composable/useFirebaseAuth";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
+import ChartSection from "./AuthChildSections/ChartSection.vue";
 import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
 import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.vue";
-import CreateBlogSection from "./AuthChildSections/BlogsRegisterSection.vue";
+import BlogsRegisterSection from "./AuthChildSections/BlogsRegisterSection.vue";
 import { useUserStore } from "../composable/useUser";
-import { Chart, registerables } from "chart.js";
-import { LineChart, useLineChart } from "vue-chart-3";
-// import { useRouter } from "vue-router";
-Chart.register(...registerables);
-
-const data = ref([30, 40, 30, 70, 5]);
-
-const chartData = computed(() => ({
-  labels: [
-    "12/04/2023",
-    "12/05/2023",
-    "12/06/2023",
-    "12/07/2023",
-    "12/08/2023",
-  ],
-  datasets: [
-    {
-      label: "Time (minutes)",
-      data: data.value,
-      backgroundColor: ["#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF"],
-      borderColor: "#1f2937",
-    },
-  ],
-}));
-const options = computed(() => ({
-  responsive: true,
-}));
-const { lineChartProps } = useLineChart({
-  chartData,
-  options,
-});
 const userStore = useUserStore();
 const isToggleFormEdit = ref(false);
 const onCloseFormEdit = () => {
@@ -195,10 +169,6 @@ const onSignout = () => {
           }
         }
       }
-      .chart {
-        padding: 1rem 2rem;
-        margin: 2rem 0;
-      }
       .courses-unclock {
         padding: 1.1rem;
       }
@@ -232,10 +202,6 @@ const onSignout = () => {
         font-size: 0.8rem !important;
       }
     }
-  }
-  .chart {
-    padding: 0.5rem 1rem !important;
-    margin: 1rem 0 !important;
   }
   .courses-unclock {
     padding: 0.5rem !important;
@@ -283,11 +249,6 @@ const onSignout = () => {
         font-size: 0.8rem !important;
       }
     }
-  }
-  .chart {
-    padding: 0.1rem 0.3rem !important;
-    margin: 0.5rem 0 !important;
-    transform: translateX(-10px);
   }
   .courses-unclock {
     padding: 0rem !important;

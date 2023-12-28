@@ -1,0 +1,70 @@
+<template>
+  <div class="chart"><LineChart v-bind="lineChartProps" />{{ userStore.studyTime }}</div>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from "vue";
+import { Chart, registerables } from "chart.js";
+import { LineChart, useLineChart } from "vue-chart-3";
+import { useUserStore } from "../../composable/useUser";
+const userStore = useUserStore();
+// import { useRouter } from "vue-router";
+Chart.register(...registerables);
+const data = ref(userStore.studyTime);
+console.log(data.value);
+const date = new Date();
+const fiveDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
+  date.getDate() - 5
+}`;
+const fourDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
+  date.getDate() - 4
+}`;
+const threeDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
+  date.getDate() - 3
+}`;
+const twoDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
+  date.getDate() - 2
+}`;
+const oneDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
+  date.getDate() - 1
+}`;
+const chartData = computed(() => ({
+  labels: [fiveDaysAgo, fourDaysAgo, threeDaysAgo, twoDaysAgo, oneDaysAgo],
+  datasets: [
+    {
+      label: "Time (minutes)",
+      data: data.value,
+      backgroundColor: ["#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF", "#77CEFF"],
+      borderColor: "#1f2937",
+    },
+  ],
+}));
+const options = computed(() => ({
+  responsive: true,
+}));
+const { lineChartProps } = useLineChart({
+  chartData,
+  options,
+});
+</script>
+
+<style lang="scss">
+.chart {
+  padding: 1rem 2rem;
+  margin: 2rem 0;
+}
+@media screen and (min-width: 534px) and (max-width: 734px) {
+  .chart {
+    padding: 0.5rem 1rem !important;
+    margin: 1rem 0 !important;
+  }
+}
+
+@media screen and (max-width: 534px) {
+  .chart {
+    padding: 0.1rem 0.3rem !important;
+    margin: 0.5rem 0 !important;
+    transform: translateX(-10px);
+  }
+}
+</style>
