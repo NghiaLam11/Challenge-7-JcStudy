@@ -1,5 +1,5 @@
 <template>
-  <div class="chart"><LineChart v-bind="lineChartProps" />{{ userStore.studyTime }}</div>
+  <div class="chart"><LineChart v-bind="lineChartProps" /></div>
 </template>
 
 <script lang="ts" setup>
