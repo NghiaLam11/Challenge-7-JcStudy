@@ -14,30 +14,39 @@
           <img :src="userStore.user?.avatar" alt="peep icon handsome" />
         </div>
       </div>
-      <CoursesRegisterSection />
-      <BlogsRegisterSection />
-      <div class="auth-bottom">
-        <div class="statistic">
-          <div class="statistic-group">
-            <span class="topic">Streak: </span>
-            <span class="number"> {{ userStore.user?.streak }}</span>
-          </div>
-          <div class="statistic-group">
-            <span class="topic">Courses(unclock): </span>
-            <span class="number">
-              {{ userStore.user?.coursesUnlock.length }}</span
-            >
-          </div>
-          <div class="statistic-group">
-            <span class="topic">Courses(completed): </span>
-            <span class="number">
-              {{ userStore.user?.coursesCompleted.length }}</span
-            >
-          </div>
-        </div>
-        <ChartSection />
-        <div class="courses-unclock"><CoursesUnlock /></div>
+
+      <div v-if="!userStore.user?.isAdmin" class="admin">
+        <CensorshipCoursesSection />
+        <CensorshipBlogsSection />
       </div>
+
+      <div v-else class="user">
+        <CoursesRegisterSection />
+        <BlogsRegisterSection />
+        <div class="auth-bottom">
+          <div class="statistic">
+            <div class="statistic-group">
+              <span class="topic">Streak: </span>
+              <span class="number"> {{ userStore.user?.streak }}</span>
+            </div>
+            <div class="statistic-group">
+              <span class="topic">Courses(unclock): </span>
+              <span class="number">
+                {{ userStore.user?.coursesUnlock.length }}</span
+              >
+            </div>
+            <div class="statistic-group">
+              <span class="topic">Courses(completed): </span>
+              <span class="number">
+                {{ userStore.user?.coursesCompleted.length }}</span
+              >
+            </div>
+          </div>
+          <ChartSection />
+          <div class="courses-unclock"><CoursesUnlock /></div>
+        </div>
+      </div>
+
       <div class="btn-signout">
         <button type="button" @click="onSignout">Sign out</button>
       </div>
@@ -49,6 +58,8 @@
 import { ref } from "vue";
 import { useSignoutAuth } from "../composable/useFirebaseAuth";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
+import CensorshipCoursesSection from "./AdminSections/CensorshipCoursesSection.vue";
+import CensorshipBlogsSection from "./AdminSections/CensorshipBlogsSection.vue";
 import ChartSection from "./AuthChildSections/ChartSection.vue";
 import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
 import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.vue";

@@ -104,6 +104,7 @@ const onSubmit = () => {
     avatar:
       "https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-76.png?alt=media&token=793c0ed3-49bf-4866-af10-a8a81d8cd690",
     streak: 0,
+    isAdmin: false,
     studyTime: [0, 0, 0, 0, 0],
     coursesCompleted: [],
     coursesRegister: [],

@@ -13,21 +13,26 @@ Chart.register(...registerables);
 const data = ref(userStore.studyTime);
 console.log(data.value);
 const date = new Date();
-const fiveDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
-  date.getDate() - 5
-}`;
-const fourDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
-  date.getDate() - 4
-}`;
-const threeDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
-  date.getDate() - 3
-}`;
-const twoDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
-  date.getDate() - 2
-}`;
-const oneDaysAgo = `${date.getFullYear()}/${date.getMonth() + 1}/${
-  date.getDate() - 1
-}`;
+const fiveDaysAgo = new Date(
+  date.setDate(date.getDate() - 5)
+).toLocaleDateString();
+console.log(fiveDaysAgo);
+const fourDaysAgo = new Date(
+  date.setDate(date.getDate() + 1)
+).toLocaleDateString();
+console.log(fourDaysAgo);
+const threeDaysAgo = new Date(
+  date.setDate(date.getDate() + 1)
+).toLocaleDateString();
+console.log(threeDaysAgo);
+const twoDaysAgo = new Date(
+  date.setDate(date.getDate() + 1)
+).toLocaleDateString();
+console.log(twoDaysAgo);
+const oneDaysAgo = new Date(
+  date.setDate(date.getDate() + 1)
+).toLocaleDateString();
+console.log(oneDaysAgo);
 const chartData = computed(() => ({
   labels: [fiveDaysAgo, fourDaysAgo, threeDaysAgo, twoDaysAgo, oneDaysAgo],
   datasets: [

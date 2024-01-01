@@ -4,13 +4,27 @@
     <div class="edit-container">
       <form class="edit-form">
         <div class="input-form">
-          <input v-model="name" placeholder="New name..." type="text" />
-          <input v-model="bio" placeholder="New bio..." type="text" />
+          <input
+            :class="[name?.length > 20 ? 'error' : '']"
+            v-model="name"
+            placeholder="New name..."
+            type="text"
+          />
+          <input
+            :class="[bio?.length > 50 ? 'error' : '']"
+            v-model="bio"
+            placeholder="New bio..."
+            type="text"
+          />
         </div>
 
         <div class="select-character">
           <i @click="onPrevCharacter" class="fa-solid fa-angle-left"></i>
-          <img ref="characterElement" src="https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-100.png?alt=media&token=db5e92e5-c9bd-4c07-b7de-ae04eb62cb0e" alt="" />
+          <img
+            ref="characterElement"
+            src="https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-100.png?alt=media&token=db5e92e5-c9bd-4c07-b7de-ae04eb62cb0e"
+            alt=""
+          />
           <i @click="onNextCharacter" class="fa-solid fa-angle-right"></i>
         </div>
       </form>
@@ -23,8 +37,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { useUpdateUserStore, useGetUserStore } from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const userStore = useUserStore();
 const emits = defineEmits(["onOpen"]);
 const name = ref(userStore.user?.name);
@@ -74,18 +90,36 @@ const onPrevCharacter = () => {
   }
 };
 const onEdit = () => {
-  const data = ref({
-    name: name.value,
-    bio: bio.value,
-    avatar: characters.value[presentCharacter.value],
-  });
-  console.log(data.value);
-  useUpdateUserStore(data.value);
-  onBack();
+  if (
+    (name.value.length < 20 && name.value.length > 0) &&
+    (bio.value.length > 0 && bio.value.length < 50)
+  ) {
+    const data = ref({
+      name: name.value,
+      bio: bio.value,
+      avatar: characters.value[presentCharacter.value],
+    });
+    console.log(data.value);
+    useUpdateUserStore(data.value);
+    useGetUserStore();
+    router.push("/auth")
+    onBack();
+  } else if (name.value.length > 20) {
+    alert("Your name is too long");
+  } else if (name.value.length === 0) {
+    alert("Your name is too short");
+  } else if (bio.value.length === 0) {
+    alert("Your name is too short");
+  } else if (bio.value.length > 50) {
+    alert("Your name is too long");
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.error {
+  color: red !important;
+}
 .edit-profile {
   display: flex;
   justify-content: center;
