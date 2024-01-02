@@ -4,6 +4,8 @@ import {
   signOut,
   onAuthStateChanged,
   signInAnonymously,
+  updatePassword,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 
 import { auth } from "../firebase";
@@ -64,6 +66,22 @@ export const useAnonymusAuth = () => {
       // ...
     });
 };
+
+// export const useUpdateAuthPassword = async (newPassword: any) => {
+//   try {
+//     console.log("1");
+//     const user = auth.currentUser;
+
+//     console.log(user);
+//     if (user !== null) {
+//       console.log("2");
+//       await reauthenticateWithCredential(user, credential);
+//       await updatePassword(user, newPassword);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const useStateChangedAuth = () => {
   onAuthStateChanged(auth, (user: any) => {

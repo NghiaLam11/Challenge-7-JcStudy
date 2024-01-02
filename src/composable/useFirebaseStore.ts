@@ -53,16 +53,13 @@ export const useUpdateUserStore = async (updateUser: any) => {
   try {
     const idUser = localStorage.getItem("idUser");
     const docRef = doc(db, "users", `${idUser}`);
-    updateDoc(docRef, updateUser)
-      .then((docRef) => {
-        console.log(
-          "A New Document Field has been added to an existing document"
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const dataUpdate = await updateDoc(docRef, updateUser);
+    console.log(
+      "A New Document Field has been added to an existing document",
+      updateUser
+    );
   } catch (error) {
     console.log(error);
   }
 };
+

@@ -2,44 +2,74 @@
   <div class="edit-profile">
     <div class="blur" @click="onBack"></div>
     <div class="edit-container">
-      <form class="edit-form">
-        <div class="input-form">
-          <input
-            :class="[name?.length > 20 ? 'error' : '']"
-            v-model="name"
-            placeholder="New name..."
-            type="text"
-          />
-          <input
-            :class="[bio?.length > 50 ? 'error' : '']"
-            v-model="bio"
-            placeholder="New bio..."
-            type="text"
-          />
-        </div>
+      <div class="password" v-if="isTogglePasswordForm">
+        <form class="edit-form">
+          <div class="input-form">
+            <input
+              v-model="oldPassword"
+              placeholder="Old password..."
+              type="text"
+            />
+            <input
+              v-model="newPassword"
+              placeholder="New password..."
+              type="text"
+            />
+          </div>
+          <button type="button" @click="onChangePassword">Change</button>
+          <p @click="onChangePasswordForm" class="change-password">
+            <span>I wanna change my profile!</span>
+          </p>
+        </form>
+      </div>
+      <div class="profile" v-else>
+        <form class="edit-form">
+          <div class="input-form">
+            <input
+              :class="[name?.length > 20 ? 'error' : '']"
+              v-model="name"
+              placeholder="New name..."
+              type="text"
+            />
+            <input
+              :class="[bio?.length > 50 ? 'error' : '']"
+              v-model="bio"
+              placeholder="New bio..."
+              type="text"
+            />
+          </div>
 
-        <div class="select-character">
-          <i @click="onPrevCharacter" class="fa-solid fa-angle-left"></i>
-          <img
-            ref="characterElement"
-            src="https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-100.png?alt=media&token=db5e92e5-c9bd-4c07-b7de-ae04eb62cb0e"
-            alt=""
-          />
-          <i @click="onNextCharacter" class="fa-solid fa-angle-right"></i>
-        </div>
-      </form>
-      <button type="button" @click="onEdit">
-        <i class="fas fa-tools"></i>
-      </button>
+          <div class="select-character">
+            <i @click="onPrevCharacter" class="fa-solid fa-angle-left"></i>
+            <img
+              ref="characterElement"
+              src="https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-100.png?alt=media&token=db5e92e5-c9bd-4c07-b7de-ae04eb62cb0e"
+              alt=""
+            />
+            <i @click="onNextCharacter" class="fa-solid fa-angle-right"></i>
+          </div>
+        </form>
+
+        <button type="button" @click="onEdit">
+          <i class="fas fa-tools"></i>
+        </button>
+        <p @click="onChangePasswordForm" class="change-password">
+          <span>I wanna change my password!</span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useUpdateUserStore, useGetUserStore } from "../../composable/useFirebaseStore";
+import {
+  useUpdateUserStore,
+  useGetUserStore,
+} from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
 import { useRouter } from "vue-router";
+import { useUpdateAuthPassword } from "../../composable/useFirebaseAuth";
 const router = useRouter();
 const userStore = useUserStore();
 const emits = defineEmits(["onOpen"]);
@@ -91,8 +121,10 @@ const onPrevCharacter = () => {
 };
 const onEdit = () => {
   if (
-    (name.value.length < 20 && name.value.length > 0) &&
-    (bio.value.length > 0 && bio.value.length < 50)
+    name.value.length < 20 &&
+    name.value.length > 0 &&
+    bio.value.length > 0 &&
+    bio.value.length < 50
   ) {
     const data = ref({
       name: name.value,
@@ -102,7 +134,7 @@ const onEdit = () => {
     console.log(data.value);
     useUpdateUserStore(data.value);
     useGetUserStore();
-    router.push("/auth")
+    router.push("/auth");
     onBack();
   } else if (name.value.length > 20) {
     alert("Your name is too long");
@@ -112,6 +144,24 @@ const onEdit = () => {
     alert("Your name is too short");
   } else if (bio.value.length > 50) {
     alert("Your name is too long");
+  }
+};
+const isTogglePasswordForm = ref(false);
+const onChangePasswordForm = () => {
+  isTogglePasswordForm.value = !isTogglePasswordForm.value;
+};
+const newPassword = ref("");
+const oldPassword = ref("");
+const onChangePassword = () => {
+  if (userStore.user.password === oldPassword.value) {
+    useUpdateAuthPassword(newPassword.value);
+    useUpdateUserStore({
+      password: newPassword.value
+    })
+    onBack();
+
+  } else {
+    alert("Wrong old password. Please try again!");
   }
 };
 </script>
@@ -152,52 +202,90 @@ const onEdit = () => {
         transform: scale(1);
       }
     }
-    button {
-      width: 80px !important;
-      padding: 0.2rem 0.1rem;
-    }
-    .edit-form {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 60vw;
-
-      .input-form {
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-
-        input {
-          background-color: transparent;
-          color: inherit;
-          border: none;
-          outline: none;
-          padding: 0.4rem 0.2rem;
-          margin: 0.3rem 0;
-          font-size: 0.8rem;
-          border-bottom: 1px solid var(--border-color);
-          width: 100%;
-        }
-      }
-
-      .select-character {
+    .profile {
+      .edit-form {
         display: flex;
         align-items: center;
-        height: 150px;
-        width: 50%;
-        img {
-          height: 100%;
-          transform: scaleX(-1);
+        justify-content: space-between;
+        max-width: 60vw;
+
+        .input-form {
+          display: flex;
+          flex-direction: column;
+          width: 50%;
+
+          input {
+            background-color: transparent;
+            color: inherit;
+            border: none;
+            outline: none;
+            padding: 0.4rem 0.2rem;
+            margin: 0.3rem 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+          }
         }
-        i {
-          cursor: pointer;
-          margin: 0 2rem;
-          opacity: 0.7;
+
+        .select-character {
+          display: flex;
+          align-items: center;
+          height: 150px;
+          width: 50%;
+          img {
+            height: 100%;
+            transform: scaleX(-1);
+          }
+          i {
+            cursor: pointer;
+            margin: 0 2rem;
+            opacity: 0.7;
+          }
+          i:hover {
+            opacity: 1;
+            scale: 1.1;
+          }
         }
-        i:hover {
-          opacity: 1;
-          scale: 1.1;
+      }
+    }
+    .password {
+      .edit-form {
+        display: flex;
+        flex-direction: column;
+        min-width: 30vw;
+        max-width: 60vw;
+
+        .input-form {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+
+          input {
+            background-color: transparent;
+            color: inherit;
+            border: none;
+            outline: none;
+            padding: 0.4rem 0.2rem;
+            margin: 0.3rem 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+          }
         }
+      }
+    }
+    .profile,
+    .password {
+      button {
+        width: 80px !important;
+        padding: 0.2rem 0.1rem;
+      }
+      .change-password {
+        font-size: 0.8rem;
+        opacity: 0.9;
+        margin-top: 0.4rem;
+        color: var(--primary-color);
+        text-decoration: underline;
       }
     }
   }

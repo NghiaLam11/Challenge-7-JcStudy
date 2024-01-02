@@ -4,6 +4,7 @@ import Blogs from "./views/BlogsView.vue";
 import BlogDetails from "./views/BlogDetailsView.vue";
 import CreateBlog from "./views/CreateBlogView.vue";
 import Auth from "./views/AuthView.vue";
+
 import AuthAnonymus from "./views/AuthAnonymusView.vue";
 import Contact from "./views/ContactView.vue";
 import CreateCourse from "./views/CreateCourseView.vue";
