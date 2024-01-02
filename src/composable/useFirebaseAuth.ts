@@ -6,10 +6,12 @@ import {
   signInAnonymously,
   updatePassword,
   reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 
 import { auth } from "../firebase";
 import { useErrorStore } from "./useError";
+import { useUserStore } from "./useUser";
 
 export const useSignupAuth = (email: string, password: string) => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -69,13 +71,16 @@ export const useAnonymusAuth = () => {
 
 export const useUpdateAuthPassword = async (newPassword: any) => {
   try {
-    console.log("1");
-    const user = auth.currentUser;
-
-    console.log(user);
+    const user: any = auth.currentUser;
+    const userStore = useUserStore();
     if (user !== null) {
-      console.log("2");
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        userStore.user.password
+      );
+      await reauthenticateWithCredential(user, credential);
       await updatePassword(user, newPassword);
+      console.log("Updated password user");
     }
   } catch (error) {
     console.log(error);
