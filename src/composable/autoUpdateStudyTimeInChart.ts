@@ -33,45 +33,43 @@ export const autoUpdateStudyTime = () => {
         parseDate(currentTimeArray.timeDay),
         parseDate(date.toLocaleDateString())
       );
-      setTimeout(() => {
-        console.log("MANY DAYS", countDaysBetweenTwoDays);
-        const initialValue = 0;
-        const timeArray: any = localStorage.getItem("currentTimeArray");
-        // SUM OF THE PAST STUDY TIME (SAVED IN LOCALSTORE)
-        const sumTimeOfAllDay = JSON.parse(timeArray).timeList.reduce(
-          (accumulator: any, currentValue: any) => accumulator + currentValue,
-          initialValue
-        );
-        // IF USER UNACCESS FOR A LONG TIME
-        if (countDaysBetweenTwoDays > 1 && countDaysBetweenTwoDays <= 4) {
-          // THESE UNCCESSED DAYS WILL BE REPLACE = 0 STUDYTIME
-          for (let i = 1; i < countDaysBetweenTwoDays; i++) {
-            userStore.studyTime.shift();
-            userStore.studyTime.push(0);
-          }
-          // AND ADD STUDYTIME OF THE ACCESSED DAYS TO THE LIST
+      console.log("MANY DAYS", countDaysBetweenTwoDays);
+      const initialValue = 0;
+      const timeArray: any = localStorage.getItem("currentTimeArray");
+      // SUM OF THE PAST STUDY TIME (SAVED IN LOCALSTORE)
+      const sumTimeOfAllDay = JSON.parse(timeArray).timeList.reduce(
+        (accumulator: any, currentValue: any) => accumulator + currentValue,
+        initialValue
+      );
+      // IF USER UNACCESS FOR A LONG TIME
+      if (countDaysBetweenTwoDays > 1 && countDaysBetweenTwoDays <= 4) {
+        // THESE UNCCESSED DAYS WILL BE REPLACE = 0 STUDYTIME
+        for (let i = 1; i < countDaysBetweenTwoDays; i++) {
           userStore.studyTime.shift();
-          userStore.studyTime.push(sumTimeOfAllDay);
-          console.log(
-            "countDaysBetweenTwoDays > 1 && <= 4",
-            countDaysBetweenTwoDays
-          );
-        } else if (countDaysBetweenTwoDays > 4) {
-          // THESE UNCCESSED DAYS (IF LARGER > 4 DAYS) WILL BE REPLACE = [0, 0, 0, 0, 0] STUDYTIME
-
-          userStore.studyTime = [0, 0, 0, 0, 0];
-          console.log("countDaysBetweenTwoDays < 1", countDaysBetweenTwoDays);
-        } else if (countDaysBetweenTwoDays <= 1) {
-          // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
-          userStore.studyTime.shift();
-          userStore.studyTime.push(sumTimeOfAllDay);
-          console.log("countDaysBetweenTwoDays > 1", countDaysBetweenTwoDays);
+          userStore.studyTime.push(0);
         }
+        // AND ADD STUDYTIME OF THE ACCESSED DAYS TO THE LIST
+        userStore.studyTime.shift();
+        userStore.studyTime.push(sumTimeOfAllDay);
+        console.log(
+          "countDaysBetweenTwoDays > 1 && <= 4",
+          countDaysBetweenTwoDays
+        );
+      } else if (countDaysBetweenTwoDays > 4) {
+        // THESE UNCCESSED DAYS (IF LARGER > 4 DAYS) WILL BE REPLACE = [0, 0, 0, 0, 0] STUDYTIME
 
-        useUpdateUserStore({
-          studyTime: userStore.studyTime,
-        });
-      }, 2000);
+        userStore.studyTime = [0, 0, 0, 0, 0];
+        console.log("countDaysBetweenTwoDays < 1", countDaysBetweenTwoDays);
+      } else if (countDaysBetweenTwoDays <= 1) {
+        // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
+        userStore.studyTime.shift();
+        userStore.studyTime.push(sumTimeOfAllDay);
+        console.log("countDaysBetweenTwoDays > 1", countDaysBetweenTwoDays);
+      }
+      console.log(userStore.studyTime, "USERSTORE");
+      useUpdateUserStore({
+        studyTime: userStore.studyTime,
+      });
       setTimeout(() => {
         // RESET LOCAL STORE WHEN CHANGE THE DAY (NEW DAY)
         localStorage.removeItem("currentTimeArray");
@@ -86,7 +84,7 @@ export const autoUpdateStudyTime = () => {
           timeDay: date.toLocaleDateString(),
           timeList: [],
         };
-      }, 3000);
+      }, 2000);
     } else {
       console.log("SAME DAY", currentTimeArray);
     }
@@ -99,9 +97,10 @@ export const autoUpdateStudyTime = () => {
   // WHENEVER LOAD OR LEAVE THE PAGE => DATA OF STUDY TIME WILL BE SAVE TO LOCAL STORAGE
   window.addEventListener("beforeunload", (e: any) => {
     e.preventDefault();
-    currentTimeArray.timeList.push(currentTime);
+    if (currentTime > 0) {
+      currentTimeArray.timeList.push(currentTime);
+    }
     // localStorage.removeItem("currentTimeArray");
-
     localStorage.setItem("currentTimeArray", JSON.stringify(currentTimeArray));
     currentTime = 0;
   });

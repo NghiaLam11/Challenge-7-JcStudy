@@ -59,13 +59,6 @@
                 "
                 alt=""
             /></router-link>
-            <!-- <router-link to="/auth"
-              ><img
-                src="
-                  /src/images/peep-94.png
-                "
-                alt=""
-            /></router-link> -->
           </li>
         </ul>
       </nav>
@@ -140,11 +133,13 @@ onAuthStateChanged(auth, (user: any) => {
   if (user) {
     const uid = user.uid;
     console.log(user, uid, "Changed auth");
+    localStorage.setItem("idUser", uid);
     isAnonymous.value = user.isAnonymous;
   } else {
     console.log(user);
   }
 });
+console.log(userStore.user)
 
 const isToggleMode = ref(false);
 const htmlElements = document.querySelector("html");

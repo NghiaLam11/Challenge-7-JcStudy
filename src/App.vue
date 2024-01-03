@@ -30,10 +30,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import {
   useGetUserStore
 } from "./composable/useFirebaseStore";
-import { autoUpdateStudyTime } from "./composable/autoUpdateStudyTime";
 // import { useUserStore } from "./composable/useUser";
 useGetUserStore();
-autoUpdateStudyTime();
 const route = useRoute();
 const errorStore = useErrorStore();
 // const userStore = useUserStore();

@@ -12,13 +12,15 @@ import {
 import { auth } from "../firebase";
 import { useErrorStore } from "./useError";
 import { useUserStore } from "./useUser";
+import { useAddUserStore, useGetUserStore } from "./useFirebaseStore";
 
-export const useSignupAuth = (email: string, password: string) => {
-  createUserWithEmailAndPassword(auth, email, password)
+export const useSignupAuth = (user: any) => {
+  createUserWithEmailAndPassword(auth, user.email, user.password)
     .then((userCredential) => {
-      // Signed up
-      const user = userCredential.user;
-      console.log(user, "signed up");
+      useAddUserStore(user, userCredential.user.uid);
+      console.log(userCredential.user.uid);
+      localStorage.setItem("idUser", userCredential.user.uid);
+      useGetUserStore();
     })
     .catch((error: any) => {
       const errorStore = useErrorStore();
@@ -35,6 +37,8 @@ export const useSigninAuth = (email: string, password: string) => {
       // Signed in
       const user = userCredential.user;
       console.log(user);
+      useGetUserStore();
+
     })
     .catch((error) => {
       const errorStore = useErrorStore();
@@ -61,6 +65,7 @@ export const useAnonymusAuth = () => {
   signInAnonymously(auth)
     .then(() => {
       console.log("Anonymously signed");
+
     })
     .catch((error) => {
       const errorMessage = error.message;
@@ -92,6 +97,8 @@ export const useStateChangedAuth = () => {
     if (user) {
       const uid = user.uid;
       console.log(user, uid, "Changed auth");
+      useGetUserStore();
+
       return user;
     } else {
       console.log(user);
