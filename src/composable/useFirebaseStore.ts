@@ -7,7 +7,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { User } from "../types/types";
+import { Course, User } from "../types/types";
 import { useLoaderStore } from "./useLoader";
 import { useUserStore } from "./useUser";
 import { ref } from "vue";
@@ -65,3 +65,11 @@ export const useUpdateUserStore = async (updateUser: any) => {
   }
 };
 
+export const useAddCourseStore = async (course: Course) => {
+  try {
+    const docRef = await addDoc(collection(db, "courses"), course);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};

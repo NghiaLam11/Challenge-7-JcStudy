@@ -55,21 +55,30 @@ export const autoUpdateStudyTime = () => {
           "countDaysBetweenTwoDays > 1 && <= 4",
           countDaysBetweenTwoDays
         );
+        useUpdateUserStore({
+          streak: 0,
+          studyTime: userStore.studyTime,
+        });
       } else if (countDaysBetweenTwoDays > 4) {
         // THESE UNCCESSED DAYS (IF LARGER > 4 DAYS) WILL BE REPLACE = [0, 0, 0, 0, 0] STUDYTIME
 
         userStore.studyTime = [0, 0, 0, 0, 0];
         console.log("countDaysBetweenTwoDays < 1", countDaysBetweenTwoDays);
+        useUpdateUserStore({
+          streak: 0,
+          studyTime: userStore.studyTime,
+        });
       } else if (countDaysBetweenTwoDays <= 1) {
         // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
         userStore.studyTime.shift();
         userStore.studyTime.push(sumTimeOfAllDay);
         console.log("countDaysBetweenTwoDays > 1", countDaysBetweenTwoDays);
+        useUpdateUserStore({
+          studyTime: userStore.studyTime,
+          streak: userStore.user.streak + 1,
+        });
       }
       console.log(userStore.studyTime, "USERSTORE");
-      useUpdateUserStore({
-        studyTime: userStore.studyTime,
-      });
       setTimeout(() => {
         // RESET LOCAL STORE WHEN CHANGE THE DAY (NEW DAY)
         localStorage.removeItem("currentTimeArray");

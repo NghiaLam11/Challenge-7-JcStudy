@@ -58,6 +58,8 @@ export interface Course {
   quiz: Quiz;
   chapters: Chapter[];
   id: string;
+  idUser: string;
+  isApproved: boolean;
 }
 
 export interface User {

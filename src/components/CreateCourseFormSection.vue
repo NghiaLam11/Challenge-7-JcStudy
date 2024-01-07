@@ -4,73 +4,96 @@
       <form class="regis-form">
         <div class="form-group form-file">
           <div class="file-thumbnail">
-            <div>
-              <input type="file" name="file" id="file" class="inputfile" />
+            <div class="select-img">
+              <input
+                @change="onImage"
+                type="file"
+                name="file"
+                ref="fileImgElement"
+                id="file"
+                class="inputfile"
+              />
               <label for="file"
                 ><i class="fas fa-image"></i>
                 <p>Upload image!</p></label
               >
             </div>
-            <!-- <div class="img-thumbnail">
-              <img
-                src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-                alt=""
-              />
-            </div> -->
+            <div class="img-thumbnail">
+              <img :src="imageUrlReader" alt="" />
+            </div>
           </div>
           <div class="file-thumbnail">
             <div>
-              <input type="file" name="file" id="file" class="inputfile" />
-              <label for="file"
+              <input
+                @change="onVideo"
+                type="file"
+                name="file-video"
+                ref="fileVideoElement"
+                id="file-video"
+                class="inputfile"
+              />
+              <label for="file-video"
                 ><i class="fas fa-play-circle"></i>
                 <p>Upload video!</p></label
               >
             </div>
-            <!-- <div class="video-thumbnail">
-              <video controls>
-                <source src="../videos/video-1645947165.mp4" type="video/mp4" />
-                <source src="movie.ogg" type="video/ogg" />
+            <div class="video-thumbnail">
+              <video controls v-if="videoUrlReader !== ''" ref="videoElement">
+                <source :src="videoUrlReader" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Title..." />
-          <textarea placeholder="Description..." cols="30" rows="5"></textarea>
+          <input v-model="title" type="text" placeholder="Title..." />
+          <textarea
+            v-model="desc"
+            placeholder="Description..."
+            cols="30"
+            rows="5"
+          ></textarea>
         </div>
         <div class="form-group">
           <div class="custom-select">
-            <select>
-              <option value="0">Industry</option>
-              <option value="1">Audi</option>
-              <option value="2">BMW</option>
-              <option value="3">Citroen</option>
-              <option value="4">Ford</option>
-              <option value="5">Honda</option>
-              <option value="6">Jaguar</option>
-              <option value="7">Land Rover</option>
-              <option value="8">Mercedes</option>
-              <option value="9">Mini</option>
-              <option value="10">Nissan</option>
-              <option value="11">Toyota</option>
-              <option value="12">Volvo</option>
+            <select v-model="industry">
+              <option>Industry</option>
+              <option>Audi</option>
+              <option>BMW</option>
+              <option>Citroen</option>
+              <option>Ford</option>
+              <option>Honda</option>
+              <option>Jaguar</option>
+              <option>Land Rover</option>
+              <option>Mercedes</option>
+              <option>Mini</option>
+              <option>Nissan</option>
+              <option>Toyota</option>
+              <option>Volvo</option>
             </select>
           </div>
           <div class="tags">
-            <input type="text" placeholder="Tags..." />
+            <input v-model="tags" type="text" placeholder="Tags..." />
           </div>
           <div class="price">
-            <input type="number" placeholder="Price..." />
+            <input
+              v-model="price"
+              disabled
+              type="number"
+              placeholder="Free..."
+            />
           </div>
         </div>
         <div class="form-group">
           <div class="create-chapter">
             <div class="amount-chapter">
               <div class="amount-left">
-                <span>Create</span><input placeholder="0" type="number" /><span
-                  >chapter</span
-                >
+                <span>Create</span
+                ><input
+                  v-model="amountChapter"
+                  placeholder="0"
+                  type="number"
+                /><span>chapter</span>
               </div>
               <div class="amount-right">
                 <button type="button">Create</button>
@@ -118,24 +141,85 @@
           </div>
         </div>
         <div class="form-btn">
-          <button type="button">Send it!</button>
+          <button @click="onSend" type="button">Send it!</button>
         </div>
       </form>
-      <AddChapterLesson v-if="isToggleForm" @on-cancel="onCancelAddLesson"/>
+      <AddChapterLesson v-if="isToggleForm" @on-cancel="onCancelAddLesson" />
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref } from "vue";
 import AddChapterLesson from "../components/CreateCourseChildSections/AddChapterLesson.vue";
+import {
+  useAddImgStorage,
+  useAddVideoStorage,
+} from "../composable/useFirebaseStorage";
 const isToggleForm = ref(false);
 const onCancelAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
-}
+};
 const onOpenAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
-}
+};
+const amountChapter = ref(0);
+const videoName = ref("");
+const videoPath = ref("");
+const videoUrlReader: any = ref("");
+const fileVideoElement = ref();
+const videoElement = ref();
+
+const onVideo = () => {
+  let file = fileVideoElement.value.files[0];
+  let reader = new FileReader();
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+  reader.onload = function () {
+    videoUrlReader.value = reader.result;
+  };
+
+  videoName.value = file.name;
+  videoPath.value = file;
+};
+
+const imageName = ref("");
+const imagePath = ref("");
+const imageUrlReader: any = ref("");
+const fileImgElement = ref();
+const onImage = () => {
+  let file = fileImgElement.value.files[0];
+  let reader = new FileReader();
+  reader.onload = function () {
+    imageUrlReader.value = reader.result;
+  };
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+  imageName.value = file.name;
+  imagePath.value = file;
+};
+const tags = ref("");
+const title = ref("");
+const desc = ref("");
+const price = ref(0);
+const industry = ref("Industry");
+const onSend = async () => {
+  console.log("SENDED");
+  const mediaImgLink = ref({
+    filePath: imagePath.value,
+    fileName: imageName.value,
+  });
+  const mediaVideoLink = ref({
+    filePath: videoPath.value,
+    fileName: videoName.value,
+  });
+  const idUser: any = localStorage.getItem("idUser");
+  await useAddImgStorage(mediaImgLink.value, idUser);
+  await useAddVideoStorage(mediaVideoLink.value, idUser);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -152,17 +236,26 @@ const onOpenAddLesson = () => {
         justify-content: center;
         align-items: center;
         width: calc(100% / 2);
-        background-color: var(--bg-secondary);
         height: 300px;
         text-align: center;
         border: 2px solid var(--border-color);
         border-radius: 10px;
         overflow: hidden;
+        position: relative;
+        .img-thumbnail,
         .video-thumbnail {
-          background-color: var(--bg-secondary);
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          z-index: -1;
+        }
+        .video-thumbnail {
           width: 100%;
           video {
             width: 100%;
+            height: 100%;
           }
         }
 

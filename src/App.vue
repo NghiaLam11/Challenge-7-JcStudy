@@ -45,7 +45,7 @@ const router = useRouter();
 onAuthStateChanged(auth, (user: any) => {
   if (user) {
     isStopChangeRoute.value = false;
-    router.push("/");
+    // router.push("/");
   } else {
     isStopChangeRoute.value = true;
     router.push("/signup");
