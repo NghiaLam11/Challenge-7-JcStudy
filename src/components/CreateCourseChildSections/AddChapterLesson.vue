@@ -6,42 +6,53 @@
         <div class="form-group form-file">
           <div class="file-thumbnail">
             <div>
-              <input type="file" name="file" id="file" class="inputfile" />
-              <label for="file"
+              <input
+                ref="fileImgElement"
+                @change="onImage"
+                type="file"
+                name="file-img-lesson"
+                id="file-img-lesson"
+                class="inputfile"
+              />
+              <label for="file-img-lesson"
                 ><i class="fas fa-image"></i>
                 <p>Upload image!</p></label
               >
             </div>
-            <!-- <div class="img-thumbnail">
-              <img
-                src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-                alt=""
-              />
-            </div> -->
+            <div class="img-thumbnail">
+              <img :src="imageUrlReader" alt="" />
+            </div>
           </div>
           <div class="file-thumbnail">
             <div>
-              <input type="file" name="file" id="file" class="inputfile" />
-              <label for="file"
+              <input
+                @change="onVideo"
+                ref="fileVideoElement"
+                type="file"
+                name="file-video-lesson"
+                id="file-video-lesson"
+                class="inputfile"
+              />
+              <label for="file-video-lesson"
                 ><i class="fas fa-play-circle"></i>
                 <p>Upload video!</p></label
               >
             </div>
-            <!-- <div class="video-thumbnail">
-              <video controls>
-                <source src="../videos/video-1645947165.mp4" type="video/mp4" />
+            <div class="video-thumbnail">
+              <video v-if="videoUrlReader !== ''" controls>
+                <source :src="videoUrlReader" type="video/mp4" />
                 <source src="movie.ogg" type="video/ogg" />
                 Your browser does not support the video tag.
               </video>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Title..." />
-          <textarea placeholder="Description..." cols="30" rows="5"></textarea>
+          <input v-model="title" type="text" placeholder="Title..." />
+          <textarea v-model="desc" placeholder="Description..." cols="30" rows="5"></textarea>
         </div>
         <div class="form-btn">
-          <button type="button">Complete</button>
+          <button @click="onComplete" type="button">Complete</button>
           <button type="button" @click="onCancel">Cancel</button>
         </div>
       </div>
@@ -49,10 +60,60 @@
   </div>
 </template>
 <script lang="ts" setup>
-// import { defineEmits } from "vue";
-const emit = defineEmits(["onCancel"]);
+import { ref } from "vue";
+const emit = defineEmits(["onCancel", "onComplete"]);
 const onCancel = () => {
   emit("onCancel");
+};
+const videoName = ref("");
+const videoPath = ref("");
+const videoUrlReader: any = ref("");
+const fileVideoElement = ref();
+const onVideo = () => {
+  let file = fileVideoElement.value.files[0];
+  let reader = new FileReader();
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+  reader.onload = function () {
+    videoUrlReader.value = reader.result;
+  };
+
+  videoName.value = file.name;
+  videoPath.value = file;
+};
+
+const imageName = ref("");
+const imagePath = ref("");
+const imageUrlReader: any = ref("");
+const fileImgElement = ref();
+const onImage = () => {
+  let file = fileImgElement.value.files[0];
+  let reader = new FileReader();
+  reader.onload = function () {
+    imageUrlReader.value = reader.result;
+  };
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+  imageName.value = file.name;
+  imagePath.value = file;
+};
+const title = ref("");
+const desc = ref("");
+const onComplete = () => {
+  const lessonDetails = ref({
+    title: title.value,
+    desc: desc.value,
+    thumbnailImg: imageUrlReader.value,
+    thumbnailVideo: videoUrlReader.value,
+    imageName: imageName.value,
+    imagePath: imagePath.value,
+    videoName: videoName.value,
+    videoPath: videoPath.value,
+  });
+  emit("onComplete", lessonDetails.value);
 };
 </script>
 <style lang="scss" scoped>
@@ -89,17 +150,26 @@ const onCancel = () => {
           justify-content: center;
           align-items: center;
           width: calc(100% / 4);
-          background-color: var(--bg-secondary);
           height: 200px;
           text-align: center;
           border: 2px solid var(--border-color);
           border-radius: 5px;
           overflow: hidden;
+          position: relative;
+          .img-thumbnail,
           .video-thumbnail {
-            background-color: var(--bg-secondary);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+          }
+          .video-thumbnail {
             width: 100%;
             video {
               width: 100%;
+              height: 100%;
             }
           }
 

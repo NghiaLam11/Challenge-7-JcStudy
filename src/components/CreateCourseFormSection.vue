@@ -93,49 +93,67 @@
                   v-model="amountChapter"
                   placeholder="0"
                   type="number"
-                /><span>chapter</span>
+                /><span>chapters</span>
               </div>
               <div class="amount-right">
-                <button type="button">Create</button>
+                <button
+                  type="button"
+                  @click="onCreateChapters"
+                  class="btn-chapter"
+                >
+                  Create
+                </button>
               </div>
             </div>
-            <div class="chapter-courses" v-for="c in 2" :key="c">
+            <div
+              class="chapter-courses"
+              v-for="(chapter, keyChapter) in chapters"
+              :key="keyChapter"
+            >
               <div class="chapter-title">
-                <h3>Chapter {{ c }}</h3>
+                <h3>Chapter {{ keyChapter }}</h3>
               </div>
               <div class="chapter-list">
-                <div class="chapter-item" v-for="n in 3" :key="n">
-                  <div class="chapter-number">{{ n }}</div>
+                <div
+                  class="chapter-item"
+                  v-for="(lesson, keyLesson) in chapter"
+                  :key="keyLesson"
+                >
+                  <div class="chapter-number">{{ keyLesson }}</div>
                   <div class="chapter-img">
-                    <img
-                      src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-                      alt=""
-                    />
+                    <img :src="lesson?.thumbnailImg" alt="" />
                   </div>
                   <div class="chapter-video">
-                    <video controls>
-                      <source
-                        src="../videos/video-1645947165.mp4"
-                        type="video/mp4"
-                      />
+                    <video
+                      class="video-lesson"
+                      ref="videoLessonElement"
+                      controls
+                    >
+                      <source :src="lesson?.thumbnailVideo" type="video/mp4" />
                     </video>
                   </div>
                   <div class="chapter-text">
-                    <h4 class="multiline-ellipsis-1">Lorem ilsum uilo tileo</h4>
+                    <h4 class="multiline-ellipsis-1">{{ lesson?.title }}</h4>
                     <p class="multiline-ellipsis-1">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Id cupiditate, in, dicta dolore reiciendis quam expedita,
-                      obcaecati aut consequuntur eos eveniet! Magni fuga est
-                      libero aut velit, non iste praesentium.
+                      {{ lesson?.desc }}
                     </p>
                   </div>
                   <div class="chapter-btn">
-                    <button type="button">Edit</button>
+                    <i
+                      @click="onOpenEditLesson(keyLesson, keyChapter)"
+                      class="fa-solid fa-hammer"
+                    ></i>
+                    <i
+                      @click="onOpenDeleteLesson(keyLesson, keyChapter)"
+                      class="fa-solid fa-trash"
+                    ></i>
                   </div>
                 </div>
               </div>
               <div class="btn-add">
-                <button type="button" @click="onOpenAddLesson">+</button>
+                <button type="button" @click="onOpenAddLesson(keyChapter)">
+                  +
+                </button>
               </div>
             </div>
           </div>
@@ -144,7 +162,16 @@
           <button @click="onSend" type="button">Send it!</button>
         </div>
       </form>
-      <AddChapterLesson v-if="isToggleForm" @on-cancel="onCancelAddLesson" />
+      <AddChapterLesson
+        @on-complete="onAddLesson"
+        v-if="isToggleForm"
+        @on-cancel="onCancelAddLesson"
+      />
+      <EditChapterLesson
+        @on-change="onEditLesson"
+        v-if="isToggleEditForm"
+        @on-cancel="onCancelEditLesson"
+      />
     </div>
   </section>
 </template>
@@ -152,6 +179,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import AddChapterLesson from "../components/CreateCourseChildSections/AddChapterLesson.vue";
+import EditChapterLesson from "../components/CreateCourseChildSections/EditChapterLesson.vue";
 import {
   useAddImgStorage,
   useAddVideoStorage,
@@ -160,10 +188,57 @@ const isToggleForm = ref(false);
 const onCancelAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
 };
-const onOpenAddLesson = () => {
+const isToggleEditForm = ref(false);
+const onCancelEditLesson = () => {
+  isToggleEditForm.value = !isToggleEditForm.value;
+};
+
+const amountChapter = ref(0);
+const chapters = ref<any>([]);
+const onCreateChapters = () => {
+  chapters.value = [];
+  for (let i = 0; i < amountChapter.value; i++) {
+    chapters.value.push([]);
+  }
+};
+const chapterNumber = ref(0);
+const onOpenAddLesson = (chapterNumberVal: number) => {
+  isToggleForm.value = !isToggleForm.value;
+  chapterNumber.value = chapterNumberVal;
+};
+const onAddLesson = (lessonDetails: any) => {
+  chapters.value[chapterNumber.value].push(lessonDetails);
+  console.log(lessonDetails);
+
   isToggleForm.value = !isToggleForm.value;
 };
-const amountChapter = ref(0);
+const editChapterNumber = ref<number>(0);
+const editLessonNumber = ref<number>(0);
+const onOpenEditLesson = (
+  lessonNumberVal: number,
+  chapterNumberVal: number
+) => {
+  isToggleEditForm.value = !isToggleEditForm.value;
+  editChapterNumber.value = chapterNumberVal;
+  editLessonNumber.value = lessonNumberVal;
+  console.log("EDIT: " + lessonNumberVal + chapterNumberVal);
+};
+
+const onOpenDeleteLesson = (
+  lessonNumberVal: number,
+  chapterNumberVal: number
+) => {
+  console.log("DELETE: " + lessonNumberVal + chapterNumberVal);
+};
+const videoLessonElement = ref<any>();
+const onEditLesson = (lessonDetails: any) => {
+  for (let i = 0; i < videoLessonElement.value.length; i++) {
+    videoLessonElement.value[i].load();
+  }
+  chapters.value[editChapterNumber.value][editLessonNumber.value] =
+    lessonDetails;
+  isToggleEditForm.value = !isToggleEditForm.value;
+};
 const videoName = ref("");
 const videoPath = ref("");
 const videoUrlReader: any = ref("");
@@ -447,6 +522,7 @@ const onSend = async () => {
                   width: 100%;
                   height: 100%;
                   border-radius: 3px;
+                  object-fit: cover;
                 }
               }
               .chapter-video {
@@ -463,6 +539,7 @@ const onSend = async () => {
               }
               .chapter-text {
                 padding: 0 1rem;
+                min-width: 60%;
                 h4 {
                   margin-left: 0.2rem;
                   letter-spacing: 0.5px;
@@ -475,15 +552,34 @@ const onSend = async () => {
               }
               .chapter-btn {
                 margin-right: 0.5rem;
-                button {
-                  border-left: 1px solid;
-                  width: 80px;
+                display: flex;
+                align-items: center;
+                opacity: 0.3;
+                i {
+                  font-size: 1.2rem;
+                  padding: 0 0.3rem;
+                  opacity: 0.3;
+                }
+                i:hover {
+                  opacity: 1;
+                }
+                i:first-child {
+                  transform: scaleX(-1);
+                }
+                i:first-child:hover {
+                  color: var(--primary-color);
+                }
+                i:last-child:hover {
+                  color: red;
                 }
               }
             }
             .chapter-item:hover {
               box-shadow: 1px 1px 3px 0px var(--border-color);
               cursor: pointer;
+              .chapter-btn {
+                opacity: 1;
+              }
             }
           }
           .btn-add {
