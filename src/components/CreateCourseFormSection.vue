@@ -187,8 +187,8 @@ import AddChapterLesson from "../components/CreateCourseChildSections/AddChapter
 import EditChapterLesson from "../components/CreateCourseChildSections/EditChapterLesson.vue";
 import DeleteChapterLesson from "../components/CreateCourseChildSections/DeleteChapterLesson.vue";
 import {
-  useAddImgStorage,
-  useAddVideoStorage,
+  useUploadImgStorage,
+  useUploadVideoStorage,
 } from "../composable/useFirebaseStorage";
 
 // CREATE CHAPTERS
@@ -342,9 +342,36 @@ const onSend = async () => {
     filePath: videoPath.value,
     fileName: videoName.value,
   });
+  // UPLOAD IMAGE/VIDEO OF COURSE THUMBNAIL
   const idUser: any = localStorage.getItem("idUser");
-  await useAddImgStorage(mediaImgLink.value, idUser);
-  await useAddVideoStorage(mediaVideoLink.value, idUser);
+  const imgUrlCourse = await useUploadImgStorage(mediaImgLink.value, idUser);
+  const videoUrlCourse = await useUploadVideoStorage(
+    mediaVideoLink.value,
+    idUser
+  );
+  console.log(imgUrlCourse, "IMAGE COURSE URL");
+  console.log(videoUrlCourse, "VIDEO COURSE URL");
+  // UPLOAD ALL IMAGES/VIDEOS OF THE LESSONS
+  for (let i = 0; i < chapters.value.length; i++) {
+    for (let j = 0; j < chapters.value[i].length; j++) {
+      const imgUrl = await useUploadImgStorage(
+        {
+          fileName: chapters.value[i][j].imageName,
+          filePath: chapters.value[i][j].imagePath,
+        },
+        idUser
+      );
+      const videoUrl = await useUploadVideoStorage(
+        {
+          fileName: chapters.value[i][j].videoName,
+          filePath: chapters.value[i][j].videoPath,
+        },
+        idUser
+      );
+      console.log(imgUrl, "IMAGE URL");
+      console.log(videoUrl, "VIDEO URL");
+    }
+  }
 };
 </script>
 
@@ -635,8 +662,9 @@ const onSend = async () => {
           }
           .btn-add {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin: 1.5rem 0;
             button {
+              margin-top: 0 !important;
               border: 0;
               font-size: 1.5rem !important;
               font-weight: 300;
