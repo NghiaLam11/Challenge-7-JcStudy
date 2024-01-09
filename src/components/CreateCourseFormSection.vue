@@ -172,6 +172,11 @@
         v-if="isToggleEditForm"
         @on-cancel="onCancelEditLesson"
       />
+      <DeleteChapterLesson
+        @on-delete="onDeleteLesson"
+        v-if="isToggleDeleteForm"
+        @on-cancel="onCancelDeleteLesson"
+      />
     </div>
   </section>
 </template>
@@ -180,71 +185,112 @@
 import { ref } from "vue";
 import AddChapterLesson from "../components/CreateCourseChildSections/AddChapterLesson.vue";
 import EditChapterLesson from "../components/CreateCourseChildSections/EditChapterLesson.vue";
+import DeleteChapterLesson from "../components/CreateCourseChildSections/DeleteChapterLesson.vue";
 import {
   useAddImgStorage,
   useAddVideoStorage,
 } from "../composable/useFirebaseStorage";
+
+// CREATE CHAPTERS
+const amountChapter = ref(0);
+const chapters = ref<any>([]);
+const onCreateChapters = () => {
+  chapters.value = []; // RESET CHAPTERS = EMPTY
+
+  for (let i = 0; i < amountChapter.value; i++) {
+    chapters.value.push([]);
+  } // AFTER RESET => CREATE .../NUMBERS/... CHAPTERS BY amountChapter
+};
+// TOGGLE HIDE/DISPLAY CREATE LESSON FORM
 const isToggleForm = ref(false);
 const onCancelAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
 };
+// OPEN CREATE LESSON FORM
+const chapterNumber = ref(0);
+const onOpenAddLesson = (chapterNumberVal: number) => {
+  isToggleForm.value = !isToggleForm.value;
+  chapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER WHEN USER OPEN CREATE FORM
+};
+// ADD NEW LESSSON
+const onAddLesson = (lessonDetails: any) => {
+  chapters.value[chapterNumber.value].push(lessonDetails); // ADD LESSON TO THE CHAPTER(GOT A KEY ABOVE)
+  isToggleForm.value = !isToggleForm.value;
+};
+// TOGGLE HIDE/DISPLAY EDIT FORM
 const isToggleEditForm = ref(false);
 const onCancelEditLesson = () => {
   isToggleEditForm.value = !isToggleEditForm.value;
 };
 
-const amountChapter = ref(0);
-const chapters = ref<any>([]);
-const onCreateChapters = () => {
-  chapters.value = [];
-  for (let i = 0; i < amountChapter.value; i++) {
-    chapters.value.push([]);
-  }
-};
-const chapterNumber = ref(0);
-const onOpenAddLesson = (chapterNumberVal: number) => {
-  isToggleForm.value = !isToggleForm.value;
-  chapterNumber.value = chapterNumberVal;
-};
-const onAddLesson = (lessonDetails: any) => {
-  chapters.value[chapterNumber.value].push(lessonDetails);
-  console.log(lessonDetails);
-
-  isToggleForm.value = !isToggleForm.value;
-};
+// OPEN EDIT FORM
+// Position of the chapter user want to edit data
 const editChapterNumber = ref<number>(0);
+// Position of the lesson user want to edit data
 const editLessonNumber = ref<number>(0);
 const onOpenEditLesson = (
   lessonNumberVal: number,
   chapterNumberVal: number
 ) => {
   isToggleEditForm.value = !isToggleEditForm.value;
-  editChapterNumber.value = chapterNumberVal;
-  editLessonNumber.value = lessonNumberVal;
+  editChapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER
+  editLessonNumber.value = lessonNumberVal; // GET A KEY OF THE LESSON
   console.log("EDIT: " + lessonNumberVal + chapterNumberVal);
 };
-
+// OPEN EDIT's DELETE FORM
+// Position of the chapter user want to delete data
+const deleteChapterNumber = ref<number>(0);
+// Position of the lesson user want to delete data
+const deleteLessonNumber = ref<number>(0);
 const onOpenDeleteLesson = (
   lessonNumberVal: number,
   chapterNumberVal: number
 ) => {
+  deleteChapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER
+  deleteLessonNumber.value = lessonNumberVal; // GET A KEY OF THE LESSON
   console.log("DELETE: " + lessonNumberVal + chapterNumberVal);
+  isToggleDeleteForm.value = !isToggleDeleteForm.value;
 };
+
+// DELETE LESSON
+const onDeleteLesson = () => {
+  let index = chapters.value[deleteChapterNumber.value].indexOf(
+    chapters.value[deleteChapterNumber.value][deleteLessonNumber.value]
+  ); // GET INDEX OF THE LESSON
+  const itemSpliced = chapters.value[deleteChapterNumber.value].splice(
+    index,
+    1
+  ); // FROM THE POSITON SPLICE ONE ITEM
+  console.log(itemSpliced);
+  isToggleDeleteForm.value = !isToggleDeleteForm.value;
+};
+
+// TOGGLE HIDE/DISPLAY DELETE FORM
+const isToggleDeleteForm = ref(false);
+const onCancelDeleteLesson = () => {
+  isToggleDeleteForm.value = !isToggleDeleteForm.value;
+};
+
+// EDIT LESSON
 const videoLessonElement = ref<any>();
 const onEditLesson = (lessonDetails: any) => {
+  // RELOAD SRC OF VIDEOS WHEN CHANGED URL
   for (let i = 0; i < videoLessonElement.value.length; i++) {
     videoLessonElement.value[i].load();
   }
+  // REPLACE OLD LESSON BY NEW LESSON
   chapters.value[editChapterNumber.value][editLessonNumber.value] =
     lessonDetails;
   isToggleEditForm.value = !isToggleEditForm.value;
 };
+
+// INPUT FILE FOR SELECT VIDEO
 const videoName = ref("");
 const videoPath = ref("");
 const videoUrlReader: any = ref("");
 const fileVideoElement = ref();
 const videoElement = ref();
-
+// GET A VIDEO BY ONCHANGE
 const onVideo = () => {
   let file = fileVideoElement.value.files[0];
   let reader = new FileReader();
@@ -253,13 +299,14 @@ const onVideo = () => {
     reader.readAsDataURL(file);
   }
   reader.onload = function () {
+    // GET A LINK OF VIDEO TO DISPLAY ON THE SCREEN
     videoUrlReader.value = reader.result;
   };
 
-  videoName.value = file.name;
-  videoPath.value = file;
+  videoName.value = file.name; // GET A NAME OF THE FILE
+  videoPath.value = file; // GET A PATH OF THE FILE
 };
-
+// INPUT FOR SELECT IMG FILE
 const imageName = ref("");
 const imagePath = ref("");
 const imageUrlReader: any = ref("");
@@ -268,19 +315,23 @@ const onImage = () => {
   let file = fileImgElement.value.files[0];
   let reader = new FileReader();
   reader.onload = function () {
+    // GET A LINK OF VIDEO TO DISPLAY ON THE SCREEN
     imageUrlReader.value = reader.result;
   };
+
   if (file) {
     reader.readAsDataURL(file);
   }
-  imageName.value = file.name;
-  imagePath.value = file;
+  imageName.value = file.name; // GET A NAME OF THE FILE
+  imagePath.value = file; // GET A PATH OF THE FILE
 };
+// OTHER INFORMATIONS OF THE COURSE
 const tags = ref("");
 const title = ref("");
 const desc = ref("");
 const price = ref(0);
 const industry = ref("Industry");
+// SEND TO THE MODERATION
 const onSend = async () => {
   console.log("SENDED");
   const mediaImgLink = ref({
