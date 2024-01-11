@@ -26,7 +26,7 @@ export interface Quiz {
   questions: QuizQuestion[];
 }
 
-export interface CourseChapter {
+export interface Lesson {
   title: string;
   desc: string;
   thumbnailImg: string;
@@ -43,7 +43,7 @@ export interface Chapter {
   desc: string;
   thumbnailImg: string;
   thumbnailVideo: string;
-  courses: CourseChapter[];
+  courses: Lesson[];
 }
 
 export interface Course {
@@ -56,7 +56,7 @@ export interface Course {
   price: number;
   comments: Comment[];
   quiz: Quiz;
-  chapters: Chapter[];
+  chapters: Lesson[];
   id: string;
   idUser: string;
   isApproved: boolean;

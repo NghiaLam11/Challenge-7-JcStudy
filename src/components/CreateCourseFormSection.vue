@@ -108,7 +108,6 @@
             <div
               class="chapter-courses"
               v-for="(chapter, keyChapter) in chapters"
-              :key="keyChapter"
             >
               <div class="chapter-title">
                 <h3>Chapter {{ keyChapter }}</h3>
@@ -190,16 +189,19 @@ import {
   useUploadImgStorage,
   useUploadVideoStorage,
 } from "../composable/useFirebaseStorage";
+import { useAddCourseStore } from "../composable/useFirebaseStore";
 
 // CREATE CHAPTERS
 const amountChapter = ref(0);
-const chapters = ref<any>([]);
+const chapters = ref<any>({});
+
 const onCreateChapters = () => {
-  chapters.value = []; // RESET CHAPTERS = EMPTY
+  chapters.value = {}; // RESET CHAPTERS = EMPTY
 
   for (let i = 0; i < amountChapter.value; i++) {
-    chapters.value.push([]);
+    chapters.value[i] = [];
   } // AFTER RESET => CREATE .../NUMBERS/... CHAPTERS BY amountChapter
+  console.log(chapters.value);
 };
 // TOGGLE HIDE/DISPLAY CREATE LESSON FORM
 const isToggleForm = ref(false);
@@ -207,15 +209,17 @@ const onCancelAddLesson = () => {
   isToggleForm.value = !isToggleForm.value;
 };
 // OPEN CREATE LESSON FORM
-const chapterNumber = ref(0);
-const onOpenAddLesson = (chapterNumberVal: number) => {
+const chapterKey = ref(0);
+const onOpenAddLesson = (chapterKeyVal: number) => {
   isToggleForm.value = !isToggleForm.value;
-  chapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER WHEN USER OPEN CREATE FORM
+  console.log(chapterKeyVal);
+  chapterKey.value = Number(chapterKeyVal); // GET A KEY OF THE CHAPTER WHEN USER OPEN CREATE FORM
 };
 // ADD NEW LESSSON
 const onAddLesson = (lessonDetails: any) => {
-  chapters.value[chapterNumber.value].push(lessonDetails); // ADD LESSON TO THE CHAPTER(GOT A KEY ABOVE)
+  chapters.value[chapterKey.value].push(lessonDetails); // ADD LESSON TO THE CHAPTER(GOT A KEY ABOVE)
   isToggleForm.value = !isToggleForm.value;
+  console.log(chapters.value);
 };
 // TOGGLE HIDE/DISPLAY EDIT FORM
 const isToggleEditForm = ref(false);
@@ -233,10 +237,23 @@ const onOpenEditLesson = (
   chapterNumberVal: number
 ) => {
   isToggleEditForm.value = !isToggleEditForm.value;
-  editChapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER
+  editChapterNumber.value = Number(chapterNumberVal); // GET A KEY OF THE CHAPTER
   editLessonNumber.value = lessonNumberVal; // GET A KEY OF THE LESSON
   console.log("EDIT: " + lessonNumberVal + chapterNumberVal);
 };
+// EDIT LESSON
+const videoLessonElement = ref<any>();
+const onEditLesson = (lessonDetails: any) => {
+  // RELOAD SRC OF VIDEOS WHEN CHANGED URL
+  for (let i = 0; i < videoLessonElement.value.length; i++) {
+    videoLessonElement.value[i].load();
+  }
+  // REPLACE OLD LESSON BY NEW LESSON
+  chapters.value[editChapterNumber.value][editLessonNumber.value] =
+    lessonDetails;
+  isToggleEditForm.value = !isToggleEditForm.value;
+};
+
 // OPEN EDIT's DELETE FORM
 // Position of the chapter user want to delete data
 const deleteChapterNumber = ref<number>(0);
@@ -246,7 +263,7 @@ const onOpenDeleteLesson = (
   lessonNumberVal: number,
   chapterNumberVal: number
 ) => {
-  deleteChapterNumber.value = chapterNumberVal; // GET A KEY OF THE CHAPTER
+  deleteChapterNumber.value = Number(chapterNumberVal); // GET A KEY OF THE CHAPTER
   deleteLessonNumber.value = lessonNumberVal; // GET A KEY OF THE LESSON
   console.log("DELETE: " + lessonNumberVal + chapterNumberVal);
   isToggleDeleteForm.value = !isToggleDeleteForm.value;
@@ -269,19 +286,6 @@ const onDeleteLesson = () => {
 const isToggleDeleteForm = ref(false);
 const onCancelDeleteLesson = () => {
   isToggleDeleteForm.value = !isToggleDeleteForm.value;
-};
-
-// EDIT LESSON
-const videoLessonElement = ref<any>();
-const onEditLesson = (lessonDetails: any) => {
-  // RELOAD SRC OF VIDEOS WHEN CHANGED URL
-  for (let i = 0; i < videoLessonElement.value.length; i++) {
-    videoLessonElement.value[i].load();
-  }
-  // REPLACE OLD LESSON BY NEW LESSON
-  chapters.value[editChapterNumber.value][editLessonNumber.value] =
-    lessonDetails;
-  isToggleEditForm.value = !isToggleEditForm.value;
 };
 
 // INPUT FILE FOR SELECT VIDEO
@@ -352,26 +356,44 @@ const onSend = async () => {
   console.log(imgUrlCourse, "IMAGE COURSE URL");
   console.log(videoUrlCourse, "VIDEO COURSE URL");
   // UPLOAD ALL IMAGES/VIDEOS OF THE LESSONS
-  for (let i = 0; i < chapters.value.length; i++) {
+  for (const i in chapters.value) {
     for (let j = 0; j < chapters.value[i].length; j++) {
       const imgUrl = await useUploadImgStorage(
         {
           fileName: chapters.value[i][j].imageName,
-          filePath: chapters.value[i][j].imagePath,
+          filePath: JSON.parse(chapters.value[i][j].imagePath),
         },
         idUser
       );
       const videoUrl = await useUploadVideoStorage(
         {
           fileName: chapters.value[i][j].videoName,
-          filePath: chapters.value[i][j].videoPath,
+          filePath: JSON.parse(chapters.value[i][j].videoPath),
         },
         idUser
       );
+      delete chapters.value[i][j].thumbnailImg;
+      delete chapters.value[i][j].thumbnailVideo;
+      delete chapters.value[i][j].imagePath;
+      delete chapters.value[i][j].videoPath;
       console.log(imgUrl, "IMAGE URL");
       console.log(videoUrl, "VIDEO URL");
     }
   }
+  console.log(chapters.value, "ENDING");
+  const data = ref({
+    title: title.value,
+    desc: desc.value,
+    tags: tags.value,
+    industry: industry.value,
+    thumbnailImg: imgUrlCourse,
+    thumbnailVideo: videoUrlCourse,
+    price: price.value,
+    idUser: idUser,
+    chapters: chapters.value,
+    isApproved: false,
+  });
+  await useAddCourseStore(data.value);
 };
 </script>
 

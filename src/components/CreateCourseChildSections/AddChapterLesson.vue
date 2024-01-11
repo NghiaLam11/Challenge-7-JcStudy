@@ -49,7 +49,12 @@
         </div>
         <div class="form-group">
           <input v-model="title" type="text" placeholder="Title..." />
-          <textarea v-model="desc" placeholder="Description..." cols="30" rows="5"></textarea>
+          <textarea
+            v-model="desc"
+            placeholder="Description..."
+            cols="30"
+            rows="5"
+          ></textarea>
         </div>
         <div class="form-btn">
           <button @click="onComplete" type="button">Complete</button>
@@ -109,9 +114,9 @@ const onComplete = () => {
     thumbnailImg: imageUrlReader.value,
     thumbnailVideo: videoUrlReader.value,
     imageName: imageName.value,
-    imagePath: imagePath.value,
+    imagePath: JSON.stringify(imagePath.value),
     videoName: videoName.value,
-    videoPath: videoPath.value,
+    videoPath: JSON.stringify(videoPath.value),
   });
   emit("onComplete", lessonDetails.value);
 };

@@ -65,7 +65,7 @@ export const useUpdateUserStore = async (updateUser: any) => {
   }
 };
 
-export const useAddCourseStore = async (course: Course) => {
+export const useAddCourseStore = async (course: any) => {
   try {
     const docRef = await addDoc(collection(db, "courses"), course);
     console.log("Document written with ID: ", docRef.id);
