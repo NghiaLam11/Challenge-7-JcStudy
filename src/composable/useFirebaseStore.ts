@@ -10,6 +10,7 @@ import { db } from "../firebase";
 import { Course, User } from "../types/types";
 import { useLoaderStore } from "./useLoader";
 import { useUserStore } from "./useUser";
+import { useCoursesStore } from "./useCourses";
 import { ref } from "vue";
 import { autoUpdateStudyTime } from "./autoUpdateStudyTimeInChart";
 
@@ -24,14 +25,12 @@ export const useGetUserStore = async () => {
     const idUser = localStorage.getItem("idUser");
     // const date = new Date();
     querySnapshot.forEach((doc) => {
-      console.log({ id: doc.id, ...doc.data() });
       users.value.push({ id: doc.id, ...doc.data() });
       if (idUser === doc.id) {
         userStore.user = { id: doc.id, ...doc.data() };
         userStore.studyTime = doc.data().studyTime;
       }
     });
-    console.log(userStore.user.id, idUser, "IDDD");
     autoUpdateStudyTime();
     loaderStore.onToggleLoading();
   } catch (error) {
@@ -69,6 +68,30 @@ export const useAddCourseStore = async (course: any) => {
   try {
     const docRef = await addDoc(collection(db, "courses"), course);
     console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useGetCoursesStore = async () => {
+  try {
+    const coursesStore = useCoursesStore();
+    const querySnapshot = await getDocs(collection(db, "courses"));
+    const courses = ref<any>([]);
+    const unApprovedCourses = ref<any>([]);
+    querySnapshot.forEach((doc) => {
+      console.log({ id: doc.id, ...doc.data() });
+      courses.value.push({ id: doc.id, ...doc.data() });
+      if (doc.data().isApproved === false) {
+        unApprovedCourses.value.push({ id: doc.id, ...doc.data() });
+        console.log(doc.data(), "APPROVED = FALSE");
+      }
+    });
+
+    coursesStore.courses = courses.value;
+    coursesStore.unApprovedCourses = unApprovedCourses.value;
+
+    console.log(courses.value, "COURSES");
   } catch (error) {
     console.log(error);
   }

@@ -32,9 +32,11 @@ import { useRoute, useRouter } from "vue-router";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import {
-  useGetUserStore
+  useGetCoursesStore,
+  useGetUserStore,
 } from "./composable/useFirebaseStore";
 // import { useUserStore } from "./composable/useUser";
+useGetCoursesStore();
 useGetUserStore();
 const route = useRoute();
 const errorStore = useErrorStore();

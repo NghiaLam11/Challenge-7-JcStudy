@@ -42,16 +42,17 @@ export const useUploadVideoStorage = async (
   }
 };
 
-export const getImageUrlStorage = async (fullPath: string) => {
+export const useGetImageUrlStorage = async (fullPath: string) => {
   try {
     const imgUrl = await getDownloadURL(ref(storage, fullPath));
-    console.log(imgUrl);
+    return imgUrl;
+    // console.log(imgUrl);
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getVideoUrlStorage = async (fullPath: string) => {
+export const useGetVideoUrlStorage = async (fullPath: string) => {
   try {
     const videoUrl = await getDownloadURL(ref(storage, fullPath));
     console.log(videoUrl);

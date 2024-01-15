@@ -333,7 +333,7 @@ const onImage = () => {
 const tags = ref("");
 const title = ref("");
 const desc = ref("");
-const price = ref(0);
+const price = ref();
 const industry = ref("Industry");
 // SEND TO THE MODERATION
 const onSend = async () => {
@@ -386,10 +386,11 @@ const onSend = async () => {
     desc: desc.value,
     tags: tags.value,
     industry: industry.value,
-    thumbnailImg: imgUrlCourse,
-    thumbnailVideo: videoUrlCourse,
-    price: price.value,
+    thumbnailImg: imageName.value,
+    thumbnailVideo: videoName.value,
+    price: 0,
     idUser: idUser,
+    quiz: [],
     chapters: chapters.value,
     isApproved: false,
   });
