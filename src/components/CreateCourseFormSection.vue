@@ -12,6 +12,7 @@
                 ref="fileImgElement"
                 id="file"
                 class="inputfile"
+                required
               />
               <label for="file"
                 ><i class="fas fa-image"></i>
@@ -31,6 +32,7 @@
                 ref="fileVideoElement"
                 id="file-video"
                 class="inputfile"
+                required
               />
               <label for="file-video"
                 ><i class="fas fa-play-circle"></i>
@@ -46,12 +48,13 @@
           </div>
         </div>
         <div class="form-group">
-          <input v-model="title" type="text" placeholder="Title..." />
+          <input v-model="title" type="text" placeholder="Title..." required/>
           <textarea
             v-model="desc"
             placeholder="Description..."
             cols="30"
             rows="5"
+            required
           ></textarea>
         </div>
         <div class="form-group">
@@ -73,7 +76,7 @@
             </select>
           </div>
           <div class="tags">
-            <input v-model="tags" type="text" placeholder="Tags..." />
+            <input v-model="tags" type="text" placeholder="Tags..." required/>
           </div>
           <div class="price">
             <input
@@ -93,6 +96,7 @@
                   v-model="amountChapter"
                   placeholder="0"
                   type="number"
+                  required
                 /><span>chapters</span>
               </div>
               <div class="amount-right">
@@ -190,6 +194,8 @@ import {
   useUploadVideoStorage,
 } from "../composable/useFirebaseStorage";
 import { useAddCourseStore } from "../composable/useFirebaseStore";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 // CREATE CHAPTERS
 const amountChapter = ref(0);
@@ -395,6 +401,7 @@ const onSend = async () => {
     isApproved: false,
   });
   await useAddCourseStore(data.value);
+  router.push("/");
 };
 </script>
 

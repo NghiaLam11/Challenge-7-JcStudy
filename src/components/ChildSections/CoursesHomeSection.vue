@@ -8,23 +8,19 @@
       :snap-align="'start'"
       :breakpoints="breakpoints"
     >
-      <Slide v-for="slide in 10" :key="slide">
+      <Slide v-for="course in coursesStore.courses" :key="course">
         <div class="card-item">
           <div class="thumbnail">
-            <img
-              src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-              alt=""
-            />
+            <img :src="mediaLinks[course.thumbnailImg]" alt="" />
           </div>
           <div class="card-right bg-primary">
-            <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+            <h3 class="multiline-ellipsis-1">{{ course.title }}</h3>
             <p class="multiline-ellipsis-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
+              {{ course.desc }}
             </p>
-            <button @click="onToggleUnlock">Unlock (Free)</button>
+            <button @click="onToggleUnlock">
+              {{ course.price === 0 ? "Unlock (Free)" : course.price }}
+            </button>
           </div>
         </div>
       </Slide>
@@ -40,13 +36,17 @@
 
 <script lang="ts" setup>
 import UnlockForm from "./UnlockForm.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { useCoursesStore } from "../../composable/useCourses";
+import { useGetImageUrlStorage } from "../../composable/useFirebaseStorage";
+
 // Play sound when btn is clicked
 const soundStore = useSound();
+const coursesStore = useCoursesStore();
 const isToggleUnlock = ref(false);
 const onToggleUnlock = () => {
   isToggleUnlock.value = !isToggleUnlock.value;
@@ -66,6 +66,29 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
+// {Key is the name of the img, the value is the link to firebase storage.
+// Set key = img name to use the name (v-for) at SRC to get the link}
+const mediaLinks = ref<any>({});
+// A FUNC TO GET THUMBNAIL LINKS OF ALL COURSES EXIST-ING
+const useStoreLinks = () => {
+  coursesStore.courses.forEach(async (course: any) => {
+    const imgUrl = await useGetImageUrlStorage(
+      `images-${course.idUser}/${course.thumbnailImg}`
+    );
+    // SET A MAP OF URL
+    mediaLinks.value[course.thumbnailImg] = imgUrl;
+  });
+};
+// WHEN USER RELOAD AT OTHER PAGE AND CHANGE TO THIS PAGE => RUN BELOW
+useStoreLinks();
+// WHEN COURSES HAD FETCH-ED FROM DATABASE => RUN BELOW
+watch(
+  () => coursesStore.courses,
+  () => {
+    // GET URL OF IMG ALL COURSES
+    useStoreLinks();
+  }
+);
 </script>
 
 <style lang="scss">
@@ -78,6 +101,7 @@ const breakpoints = ref({
   .card-item {
     display: flex;
     cursor: pointer;
+    width: 100%;
     .thumbnail {
       width: 50%;
       height: 100%;
@@ -87,7 +111,7 @@ const breakpoints = ref({
       img {
         object-fit: cover;
         width: 100%;
-        min-height: 180px;
+        max-height: 180px;
         height: 100%;
         border-radius: 5px;
       }
@@ -114,7 +138,7 @@ const breakpoints = ref({
     }
   }
   .card-item:hover .card-right {
-    transform: translateX(-50%);
+    transform: translateX(-2rem);
     padding-left: 1rem;
     border-radius: 5px;
   }

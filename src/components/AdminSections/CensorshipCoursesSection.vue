@@ -19,12 +19,15 @@
                     <img :src="mediaLinks[course.thumbnailImg]" alt="" />
                   </div>
                   <div class="card-right bg-primary">
-                    <h3 class="multiline-ellipsis-1">
-                      {{ course.title }}
-                    </h3>
-                    <p class="multiline-ellipsis-4">
-                      {{ course.desc }}
-                    </p>
+                    <div>
+                      <h3 class="multiline-ellipsis-1">
+                        {{ course.title }}
+                      </h3>
+                      <p class="multiline-ellipsis-4">
+                        {{ course.desc }}
+                      </p>
+                    </div>
+
                     <button>More details...</button>
                   </div>
                 </div>
@@ -72,7 +75,6 @@ coursesStore.unApprovedCourses.forEach(async (course: any) => {
   );
   // SET A MAP OF URL
   mediaLinks.value[course.thumbnailImg] = imgUrl;
-  console.log(mediaLinks.value, "mediaLinks");
 });
 </script>
 <style lang="scss" scoped>
@@ -134,8 +136,10 @@ coursesStore.unApprovedCourses.forEach(async (course: any) => {
       .card-item {
         display: flex;
         cursor: pointer;
+        width: 100%;
+        height: 100%;
         .thumbnail {
-          width: 50%;
+          width: 40%;
           height: 100%;
           padding: 0.5rem;
           transition: all 0.35s ease;
@@ -143,13 +147,16 @@ coursesStore.unApprovedCourses.forEach(async (course: any) => {
           img {
             object-fit: cover;
             width: 100%;
-            min-height: 180px;
+            max-height: 200px;
             height: 100%;
             border-radius: 5px;
           }
         }
         .card-right {
-          width: 50%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          width: 60%;
           text-align: start;
           transition: all 0.35s ease;
           padding: 1rem;
@@ -164,10 +171,8 @@ coursesStore.unApprovedCourses.forEach(async (course: any) => {
             line-height: 1.2rem;
             opacity: 0.7;
           }
-          .checking {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: var(--primary-color);
+          button {
+            width: 150px;
           }
         }
       }

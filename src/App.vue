@@ -31,17 +31,15 @@ import { useErrorStore } from "./composable/useError";
 import { useRoute, useRouter } from "vue-router";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  useGetCoursesStore,
-  useGetUserStore,
-} from "./composable/useFirebaseStore";
+import { useGetUserStore } from "./composable/useFirebaseStore";
 // import { useUserStore } from "./composable/useUser";
-useGetCoursesStore();
+const loaderStore = useLoaderStore();
+loaderStore.onToggleLoading();
 useGetUserStore();
 const route = useRoute();
 const errorStore = useErrorStore();
 // const userStore = useUserStore();
-const loaderStore = useLoaderStore();
+
 const uploaderStore = useUploaderStore();
 const isSpecialPage = ref(false);
 const effectStore = useEffectChangeRoute();

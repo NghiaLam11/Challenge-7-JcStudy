@@ -17,9 +17,8 @@ import { autoUpdateStudyTime } from "./autoUpdateStudyTimeInChart";
 export const useGetUserStore = async () => {
   try {
     const loaderStore = useLoaderStore();
-    loaderStore.onToggleLoading();
     const userStore = useUserStore();
-
+    await useGetCoursesStore();
     const querySnapshot = await getDocs(collection(db, "users"));
     const users = ref<any>([]);
     const idUser = localStorage.getItem("idUser");
@@ -78,11 +77,13 @@ export const useGetCoursesStore = async () => {
     const coursesStore = useCoursesStore();
     const querySnapshot = await getDocs(collection(db, "courses"));
     const courses = ref<any>([]);
+
     const unApprovedCourses = ref<any>([]);
     querySnapshot.forEach((doc) => {
       console.log({ id: doc.id, ...doc.data() });
-      courses.value.push({ id: doc.id, ...doc.data() });
-      if (doc.data().isApproved === false) {
+      if (doc.data().isApproved === true) {
+        courses.value.push({ id: doc.id, ...doc.data() });
+      } else if (doc.data().isApproved === false) {
         unApprovedCourses.value.push({ id: doc.id, ...doc.data() });
         console.log(doc.data(), "APPROVED = FALSE");
       }
@@ -90,8 +91,6 @@ export const useGetCoursesStore = async () => {
 
     coursesStore.courses = courses.value;
     coursesStore.unApprovedCourses = unApprovedCourses.value;
-
-    console.log(courses.value, "COURSES");
   } catch (error) {
     console.log(error);
   }

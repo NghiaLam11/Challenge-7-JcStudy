@@ -4,8 +4,10 @@ export const autoUpdateStudyTime = () => {
   const userStore = useUserStore();
   const date = new Date();
   let currentTime = 0;
+  const idUser: any = localStorage.getItem("idUser");
+  console.log(idUser);
   // DATA TimeArray IS DATA WHEN USER RELOAD OF LEAVE WILL BE SAVE HERE!
-  const timeArray: any = localStorage.getItem("currentTimeArray");
+  const timeArray: any = localStorage.getItem(`currentTimeArray-${idUser}`);
   // IF NEW DAY ,TIMEARRAY WILL RESET (timeArray === NULL) AND CHANGE TO NEW LIST
   let currentTimeArray =
     timeArray != null
@@ -35,7 +37,7 @@ export const autoUpdateStudyTime = () => {
       );
       console.log("MANY DAYS", countDaysBetweenTwoDays);
       const initialValue = 0;
-      const timeArray: any = localStorage.getItem("currentTimeArray");
+      const timeArray: any = localStorage.getItem(`currentTimeArray-${idUser}`);
       // SUM OF THE PAST STUDY TIME (SAVED IN LOCALSTORE)
       const sumTimeOfAllDay = JSON.parse(timeArray).timeList.reduce(
         (accumulator: any, currentValue: any) => accumulator + currentValue,
@@ -72,7 +74,7 @@ export const autoUpdateStudyTime = () => {
         // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
         userStore.studyTime.shift();
         userStore.studyTime.push(sumTimeOfAllDay);
-        console.log("countDaysBetweenTwoDays > 1", countDaysBetweenTwoDays);
+        console.log("countDaysBetweenTwoDays = 1", countDaysBetweenTwoDays);
         useUpdateUserStore({
           studyTime: userStore.studyTime,
           streak: userStore.user.streak + 1,
@@ -81,9 +83,9 @@ export const autoUpdateStudyTime = () => {
       console.log(userStore.studyTime, "USERSTORE");
       setTimeout(() => {
         // RESET LOCAL STORE WHEN CHANGE THE DAY (NEW DAY)
-        localStorage.removeItem("currentTimeArray");
+        localStorage.removeItem(`currentTimeArray-${idUser}`);
         localStorage.setItem(
-          "currentTimeArray",
+          `currentTimeArray-${idUser}`,
           JSON.stringify({
             timeDay: date.toLocaleDateString(),
             timeList: [],
@@ -110,7 +112,11 @@ export const autoUpdateStudyTime = () => {
       currentTimeArray.timeList.push(currentTime);
     }
     // localStorage.removeItem("currentTimeArray");
-    localStorage.setItem("currentTimeArray", JSON.stringify(currentTimeArray));
+    localStorage.setItem(
+      `currentTimeArray-${idUser}`,
+      JSON.stringify(currentTimeArray)
+    );
     currentTime = 0;
   });
+  console.log(JSON.parse(timeArray));
 };

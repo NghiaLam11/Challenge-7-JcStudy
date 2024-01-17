@@ -11,28 +11,27 @@ const userStore = useUserStore();
 // import { useRouter } from "vue-router";
 Chart.register(...registerables);
 const data = ref(userStore.studyTime);
-console.log(data.value);
 const date = new Date();
 const fiveDaysAgo = new Date(
   date.setDate(date.getDate() - 5)
 ).toLocaleDateString();
-console.log(fiveDaysAgo);
+// console.log(fiveDaysAgo);
 const fourDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
 ).toLocaleDateString();
-console.log(fourDaysAgo);
+// console.log(fourDaysAgo);
 const threeDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
 ).toLocaleDateString();
-console.log(threeDaysAgo);
+// console.log(threeDaysAgo);
 const twoDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
 ).toLocaleDateString();
-console.log(twoDaysAgo);
+// console.log(twoDaysAgo);
 const oneDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
 ).toLocaleDateString();
-console.log(oneDaysAgo);
+// console.log(oneDaysAgo);
 const chartData = computed(() => ({
   labels: [fiveDaysAgo, fourDaysAgo, threeDaysAgo, twoDaysAgo, oneDaysAgo],
   datasets: [

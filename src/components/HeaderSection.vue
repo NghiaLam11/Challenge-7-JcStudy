@@ -132,19 +132,14 @@ const isAnonymous = ref(false);
 onAuthStateChanged(auth, (user: any) => {
   if (user) {
     const uid = user.uid;
-    console.log(user, uid, "Changed auth");
     localStorage.setItem("idUser", uid);
     isAnonymous.value = user.isAnonymous;
-  } else {
-    console.log(user);
   }
 });
-console.log(userStore.user)
 
 const isToggleMode = ref(false);
 const htmlElements = document.querySelector("html");
 const onDarkMode = () => {
-  console.log("onDarkMode");
   isToggleMode.value = true;
   htmlElements?.classList.remove("light");
   htmlElements?.classList.add("dark");
@@ -158,7 +153,6 @@ const onDarkMode = () => {
   }
 };
 const onLightMode = () => {
-  console.log("onLightMode");
   isToggleMode.value = false;
   htmlElements?.classList.remove("dark");
   htmlElements?.classList.add("light");
