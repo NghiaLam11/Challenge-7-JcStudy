@@ -51,6 +51,8 @@ export interface Course {
   desc: string;
   thumbnailImg: string;
   thumbnailVideo: string;
+  imgUrl: string,
+  videoUrl: string,
   industry: string;
   tags: string;
   price: number;

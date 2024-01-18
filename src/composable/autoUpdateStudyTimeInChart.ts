@@ -111,12 +111,14 @@ export const autoUpdateStudyTime = () => {
     if (currentTime > 0) {
       currentTimeArray.timeList.push(currentTime);
     }
+    console.log("a");
     // localStorage.removeItem("currentTimeArray");
     localStorage.setItem(
       `currentTimeArray-${idUser}`,
       JSON.stringify(currentTimeArray)
     );
     currentTime = 0;
+    return;
   });
   console.log(JSON.parse(timeArray));
 };

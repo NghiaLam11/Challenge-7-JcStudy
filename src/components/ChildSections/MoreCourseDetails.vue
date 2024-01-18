@@ -1,0 +1,138 @@
+<template>
+  <div class="details-form">
+    <div class="container form-container">
+      <div class="blur"></div>
+      <div class="confirm-details">
+        <div class="details">
+          <div class="media">
+            <Carousel :items-to-show="1" :autoplay="60000">
+              <Slide v-for="slide in 2" :key="slide">
+                <img :src="props.course?.imgUrl" alt="" v-if="slide === 1" />
+                <video controls v-else>
+                  <source :src="props.course?.videoUrl" type="video/mp4" />
+                </video>
+              </Slide>
+
+              <template #addons>
+                <Navigation />
+              </template>
+            </Carousel>
+          </div>
+          <div class="overview-details">
+            <span
+              >&#129299; {{ props.course?.chapters.length }} chapters 25
+              lessons</span
+            >
+          </div>
+          <div class="text-details">
+            <h4 class="title">{{ props.course?.title }}</h4>
+            <p>
+              {{ props.course?.desc }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <button @click="onUnlock" class="btn-unlock" type="button">
+            Unlock
+          </button>
+          <button @click="onToggleDetails" type="button">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+// import { ref } from "vue";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Navigation } from "vue3-carousel";
+import { Course } from "../../types/types";
+
+const emit = defineEmits(["onToggleDetails"]);
+const props = defineProps<{
+  course?: Course;
+}>();
+const onUnlock = () => {
+  console.log(props.course);
+};
+const onToggleDetails = () => {
+  emit("onToggleDetails");
+};
+</script>
+
+<style lang="scss" scope>
+.details-form {
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    .blur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: -1;
+    }
+    .confirm-details {
+      width: 75vw;
+      height: 80vh;
+      border: 1px solid;
+      padding: 2rem;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .details {
+        width: 100%;
+        overflow-y: scroll;
+        .media {
+          width: 100%;
+          img,
+          video {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+          }
+          video {
+            aspect-ratio: 1;
+          }
+        }
+        .overview-details {
+          span {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-family: monospace;
+          }
+        }
+        .text-details {
+          h4 {
+            padding: 0.4rem 0;
+            font-size: 1.8rem;
+            line-height: 2.1rem;
+            letter-spacing: 0.5px;
+          }
+          p {
+            letter-spacing: 0.2px;
+            font-size: 0.9rem;
+            line-height: 1.3rem;
+            opacity: 0.8;
+            color: var(--text-color);
+          }
+        }
+      }
+      .btn-unlock {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+</style>

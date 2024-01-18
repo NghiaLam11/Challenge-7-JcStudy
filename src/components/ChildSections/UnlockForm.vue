@@ -4,7 +4,9 @@
       <div class="blur"></div>
       <div class="confirm-unlock">
         <p>You really want to unlock this course, right?</p>
-        <button class="btn-unlock" type="button">Unlock</button>
+        <button @click="onUnlock" class="btn-unlock" type="button">
+          Unlock
+        </button>
         <button @click="onToggleUnlock" type="button">Cancel</button>
       </div>
     </div>
@@ -12,7 +14,14 @@
 </template>
 
 <script lang="ts" setup>
+import { Course } from "../../types/types";
 const emit = defineEmits(["onToggleUnlock"]);
+const props = defineProps<{
+  course?: Course;
+}>();
+const onUnlock = () => {
+  console.log(props.course);
+};
 const onToggleUnlock = () => {
   emit("onToggleUnlock");
 };

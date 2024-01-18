@@ -80,12 +80,10 @@ export const useGetCoursesStore = async () => {
 
     const unApprovedCourses = ref<any>([]);
     querySnapshot.forEach((doc) => {
-      console.log({ id: doc.id, ...doc.data() });
       if (doc.data().isApproved === true) {
         courses.value.push({ id: doc.id, ...doc.data() });
       } else if (doc.data().isApproved === false) {
         unApprovedCourses.value.push({ id: doc.id, ...doc.data() });
-        console.log(doc.data(), "APPROVED = FALSE");
       }
     });
 

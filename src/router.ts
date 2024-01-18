@@ -24,7 +24,7 @@ const routes = [
   { path: "/utilities", component: Utilities },
   { path: "/courses", component: Courses },
   { path: "/create-course", component: CreateCourse },
-  { path: "/courses/:idCourse/:chapter/:idLesson", component: CourseDetails },
+  { path: "/courses/:idCourse/:idLesson", component: CourseDetails },
   { path: "/signin", component: SignIn },
   { path: "/signup", component: SignUp },
 ];

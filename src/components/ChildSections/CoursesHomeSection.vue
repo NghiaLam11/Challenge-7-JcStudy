@@ -8,19 +8,23 @@
       :snap-align="'start'"
       :breakpoints="breakpoints"
     >
-      <Slide v-for="course in coursesStore.courses" :key="course">
+      <Slide v-for="course in courses" :key="course">
         <div class="card-item">
           <div class="thumbnail">
-            <img :src="mediaLinks[course.thumbnailImg]" alt="" />
+            <img :src="course?.imgUrl" alt="" />
           </div>
           <div class="card-right bg-primary">
-            <h3 class="multiline-ellipsis-1">{{ course.title }}</h3>
+            <h3 class="multiline-ellipsis-1">{{ course?.title }}</h3>
             <p class="multiline-ellipsis-4">
-              {{ course.desc }}
+              {{ course?.desc }}
             </p>
-            <button @click="onToggleUnlock">
-              {{ course.price === 0 ? "Unlock (Free)" : course.price }}
+            <button @click="onToggleUnlock(course)">
+              {{ course?.price === 0 ? "Unlock (Free)" : course?.price }}
             </button>
+            <span>or</span>
+            <span @click="onToggleDetails(course)" class="more-detail">
+              More details</span
+            >
           </div>
         </div>
       </Slide>
@@ -30,7 +34,16 @@
         <Pagination />
       </template>
     </Carousel>
-    <UnlockForm v-if="isToggleUnlock" @on-toggle-unlock="onToggleUnlock" />
+    <UnlockForm
+      v-if="isToggleUnlock"
+      :course="courseSelected"
+      @on-toggle-unlock="onToggleUnlock"
+    />
+    <MoreCourseDetails
+      v-if="isToggleDetails"
+      :course="courseSelected"
+      @on-toggle-details="onToggleDetails"
+    />
   </div>
 </template>
 
@@ -43,13 +56,25 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useCoursesStore } from "../../composable/useCourses";
 import { useGetImageUrlStorage } from "../../composable/useFirebaseStorage";
+import { Course } from "../../types/types";
+import MoreCourseDetails from "./MoreCourseDetails.vue";
 
 // Play sound when btn is clicked
 const soundStore = useSound();
 const coursesStore = useCoursesStore();
 const isToggleUnlock = ref(false);
-const onToggleUnlock = () => {
+const courseSelected = ref<Course>();
+const onToggleUnlock = (course: Course) => {
   isToggleUnlock.value = !isToggleUnlock.value;
+  courseSelected.value = course;
+  console.log(course);
+  soundStore.playSound();
+};
+const isToggleDetails = ref(false);
+const onToggleDetails = (course: Course) => {
+  isToggleDetails.value = !isToggleDetails.value;
+  courseSelected.value = course;
+  console.log(course);
   soundStore.playSound();
 };
 
@@ -66,6 +91,7 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
+const courses = ref<any>([]);
 // {Key is the name of the img, the value is the link to firebase storage.
 // Set key = img name to use the name (v-for) at SRC to get the link}
 const mediaLinks = ref<any>({});
@@ -75,6 +101,10 @@ const useStoreLinks = () => {
     const imgUrl = await useGetImageUrlStorage(
       `images-${course.idUser}/${course.thumbnailImg}`
     );
+    const videoUrl = await useGetImageUrlStorage(
+      `videos-${course.idUser}/${course.thumbnailVideo}`
+    );
+    courses.value.push({ ...course, imgUrl: imgUrl, videoUrl: videoUrl });
     // SET A MAP OF URL
     mediaLinks.value[course.thumbnailImg] = imgUrl;
   });
@@ -134,6 +164,19 @@ watch(
       }
       button {
         margin-top: 1rem;
+      }
+      span:not(.more-detail) {
+        margin-left: 0.3rem;
+        opacity: 0.3;
+        font-size: 0.8rem;
+      }
+      .more-detail {
+        font-size: 0.9rem;
+        opacity: 0.7;
+      }
+      .more-detail:hover {
+        opacity: 1;
+        color: var(--primary-color);
       }
     }
   }
