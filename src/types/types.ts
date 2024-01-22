@@ -58,7 +58,7 @@ export interface Course {
   price: number;
   comments: Comment[];
   quiz: Quiz;
-  chapters: Lesson[];
+  chapters: any;
   id: string;
   idUser: string;
   isApproved: boolean;

@@ -14,13 +14,20 @@
 </template>
 
 <script lang="ts" setup>
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { useUserStore } from "../../composable/useUser";
 import { Course } from "../../types/types";
 const emit = defineEmits(["onToggleUnlock"]);
+const userStore = useUserStore();
 const props = defineProps<{
   course?: Course;
 }>();
 const onUnlock = () => {
-  console.log(props.course);
+  userStore.user.coursesUnlock.push(props.course);
+  console.log(userStore.user.coursesUnlock);
+  useUpdateUserStore({
+    coursesUnlock: userStore.user.coursesUnlock,
+  });
 };
 const onToggleUnlock = () => {
   emit("onToggleUnlock");

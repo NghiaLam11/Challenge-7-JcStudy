@@ -1,16 +1,20 @@
 <template>
-  <div class="chart"><LineChart v-bind="lineChartProps" /></div>
+  <div class="chart" v-if="data.length !== 0">
+    <LineChart v-bind="lineChartProps" />
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { Chart, registerables } from "chart.js";
 import { LineChart, useLineChart } from "vue-chart-3";
 import { useUserStore } from "../../composable/useUser";
 const userStore = useUserStore();
 // import { useRouter } from "vue-router";
 Chart.register(...registerables);
-const data = ref(userStore.studyTime);
+const data = computed(() => {
+  return userStore.studyTime;
+});
 const date = new Date();
 const fiveDaysAgo = new Date(
   date.setDate(date.getDate() - 5)

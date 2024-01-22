@@ -56,8 +56,10 @@ export const useUpdateUserStore = async (updateUser: any) => {
     const dataUpdate = await updateDoc(docRef, updateUser);
     console.log(
       "A New Document Field has been added to an existing document",
-      updateUser
+      updateUser,
+      dataUpdate
     );
+    window.location.reload();
   } catch (error) {
     console.log(error);
   }

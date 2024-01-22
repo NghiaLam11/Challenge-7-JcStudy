@@ -21,7 +21,7 @@
             <button @click="onToggleUnlock(course)">
               {{ course?.price === 0 ? "Unlock (Free)" : course?.price }}
             </button>
-            <span>or</span>
+            <span class="or">or</span>
             <span @click="onToggleDetails(course)" class="more-detail">
               More details</span
             >
@@ -187,6 +187,18 @@ watch(
   }
   .card-item:hover .thumbnail {
     filter: grayscale(0);
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 998px) {
+  .card-right {
+    padding-right: 0.1rem !important;
+    padding-top: 0.5rem !important;
+  }
+  .more-detail {
+    font-size: 0.7rem !important;
+  }
+  .or {
+    font-size: 0.5rem !important;
   }
 }
 // ---------------------------------- END COURSE CSS STYLE----------------------------------------------

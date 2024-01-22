@@ -45,14 +45,15 @@ export const autoUpdateStudyTime = () => {
       );
       // IF USER UNACCESS FOR A LONG TIME
       if (countDaysBetweenTwoDays > 1 && countDaysBetweenTwoDays <= 4) {
+        // AND ADD STUDYTIME OF THE ACCESSED DAYS TO THE LIST
+        userStore.studyTime.shift();
+        userStore.studyTime.push(sumTimeOfAllDay);
         // THESE UNCCESSED DAYS WILL BE REPLACE = 0 STUDYTIME
         for (let i = 1; i < countDaysBetweenTwoDays; i++) {
           userStore.studyTime.shift();
           userStore.studyTime.push(0);
         }
-        // AND ADD STUDYTIME OF THE ACCESSED DAYS TO THE LIST
-        userStore.studyTime.shift();
-        userStore.studyTime.push(sumTimeOfAllDay);
+
         console.log(
           "countDaysBetweenTwoDays > 1 && <= 4",
           countDaysBetweenTwoDays

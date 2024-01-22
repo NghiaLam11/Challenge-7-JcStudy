@@ -7,9 +7,9 @@
           <div class="media">
             <Carousel :items-to-show="1" :autoplay="60000">
               <Slide v-for="slide in 2" :key="slide">
-                <img :src="props.course?.imgUrl" alt="" v-if="slide === 1" />
+                <img :src="course?.imgUrl" alt="" v-if="slide === 1" />
                 <video controls v-else>
-                  <source :src="props.course?.videoUrl" type="video/mp4" />
+                  <source :src="course?.videoUrl" type="video/mp4" />
                 </video>
               </Slide>
 
@@ -20,14 +20,14 @@
           </div>
           <div class="overview-details">
             <span
-              >&#129299; {{ props.course?.chapters.length }} chapters 25
-              lessons</span
+              >&#129299; {{ countChapters }} chapters
+              {{ countLessons }} lessons</span
             >
           </div>
           <div class="text-details">
-            <h4 class="title">{{ props.course?.title }}</h4>
+            <h4 class="title">{{ course?.title }}</h4>
             <p>
-              {{ props.course?.desc }}
+              {{ course?.desc }}
             </p>
           </div>
         </div>
@@ -47,13 +47,27 @@
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
 import { Course } from "../../types/types";
+import { computed } from "vue";
 
 const emit = defineEmits(["onToggleDetails"]);
 const props = defineProps<{
   course?: Course;
 }>();
+
+const course = props.course;
+const countChapters: number = Object.entries(course?.chapters).length;
+const countLessons: any = computed(() => {
+  let count = 0;
+
+  for (const key in course?.chapters) {
+    if (course?.chapters.hasOwnProperty(key)) {
+      count += course?.chapters[key].length;
+    }
+  }
+  return count;
+});
 const onUnlock = () => {
-  console.log(props.course);
+  console.log(course);
 };
 const onToggleDetails = () => {
   emit("onToggleDetails");
@@ -128,6 +142,9 @@ const onToggleDetails = () => {
             color: var(--text-color);
           }
         }
+      }
+      .details::-webkit-scrollbar {
+        display: none;
       }
       .btn-unlock {
         margin-right: 1rem;
