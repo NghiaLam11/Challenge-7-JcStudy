@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div v-if="userStore.user?.isAdmin" class="admin">
+      <div v-if="!userStore.user?.isAdmin" class="admin">
         <CensorshipCoursesSection />
         <CensorshipBlogsSection />
       </div>

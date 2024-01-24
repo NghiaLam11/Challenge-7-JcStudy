@@ -399,6 +399,7 @@ const onSend = async () => {
     quiz: [],
     chapters: chapters.value,
     isApproved: false,
+    createdAt: new Date().toLocaleDateString(), 
   });
   await useAddCourseStore(data.value);
   router.push("/");

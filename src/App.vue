@@ -39,7 +39,6 @@ useGetUserStore();
 const route = useRoute();
 const errorStore = useErrorStore();
 // const userStore = useUserStore();
-
 const uploaderStore = useUploaderStore();
 const isSpecialPage = ref(false);
 const effectStore = useEffectChangeRoute();

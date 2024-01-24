@@ -8,7 +8,7 @@
       :snap-align="'start'"
       :breakpoints="breakpoints"
     >
-      <Slide v-for="course in courses" :key="course">
+      <Slide v-for="course in coursesStore.courses" :key="course">
         <div class="card-item">
           <div class="thumbnail">
             <img :src="course?.imgUrl" alt="" />
@@ -18,13 +18,11 @@
             <p class="multiline-ellipsis-4">
               {{ course?.desc }}
             </p>
-            <button @click="onToggleUnlock(course)">
-              {{ course?.price === 0 ? "Unlock (Free)" : course?.price }}
-            </button>
-            <span class="or">or</span>
-            <span @click="onToggleDetails(course)" class="more-detail">
-              More details</span
-            >
+            <div>
+              <button @click="onToggleUnlock(course)">
+                {{ course?.price === 0 ? "Unlock (Free)" : course?.price }}
+              </button>
+            </div>
           </div>
         </div>
       </Slide>
@@ -34,30 +32,26 @@
         <Pagination />
       </template>
     </Carousel>
-    <UnlockForm
+    <MoreDetailsForm
       v-if="isToggleUnlock"
       :course="courseSelected"
       @on-toggle-unlock="onToggleUnlock"
-    />
-    <MoreCourseDetails
-      v-if="isToggleDetails"
-      :course="courseSelected"
-      @on-toggle-details="onToggleDetails"
+      @on-unlock="onUnlock"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import UnlockForm from "./UnlockForm.vue";
-import { ref, watch } from "vue";
+import MoreDetailsForm from "./MoreDetailsForm.vue";
+import { ref } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useCoursesStore } from "../../composable/useCourses";
-import { useGetImageUrlStorage } from "../../composable/useFirebaseStorage";
 import { Course } from "../../types/types";
-import MoreCourseDetails from "./MoreCourseDetails.vue";
+import { useUserStore } from "../../composable/useUser";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 
 // Play sound when btn is clicked
 const soundStore = useSound();
@@ -67,17 +61,16 @@ const courseSelected = ref<Course>();
 const onToggleUnlock = (course: Course) => {
   isToggleUnlock.value = !isToggleUnlock.value;
   courseSelected.value = course;
-  console.log(course);
   soundStore.playSound();
 };
-const isToggleDetails = ref(false);
-const onToggleDetails = (course: Course) => {
-  isToggleDetails.value = !isToggleDetails.value;
-  courseSelected.value = course;
-  console.log(course);
-  soundStore.playSound();
+const userStore = useUserStore();
+const onUnlock = () => {
+  userStore.user.coursesUnlock.push(courseSelected.value);
+  // add to unlocked course array in database
+  useUpdateUserStore({
+    coursesUnlock: userStore.user.coursesUnlock,
+  });
 };
-
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -91,34 +84,6 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
-const courses = ref<any>([]);
-// {Key is the name of the img, the value is the link to firebase storage.
-// Set key = img name to use the name (v-for) at SRC to get the link}
-const mediaLinks = ref<any>({});
-// A FUNC TO GET THUMBNAIL LINKS OF ALL COURSES EXIST-ING
-const useStoreLinks = () => {
-  coursesStore.courses.forEach(async (course: any) => {
-    const imgUrl = await useGetImageUrlStorage(
-      `images-${course.idUser}/${course.thumbnailImg}`
-    );
-    const videoUrl = await useGetImageUrlStorage(
-      `videos-${course.idUser}/${course.thumbnailVideo}`
-    );
-    courses.value.push({ ...course, imgUrl: imgUrl, videoUrl: videoUrl });
-    // SET A MAP OF URL
-    mediaLinks.value[course.thumbnailImg] = imgUrl;
-  });
-};
-// WHEN USER RELOAD AT OTHER PAGE AND CHANGE TO THIS PAGE => RUN BELOW
-useStoreLinks();
-// WHEN COURSES HAD FETCH-ED FROM DATABASE => RUN BELOW
-watch(
-  () => coursesStore.courses,
-  () => {
-    // GET URL OF IMG ALL COURSES
-    useStoreLinks();
-  }
-);
 </script>
 
 <style lang="scss">
@@ -149,6 +114,9 @@ watch(
     .card-right {
       width: 50%;
       text-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       transition: all 0.35s ease;
       padding: 1rem;
       padding-left: 0.2rem;
@@ -161,6 +129,7 @@ watch(
         font-size: 0.8rem;
         line-height: 1.2rem;
         opacity: 0.7;
+        margin-bottom: auto;
       }
       button {
         margin-top: 1rem;

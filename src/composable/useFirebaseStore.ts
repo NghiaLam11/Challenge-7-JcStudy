@@ -5,6 +5,9 @@ import {
   updateDoc,
   doc,
   setDoc,
+  orderBy,
+  query,
+  limit,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { Course, User } from "../types/types";
@@ -13,6 +16,10 @@ import { useUserStore } from "./useUser";
 import { useCoursesStore } from "./useCourses";
 import { ref } from "vue";
 import { autoUpdateStudyTime } from "./autoUpdateStudyTimeInChart";
+import {
+  useGetImageUrlStorage,
+  useGetVideoUrlStorage,
+} from "./useFirebaseStorage";
 
 export const useGetUserStore = async () => {
   try {
@@ -77,19 +84,57 @@ export const useAddCourseStore = async (course: any) => {
 export const useGetCoursesStore = async () => {
   try {
     const coursesStore = useCoursesStore();
-    const querySnapshot = await getDocs(collection(db, "courses"));
+    const q = query(
+      collection(db, "courses"),
+      orderBy("countUnlocked", "desc"),
+      limit(20)
+    );
+    const querySnapshot = await getDocs(q);
     const courses = ref<any>([]);
 
     const unApprovedCourses = ref<any>([]);
-    querySnapshot.forEach((doc) => {
-      if (doc.data().isApproved === true) {
-        courses.value.push({ id: doc.id, ...doc.data() });
-      } else if (doc.data().isApproved === false) {
-        unApprovedCourses.value.push({ id: doc.id, ...doc.data() });
+    querySnapshot.forEach(async (doc) => {
+      const course = doc.data();
+      // FETCH URL IMG THUMBNAIL
+      const imgUrl = await useGetImageUrlStorage(
+        `images-${course.idUser}/${course.thumbnailImg}`
+      );
+      // FETCH URL VIDEO THUMBNAIL
+      const videoUrl = await useGetVideoUrlStorage(
+        `videos-${course.idUser}/${course.thumbnailVideo}`
+      );
+      // Separate two store - first is approved and second is unapproved
+      if (course.isApproved === true) {
+        if (courses.value.length < 10) {
+          // unapprove -> for normal user
+          courses.value.push({
+            id: doc.id,
+            imgUrl: imgUrl,
+            videoUrl: videoUrl,
+            ...course,
+          });
+          console.log(courses.value.length, "LENGTH");
+        }
+      } else if (course.isApproved === false) {
+        // unapprove -> for admin
+        unApprovedCourses.value.push({
+          id: doc.id,
+          imgUrl: imgUrl,
+          videoUrl: videoUrl,
+          ...course,
+        });
       }
     });
+    // declare the function to RANDOMIZE (shuffle) ARRAY COURSES APPROVED
+    const shuffle = (array: string[]) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    };
 
-    coursesStore.courses = courses.value;
+    coursesStore.courses = shuffle(courses.value);
     coursesStore.unApprovedCourses = unApprovedCourses.value;
   } catch (error) {
     console.log(error);

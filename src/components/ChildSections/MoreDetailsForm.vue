@@ -35,7 +35,7 @@
           <button @click="onUnlock" class="btn-unlock" type="button">
             Unlock
           </button>
-          <button @click="onToggleDetails" type="button">Back</button>
+          <button @click="onToggleUnlock" type="button">Back</button>
         </div>
       </div>
     </div>
@@ -49,7 +49,8 @@ import { Carousel, Slide, Navigation } from "vue3-carousel";
 import { Course } from "../../types/types";
 import { computed } from "vue";
 
-const emit = defineEmits(["onToggleDetails"]);
+const emit = defineEmits(["onToggleUnlock", "onUnlock"]);
+
 const props = defineProps<{
   course?: Course;
 }>();
@@ -68,9 +69,10 @@ const countLessons: any = computed(() => {
 });
 const onUnlock = () => {
   console.log(course);
+  emit("onUnlock");
 };
-const onToggleDetails = () => {
-  emit("onToggleDetails");
+const onToggleUnlock = () => {
+  emit("onToggleUnlock");
 };
 </script>
 

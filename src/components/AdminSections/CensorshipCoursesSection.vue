@@ -16,7 +16,7 @@
               >
                 <div class="card-item">
                   <div class="thumbnail">
-                    <img :src="mediaLinks[course.thumbnailImg]" alt="" />
+                    <img :src="course.imgUrl" alt="" />
                   </div>
                   <div class="card-right bg-primary">
                     <div>
@@ -28,7 +28,7 @@
                       </p>
                     </div>
 
-                    <button>More details...</button>
+                    <button @click="onMoreDetails(course)">More details...</button>
                   </div>
                 </div>
               </Slide>
@@ -47,9 +47,10 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useCoursesStore } from "../../composable/useCourses";
-import { useGetImageUrlStorage } from "../../composable/useFirebaseStorage";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { useRouter } from "vue-router";
+import { Course } from "../../types/types";
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -63,19 +64,12 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
-
+const router = useRouter()
 const coursesStore = useCoursesStore();
-// {Key is the name of the img, the value is the link to firebase storage.
-// Set key = img name to use the name (v-for) at SRC to get the link}
-const mediaLinks = ref<any>({});
-// GET URL OF IMG ALL COURSES
-coursesStore.unApprovedCourses.forEach(async (course: any) => {
-  const imgUrl = await useGetImageUrlStorage(
-    `images-${course.idUser}/${course.thumbnailImg}`
-  );
-  // SET A MAP OF URL
-  mediaLinks.value[course.thumbnailImg] = imgUrl;
-});
+const onMoreDetails = (course: Course) => {
+  router.push(`/courses/${course.id}/overview`)
+}
+
 </script>
 <style lang="scss" scoped>
 .censorship {
