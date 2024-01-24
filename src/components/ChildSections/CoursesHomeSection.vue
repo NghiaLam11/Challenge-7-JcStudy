@@ -57,7 +57,7 @@ import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 const soundStore = useSound();
 const coursesStore = useCoursesStore();
 const isToggleUnlock = ref(false);
-const courseSelected = ref<Course>();
+const courseSelected = ref<any>();
 const onToggleUnlock = (course: Course) => {
   isToggleUnlock.value = !isToggleUnlock.value;
   courseSelected.value = course;
@@ -65,7 +65,7 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
-  userStore.user.coursesUnlock.push(courseSelected.value);
+  userStore.user.coursesUnlock[courseSelected.value?.id] = courseSelected.value;
   // add to unlocked course array in database
   useUpdateUserStore({
     coursesUnlock: userStore.user.coursesUnlock,

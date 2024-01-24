@@ -5,10 +5,10 @@
         <div>
           <div class="course-text">
             <h3 class="title multiline-ellipsis-1">
-              Lorem dielsius akinsai olse
+              {{ courseUnapproved?.title }}
             </h3>
             <p class="multiline-ellipsis-1">
-              Lorem isep djukse iudu olsedi kohiri delore!
+              {{ courseUnapproved?.desc }}
             </p>
             <div class="lesson-progress">
               <progress class="accent-color" value="32" max="100"></progress>
@@ -21,9 +21,13 @@
             <div class="overview">
               <button>Overview</button>
             </div>
-            <div v-for="num in 3" class="chapter-collapse">
-              <button @click="onToggleCollapse(num)">
-                <span>Chapter {{ num }}</span>
+            <div
+              v-for="(chapter, key) in courseUnapproved?.chapters"
+              :key="key"
+              class="chapter-collapse"
+            >
+              <button @click="onToggleCollapse(Number(key) + 1)">
+                <span>Chapter {{ Number(key) + 1 }}</span>
                 <i
                   ref="collapseIconElementUp"
                   class="fas fa-angle-up icon-up"
@@ -33,28 +37,12 @@
               <ul
                 class="lesson-list"
                 ref="collapseListElement"
-                :style="num === 1 ? 'display:block' : 'display: none'"
+                :style="Number(key) + 1 == 0 ? 'display:block' : 'display: none'"
               >
-                <li class="lesson-item">
+                <li class="lesson-item" v-for="lesson in chapter">
                   <router-link class="lesson-link" to="/"
-                    ><span>What's it? {{ num }}</span>
+                    ><span>{{ lesson.title }}</span>
                     <i class="far fa-play-circle"></i
-                  ></router-link>
-                </li>
-                <li class="lesson-item">
-                  <router-link class="lesson-link" to="/"
-                    ><span>What's that?</span> <i class="far fa-play-circle"></i
-                  ></router-link>
-                </li>
-                <li class="lesson-item">
-                  <router-link class="lesson-link" to="/"
-                    ><span>What's it? {{ num }}</span>
-                    <i class="far fa-play-circle"></i
-                  ></router-link>
-                </li>
-                <li class="lesson-item">
-                  <router-link class="lesson-link" to="/"
-                    ><span>What's that?</span> <i class="far fa-play-circle"></i
                   ></router-link>
                 </li>
               </ul>
@@ -182,14 +170,17 @@
   </section>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
+import { useRoute } from "vue-router";
+import { useCoursesStore } from "../composable/useCourses";
 
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
 const collapseIconElementUp = ref();
 const collapseListElement = ref();
 const onToggleCollapse = (num: number) => {
+  console.log(num);
   isToggleCollapse.value = !isToggleCollapse.value;
   if (collapseListElement.value[num - 1].style.display === "none") {
     collapseListElement.value[num - 1].style.display = "block";
@@ -217,6 +208,12 @@ function openCategory(evt: any, tabName: string) {
   tab.style.display = "block";
   evt.currentTarget.className += " active";
 }
+const coursesStore = useCoursesStore();
+const route: any = useRoute();
+console.log(route.params, "PARAMS");
+const courseUnapproved = computed(() => {
+  return coursesStore.unApprovedCourses[route.params.idCourse];
+});
 onMounted(() => {
   let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
 
@@ -599,6 +596,5 @@ onMounted(() => {
       }
     }
   }
-
 }
 </style>

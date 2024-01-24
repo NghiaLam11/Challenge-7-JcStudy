@@ -1,5 +1,7 @@
 <template>
-  <div class="censorship">
+  <div
+    class="censorship"
+  >
     <div class="container">
       <div class="censorship-moderate">
         <div class="content-moderate">
@@ -10,10 +12,7 @@
               :snap-align="'start'"
               :breakpoints="breakpoints"
             >
-              <Slide
-                v-for="course in coursesStore.unApprovedCourses"
-                :key="course.id"
-              >
+              <Slide v-for="course in courseUnapproved" :key="course.id">
                 <div class="card-item">
                   <div class="thumbnail">
                     <img :src="course.imgUrl" alt="" />
@@ -27,8 +26,9 @@
                         {{ course.desc }}
                       </p>
                     </div>
-
-                    <button @click="onMoreDetails(course)">More details...</button>
+                    <button @click="onMoreDetails(course)">
+                      More details...
+                    </button>
                   </div>
                 </div>
               </Slide>
@@ -45,7 +45,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useCoursesStore } from "../../composable/useCourses";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
@@ -64,12 +64,14 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
-const router = useRouter()
+const router = useRouter();
 const coursesStore = useCoursesStore();
+const courseUnapproved = computed(() => {
+  return coursesStore.unApprovedCourses;
+});
 const onMoreDetails = (course: Course) => {
-  router.push(`/courses/${course.id}/overview`)
-}
-
+  router.push(`/courses/${course.id}/overview`);
+};
 </script>
 <style lang="scss" scoped>
 .censorship {
@@ -141,8 +143,7 @@ const onMoreDetails = (course: Course) => {
           img {
             object-fit: cover;
             width: 100%;
-            max-height: 200px;
-            height: 100%;
+            height: 150px;
             border-radius: 5px;
           }
         }
@@ -166,7 +167,8 @@ const onMoreDetails = (course: Course) => {
             opacity: 0.7;
           }
           button {
-            width: 150px;
+            width: 120px;
+            font-size: 0.7rem !important;
           }
         }
       }

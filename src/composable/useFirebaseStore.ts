@@ -90,9 +90,9 @@ export const useGetCoursesStore = async () => {
       limit(20)
     );
     const querySnapshot = await getDocs(q);
-    const courses = ref<any>([]);
+    const courses = ref<any>({});
 
-    const unApprovedCourses = ref<any>([]);
+    const unApprovedCourses = ref<any>({});
     querySnapshot.forEach(async (doc) => {
       const course = doc.data();
       // FETCH URL IMG THUMBNAIL
@@ -107,22 +107,22 @@ export const useGetCoursesStore = async () => {
       if (course.isApproved === true) {
         if (courses.value.length < 10) {
           // unapprove -> for normal user
-          courses.value.push({
+          courses.value[doc.id] = {
             id: doc.id,
             imgUrl: imgUrl,
             videoUrl: videoUrl,
             ...course,
-          });
+          };
           console.log(courses.value.length, "LENGTH");
         }
       } else if (course.isApproved === false) {
         // unapprove -> for admin
-        unApprovedCourses.value.push({
+        unApprovedCourses.value[doc.id] = {
           id: doc.id,
           imgUrl: imgUrl,
           videoUrl: videoUrl,
           ...course,
-        });
+        };
       }
     });
     // declare the function to RANDOMIZE (shuffle) ARRAY COURSES APPROVED
