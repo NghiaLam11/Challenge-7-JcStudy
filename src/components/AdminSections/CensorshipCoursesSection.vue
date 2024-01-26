@@ -70,7 +70,7 @@ const courseUnapproved = computed(() => {
   return coursesStore.unApprovedCourses;
 });
 const onMoreDetails = (course: Course) => {
-  router.push(`/courses/${course.id}/overview`);
+  router.push(`/courses/${course.id}/0/overview`);
 };
 </script>
 <style lang="scss" scoped>

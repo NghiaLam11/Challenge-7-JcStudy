@@ -55,7 +55,8 @@ export const useGetImageUrlStorage = async (fullPath: string) => {
 export const useGetVideoUrlStorage = async (fullPath: string) => {
   try {
     const videoUrl = await getDownloadURL(ref(storage, fullPath));
-    console.log(videoUrl);
+    return videoUrl;
+
   } catch (error) {
     console.log(error);
   }

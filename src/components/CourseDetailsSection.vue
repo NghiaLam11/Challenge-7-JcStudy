@@ -12,14 +12,18 @@
             </p>
             <div class="lesson-progress">
               <progress class="accent-color" value="32" max="100"></progress>
-              <span class="percent">32%</span>
+              <span class="percent"> 43% </span>
             </div>
           </div>
 
           <hr />
           <div class="course-lesson">
             <div class="overview">
-              <button>Overview</button>
+              <button>
+                <router-link active-class="active" to="overview"
+                  >Overview</router-link
+                >
+              </button>
             </div>
             <div
               v-for="(chapter, key) in courseUnapproved?.chapters"
@@ -37,10 +41,17 @@
               <ul
                 class="lesson-list"
                 ref="collapseListElement"
-                :style="Number(key) + 1 == 0 ? 'display:block' : 'display: none'"
+                :style="
+                  Number(key) + 1 == 1 ? 'display:block' : 'display: none'
+                "
               >
-                <li class="lesson-item" v-for="lesson in chapter">
-                  <router-link class="lesson-link" to="/"
+                <li class="lesson-item" v-for="(lesson, index) in chapter">
+                  <router-link
+                    class="lesson-link"
+                    active-class="active"
+                    :to="`/courses/${courseUnapproved?.id}/${
+                      Number(key) + 1
+                    }/${index}`"
                     ><span>{{ lesson.title }}</span>
                     <i class="far fa-play-circle"></i
                   ></router-link>
@@ -53,8 +64,8 @@
       <div class="lesson-right">
         <div>
           <div class="band">
-            <video controls>
-              <source src="../videos/video-1645947165.mp4" type="video/mp4" />
+            <video controls v-if="lessonSelected?.videoUrl">
+              <source :src="lessonSelected?.videoUrl" type="video/mp4" />
             </video>
           </div>
           <div class="lesson-category tab">
@@ -79,13 +90,10 @@
           </div>
           <div class="lesson-detail tabcontent" id="overview">
             <h3 class="detail-title">
-              Overview ipsum dolor sit amet consectetur adipisicing elit.
+              {{ lessonSelected?.title }}
             </h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta
-              sequi, distinctio cupiditate repudiandae dolor corporis possimus
-              doloribus hic iusto. Soluta rerum vero eius error earum fugit fuga
-              ad saepe perspiciatis.
+              {{ lessonSelected?.desc }}
             </p>
             <div class="course-related">
               <CoursesRelatedSection />
@@ -170,10 +178,14 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
 import { useRoute } from "vue-router";
 import { useCoursesStore } from "../composable/useCourses";
+import {
+  useGetImageUrlStorage,
+  useGetVideoUrlStorage,
+} from "../composable/useFirebaseStorage";
 
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
@@ -214,6 +226,47 @@ console.log(route.params, "PARAMS");
 const courseUnapproved = computed(() => {
   return coursesStore.unApprovedCourses[route.params.idCourse];
 });
+const lessonSelected = ref();
+const getLesson = async (course: any) => {
+  console.log(course);
+  if (route.params.idLesson === "overview") {
+    lessonSelected.value = course;
+    console.log("Overview");
+  } else if (course) {
+    console.log("Unoverview");
+    const idChapter = Number(route.params.idChapter) - 1;
+    const imgUrl = await useGetImageUrlStorage(
+      `images-${course.idUser}/${
+        course.chapters[idChapter][route.params.idLesson].imageName
+      }`
+    );
+    // FETCH URL VIDEO THUMBNAIL
+    const videoUrl = await useGetVideoUrlStorage(
+      `videos-${course.idUser}/${
+        course.chapters[idChapter][route.params.idLesson].videoName
+      }`
+    );
+
+    console.log(imgUrl, videoUrl);
+    lessonSelected.value = {
+      ...course.chapters[idChapter][route.params.idLesson],
+      imgUrl: imgUrl,
+      videoUrl: videoUrl,
+    };
+  }
+};
+
+watch(coursesStore, async (newCourse) => {
+  await getLesson(newCourse.unApprovedCourses[route.params.idCourse]);
+});
+
+watch(
+  () => route.fullPath,
+  () => {
+    getLesson(coursesStore.unApprovedCourses[route.params.idCourse]);
+  }
+);
+
 onMounted(() => {
   let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
 
@@ -224,6 +277,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+a {
+  color: inherit;
+  text-decoration: none;
+}
 .course-detail {
   .course-detail-wrapper {
     display: flex;
@@ -485,7 +542,6 @@ onMounted(() => {
               margin: 0.5rem 0;
 
               .lesson-link {
-                color: inherit !important;
                 text-decoration: none;
                 font-size: 0.8rem;
                 display: flex;
@@ -498,9 +554,6 @@ onMounted(() => {
                 i {
                   margin-right: 0.3rem;
                 }
-              }
-              .lesson-link:visited {
-                color: #38e54d;
               }
             }
             .lesson-item:hover {

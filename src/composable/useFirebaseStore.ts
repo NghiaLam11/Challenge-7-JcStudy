@@ -105,7 +105,8 @@ export const useGetCoursesStore = async () => {
       );
       // Separate two store - first is approved and second is unapproved
       if (course.isApproved === true) {
-        if (courses.value.length < 10) {
+        var size = Object.keys(courses.value).length;
+        if (size < 10) {
           // unapprove -> for normal user
           courses.value[doc.id] = {
             id: doc.id,
@@ -113,7 +114,6 @@ export const useGetCoursesStore = async () => {
             videoUrl: videoUrl,
             ...course,
           };
-          console.log(courses.value.length, "LENGTH");
         }
       } else if (course.isApproved === false) {
         // unapprove -> for admin
@@ -123,6 +123,7 @@ export const useGetCoursesStore = async () => {
           videoUrl: videoUrl,
           ...course,
         };
+
       }
     });
     // declare the function to RANDOMIZE (shuffle) ARRAY COURSES APPROVED

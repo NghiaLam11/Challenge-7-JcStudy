@@ -109,6 +109,7 @@ const title = ref("");
 const desc = ref("");
 const onComplete = () => {
   const lessonDetails = ref({
+    id: Math.random() * 10,
     title: title.value,
     desc: desc.value,
     thumbnailImg: imageUrlReader.value,
