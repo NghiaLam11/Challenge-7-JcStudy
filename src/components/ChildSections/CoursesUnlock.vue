@@ -4,7 +4,7 @@
       <h3>Courses unlock</h3>
     </div>
     <Carousel :breakpoints="breakpointsunlock">
-      <Slide v-for="course in userStore.user?.coursesUnlock" :key="course?.id">
+      <Slide v-for="course in userStore.user?.coursesUnlocked" :key="course?.id">
         <div class="card-item">
           <div class="thumbnail">
             <img

@@ -64,8 +64,12 @@
       <div class="lesson-right">
         <div>
           <div class="band">
-            <video controls v-if="lessonSelected?.videoUrl">
-              <source :src="lessonSelected?.videoUrl" type="video/mp4" />
+            <video ref="videoElement" controls>
+              <source
+                ref="sourceElement"
+                :src="lessonSelected?.videoUrl"
+                type="video/mp4"
+              />
             </video>
           </div>
           <div class="lesson-category tab">
@@ -182,15 +186,13 @@ import { computed, onMounted, ref, watch } from "vue";
 import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
 import { useRoute } from "vue-router";
 import { useCoursesStore } from "../composable/useCourses";
-import {
-  useGetImageUrlStorage,
-  useGetVideoUrlStorage,
-} from "../composable/useFirebaseStorage";
+import { useGetVideoUrlStorage } from "../composable/useFirebaseStorage";
 
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
 const collapseIconElementUp = ref();
 const collapseListElement = ref();
+// OPEN CHAPTER'S LESSONS
 const onToggleCollapse = (num: number) => {
   console.log(num);
   isToggleCollapse.value = !isToggleCollapse.value;
@@ -206,6 +208,7 @@ const onToggleCollapse = (num: number) => {
     console.log("close");
   }
 };
+// OPEN TAB( RIGHT TAB DETAILS )
 function openCategory(evt: any, tabName: string) {
   var i, tablinks;
   const tabcontent: any = document.getElementsByClassName("tabcontent");
@@ -223,10 +226,13 @@ function openCategory(evt: any, tabName: string) {
 const coursesStore = useCoursesStore();
 const route: any = useRoute();
 console.log(route.params, "PARAMS");
+
 const courseUnapproved = computed(() => {
   return coursesStore.unApprovedCourses[route.params.idCourse];
 });
 const lessonSelected = ref();
+const videoElement = ref();
+const sourceElement = ref();
 const getLesson = async (course: any) => {
   console.log(course);
   if (route.params.idLesson === "overview") {
@@ -235,31 +241,25 @@ const getLesson = async (course: any) => {
   } else if (course) {
     console.log("Unoverview");
     const idChapter = Number(route.params.idChapter) - 1;
-    const imgUrl = await useGetImageUrlStorage(
-      `images-${course.idUser}/${
-        course.chapters[idChapter][route.params.idLesson].imageName
-      }`
-    );
     // FETCH URL VIDEO THUMBNAIL
     const videoUrl = await useGetVideoUrlStorage(
       `videos-${course.idUser}/${
         course.chapters[idChapter][route.params.idLesson].videoName
       }`
     );
-
-    console.log(imgUrl, videoUrl);
+    sourceElement.value.src = videoUrl;
     lessonSelected.value = {
       ...course.chapters[idChapter][route.params.idLesson],
-      imgUrl: imgUrl,
       videoUrl: videoUrl,
     };
   }
+  videoElement.value.load();
 };
-
+// FETCH URL WHEN COURSE CHANGE
 watch(coursesStore, async (newCourse) => {
   await getLesson(newCourse.unApprovedCourses[route.params.idCourse]);
 });
-
+// FETCH URL WHEN ROUTE CHANGE
 watch(
   () => route.fullPath,
   () => {
@@ -268,6 +268,8 @@ watch(
 );
 
 onMounted(() => {
+  // WHEN URL WHEN FIRST ACCESS
+  getLesson(coursesStore.unApprovedCourses[route.params.idCourse]);
   let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
 
   if (isMobile) {

@@ -1,8 +1,8 @@
 <template>
   <div class="home container">
     <HeroSection />
-    <CoursesHomeSection />
-    <NewSection />
+    <CoursesHomeSection v-if="Object.keys(coursesStore.courses).length > 0" />
+    <NewSection v-if="Object.keys(coursesStore.newCourses).length > 0" />
     <BlogsHomeSection />
   </div>
 </template>
@@ -13,8 +13,9 @@ import NewSection from "./ChildSections/NewSection.vue";
 import BlogsHomeSection from "./ChildSections/BlogsHomeSection.vue";
 import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import { onMounted } from "vue";
+import { useCoursesStore } from "../composable/useCourses";
 
-
+const coursesStore = useCoursesStore();
 
 const theme = localStorage.getItem("theme");
 onMounted(() => {

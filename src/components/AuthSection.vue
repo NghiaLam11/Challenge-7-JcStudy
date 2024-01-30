@@ -15,8 +15,10 @@
         </div>
       </div>
 
-      <div v-if="!userStore.user?.isAdmin" class="admin">
-        <CensorshipCoursesSection />
+      <div v-if="userStore.user?.isAdmin" class="admin">
+        <CensorshipCoursesSection
+          v-if="Object.keys(coursesStore.unApprovedCourses).length > 0"
+        />
         <CensorshipBlogsSection />
       </div>
 
@@ -32,18 +34,23 @@
             <div class="statistic-group">
               <span class="topic">Courses(unclock): </span>
               <span class="number">
-                {{ userStore.user?.coursesUnlock.length }}</span
+                {{ Object.keys(userStore.user?.coursesUnlocked).length }}</span
               >
             </div>
             <div class="statistic-group">
               <span class="topic">Courses(completed): </span>
               <span class="number">
-                {{ userStore.user?.coursesCompleted.length }}</span
+                {{ Object.keys(userStore.user?.coursesCompleted).length }}</span
               >
             </div>
           </div>
           <ChartSection />
-          <div class="courses-unclock"><CoursesUnlock /></div>
+          <div
+            class="courses-unclock"
+            v-if="Object.keys(userStore.user?.coursesUnlocked).length > 0"
+          >
+            <CoursesUnlock />
+          </div>
         </div>
       </div>
 
@@ -65,7 +72,9 @@ import EditProfileSection from "./AuthChildSections/EditProfileSection.vue";
 import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.vue";
 import BlogsRegisterSection from "./AuthChildSections/BlogsRegisterSection.vue";
 import { useUserStore } from "../composable/useUser";
+import { useCoursesStore } from "../composable/useCourses";
 const userStore = useUserStore();
+const coursesStore = useCoursesStore();
 const isToggleFormEdit = ref(false);
 const onCloseFormEdit = () => {
   isToggleFormEdit.value = !isToggleFormEdit.value;

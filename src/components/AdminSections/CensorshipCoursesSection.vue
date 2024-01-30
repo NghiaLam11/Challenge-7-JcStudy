@@ -26,9 +26,12 @@
                         {{ course.desc }}
                       </p>
                     </div>
-                    <button @click="onMoreDetails(course)">
-                      More details...
-                    </button>
+                    <div class="btn-group">
+                      <button @click="onApprove(course)">Approve</button>
+                      <span @click="onMoreDetails(course)">
+                        More details...
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Slide>
@@ -51,6 +54,7 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useRouter } from "vue-router";
 import { Course } from "../../types/types";
+import { useUpdateCourseStore } from "../../composable/useFirebaseStore";
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -64,6 +68,13 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
 });
+const onApprove = (course: any) => {
+  console.log(course);
+  const data = ref({
+    isApproved: true,
+  });
+  useUpdateCourseStore(data.value, course.id);
+};
 const router = useRouter();
 const coursesStore = useCoursesStore();
 const courseUnapproved = computed(() => {
@@ -166,9 +177,16 @@ const onMoreDetails = (course: Course) => {
             line-height: 1.2rem;
             opacity: 0.7;
           }
-          button {
-            width: 120px;
-            font-size: 0.7rem !important;
+          .btn-group {
+            display: flex;
+            align-items: center;
+            button {
+              font-size: 0.7rem !important;
+              margin-top: 0 !important;
+            }
+            span:hover {
+              opacity: 1 !important;
+            }
           }
         }
       }

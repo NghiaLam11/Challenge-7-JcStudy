@@ -52,8 +52,10 @@ export interface Course {
   thumbnailImg: string;
   thumbnailVideo: string;
   imgUrl: string,
+  createdAt:string;
   videoUrl: string,
   industry: string;
+  countUnlocked: number;
   tags: string;
   price: number;
   comments: Comment[];

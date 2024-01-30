@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="form-group">
-          <input v-model="title" type="text" placeholder="Title..." required/>
+          <input v-model="title" type="text" placeholder="Title..." required />
           <textarea
             v-model="desc"
             placeholder="Description..."
@@ -76,7 +76,7 @@
             </select>
           </div>
           <div class="tags">
-            <input v-model="tags" type="text" placeholder="Tags..." required/>
+            <input v-model="tags" type="text" placeholder="Tags..." required />
           </div>
           <div class="price">
             <input
@@ -352,6 +352,7 @@ const onSend = async () => {
     filePath: videoPath.value,
     fileName: videoName.value,
   });
+  console.log(mediaImgLink.value, mediaVideoLink.value, "UNDEATILS");
   // UPLOAD IMAGE/VIDEO OF COURSE THUMBNAIL
   const idUser: any = localStorage.getItem("idUser");
   const imgUrlCourse = await useUploadImgStorage(mediaImgLink.value, idUser);
@@ -364,17 +365,31 @@ const onSend = async () => {
   // UPLOAD ALL IMAGES/VIDEOS OF THE LESSONS
   for (const i in chapters.value) {
     for (let j = 0; j < chapters.value[i].length; j++) {
+      console.log(
+        {
+          fileName: chapters.value[i][j].imageName,
+          filePath: chapters.value[i][j].imagePath,
+        },
+        "IMAGE__"
+      );
       const imgUrl = await useUploadImgStorage(
         {
           fileName: chapters.value[i][j].imageName,
-          filePath: JSON.parse(chapters.value[i][j].imagePath),
+          filePath: chapters.value[i][j].imagePath,
         },
         idUser
+      );
+      console.log(
+        {
+          fileName: chapters.value[i][j].videoName,
+          filePath: chapters.value[i][j].videoPath,
+        },
+        "VIDEO__"
       );
       const videoUrl = await useUploadVideoStorage(
         {
           fileName: chapters.value[i][j].videoName,
-          filePath: JSON.parse(chapters.value[i][j].videoPath),
+          filePath: chapters.value[i][j].videoPath,
         },
         idUser
       );
@@ -396,10 +411,11 @@ const onSend = async () => {
     thumbnailVideo: videoName.value,
     price: 0,
     idUser: idUser,
+    countUnlocked: 0,
     quiz: [],
     chapters: chapters.value,
     isApproved: false,
-    createdAt: new Date().toLocaleDateString(), 
+    createdAt: new Date().toLocaleDateString(),
   });
   await useAddCourseStore(data.value);
   router.push("/");

@@ -87,6 +87,7 @@ const onVideo = () => {
 
   videoName.value = file.name;
   videoPath.value = file;
+  console.log(file, "FILEV");
 };
 
 const imageName = ref("");
@@ -102,9 +103,11 @@ const onImage = () => {
   if (file) {
     reader.readAsDataURL(file);
   }
+  console.log(file, "FILE");
   imageName.value = file.name;
   imagePath.value = file;
 };
+
 const title = ref("");
 const desc = ref("");
 const onComplete = () => {
@@ -112,13 +115,15 @@ const onComplete = () => {
     id: Math.random() * 10,
     title: title.value,
     desc: desc.value,
+    comments: [],
     thumbnailImg: imageUrlReader.value,
     thumbnailVideo: videoUrlReader.value,
     imageName: imageName.value,
-    imagePath: JSON.stringify(imagePath.value),
+    imagePath: imagePath.value,
     videoName: videoName.value,
-    videoPath: JSON.stringify(videoPath.value),
+    videoPath: videoPath.value,
   });
+  console.log(lessonDetails.value, "DETAILS");
   emit("onComplete", lessonDetails.value);
 };
 </script>

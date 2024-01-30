@@ -43,7 +43,7 @@ button {
   border-left: 0.2rem solid;
   border-bottom: 0.3rem solid;
   border-color: var(--border-color) !important;
-  font-size: 0.8rem !important;
+  font-size: 0.6rem !important;
   outline: none;
   // transition: all 0.2s linear;
 }
@@ -60,13 +60,17 @@ textarea::placeholder {
 }
 @media screen and (min-width: 768px) and (max-width: 998px) {
   button {
-    font-size: 0.6rem !important;
     margin-top: 0.2rem !important;
+  }
+  .multiline-ellipsis-4 {
+    -webkit-line-clamp: 3 !important; /* start showing ellipsis when 4rd line is reached */
+    @include ellipsisText();
   }
 }
 @media screen and (max-width: 534px) {
-  button {
-    font-size: 0.6rem !important;
+  .multiline-ellipsis-4 {
+    -webkit-line-clamp: 2 !important; /* start showing ellipsis when 4rd line is reached */
+    @include ellipsisText();
   }
 }
 

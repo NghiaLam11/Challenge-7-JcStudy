@@ -8,23 +8,17 @@
       :snap-align="'start'"
       :breakpoints="breakpointsnew"
     >
-      <Slide v-for="slide in 10" :key="slide">
+      <Slide v-for="(course, key) in coursesStore.newCourses" :key="key">
         <div class="card-item">
           <div class="thumbnail">
-            <img
-              src="/src/images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-              alt=""
-            />
+            <img :src="course.imgUrl" alt="" />
           </div>
           <div class="card-right bg-primary">
-            <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+            <h3 class="multiline-ellipsis-1">{{ course?.title }}</h3>
             <p class="multiline-ellipsis-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
+              {{ course?.desc }}
             </p>
-            <button @click="onToggleUnlock">Unlock (Free)</button>
+            <button @click="onToggleUnlock(course)">Unlock (Free)</button>
           </div>
         </div>
       </Slide>
@@ -34,7 +28,12 @@
         <Pagination />
       </template>
     </Carousel>
-    <MoreDetailsForm v-if="isToggleUnlock" @on-toggle-unlock="onToggleUnlock" />
+    <MoreDetailsForm
+      v-if="isToggleUnlock"
+      :course="courseSelected"
+      @on-toggle-unlock="onToggleUnlock"
+      @on-unlock="onUnlock"
+    />
   </div>
 </template>
 
@@ -45,13 +44,29 @@ import MoreDetailsForm from "./MoreDetailsForm.vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
-
+import { useUserStore } from "../../composable/useUser";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { Course } from "../../types/types";
+import { useCoursesStore } from "../../composable/useCourses";
+const coursesStore = useCoursesStore();
 // Play sound when btn is clicked
 const soundStore = useSound();
 const isToggleUnlock = ref(false);
-const onToggleUnlock = () => {
+const courseSelected = ref<any>();
+const onToggleUnlock = (course: Course) => {
   isToggleUnlock.value = !isToggleUnlock.value;
+  courseSelected.value = course;
   soundStore.playSound();
+};
+const userStore = useUserStore();
+const onUnlock = () => {
+  userStore.user.coursesUnlocked[courseSelected.value?.id] =
+    courseSelected.value;
+  // add to unlocked course array in database
+  useUpdateUserStore({
+    coursesUnlocked: userStore.user.coursesUnlocked,
+  });
+  isToggleUnlock.value = !isToggleUnlock.value;
 };
 const breakpointsnew = ref({
   0: {
@@ -76,6 +91,7 @@ const breakpointsnew = ref({
   .card-item {
     display: flex;
     cursor: pointer;
+    width: 100%;
     .thumbnail {
       width: 50%;
       height: 100%;
@@ -85,7 +101,7 @@ const breakpointsnew = ref({
       img {
         object-fit: cover;
         width: 100%;
-        min-height: 180px;
+        max-height: 180px;
         height: 100%;
         border-radius: 5px;
       }
@@ -93,9 +109,12 @@ const breakpointsnew = ref({
     .card-right {
       width: 50%;
       text-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       transition: all 0.35s ease;
       padding: 1rem;
-      padding-left: 0;
+      padding-left: 0.2rem;
       h3 {
         font-size: 1.3rem;
         line-height: 1.8rem;
@@ -105,19 +124,33 @@ const breakpointsnew = ref({
         font-size: 0.8rem;
         line-height: 1.2rem;
         opacity: 0.7;
+        margin-bottom: auto;
       }
       button {
         margin-top: 1rem;
+        width: 100px;
       }
     }
   }
   .card-item:hover .card-right {
-    transform: translateX(-50%);
+    transform: translateX(-2rem);
     padding-left: 1rem;
     border-radius: 5px;
   }
   .card-item:hover .thumbnail {
     filter: grayscale(0);
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 998px) {
+  .card-right {
+    padding-right: 0.1rem !important;
+    padding-top: 0.5rem !important;
+  }
+  .more-detail {
+    font-size: 0.7rem !important;
+  }
+  .or {
+    font-size: 0.5rem !important;
   }
 }
 // ---------------------------------- END NEW CSS STYLE----------------------------------------------

@@ -20,9 +20,11 @@
           </div>
           <div class="overview-details">
             <span
-              >&#129299; {{ countChapters }} chapters
+              >&#129299;{{ countChapters }} chapters &
               {{ countLessons }} lessons</span
-            >
+            ><span> &#9997;{{ course?.industry }}</span
+            ><span> &#128339;{{ course?.createdAt }}</span
+            > <span> &#128275;{{ course?.countUnlocked }}</span>
           </div>
           <div class="text-details">
             <h4 class="title">{{ course?.title }}</h4>

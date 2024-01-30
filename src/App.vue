@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <header v-if="!isSpecialPage" class="header"><NavBar /></header>
-    <main class="body">
+    <main class="body" v-if="userStore.user">
       <router-view></router-view>
     </main>
     <footer v-if="!isSpecialPage"><FooterSection /></footer>
@@ -32,10 +32,11 @@ import { useRoute, useRouter } from "vue-router";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useGetUserStore } from "./composable/useFirebaseStore";
-// import { useUserStore } from "./composable/useUser";
+import { useUserStore } from "./composable/useUser";
 const loaderStore = useLoaderStore();
 loaderStore.onToggleLoading();
 useGetUserStore();
+const userStore = useUserStore();
 const route = useRoute();
 const errorStore = useErrorStore();
 // const userStore = useUserStore();
@@ -153,6 +154,7 @@ onMounted(() => {
         isSpecialPage.value = false;
         console.log("FALSE: " + newPath);
       }
+
       // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {

@@ -8,7 +8,7 @@
       :snap-align="'start'"
       :breakpoints="breakpoints"
     >
-      <Slide v-for="course in coursesStore.courses" :key="course">
+      <Slide v-for="(course, key) in coursesStore.courses" :key="key">
         <div class="card-item">
           <div class="thumbnail">
             <img :src="course?.imgUrl" alt="" />
@@ -65,10 +65,10 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
-  userStore.user.coursesUnlock[courseSelected.value?.id] = courseSelected.value;
+  userStore.user.coursesUnlocked[courseSelected.value?.id] = courseSelected.value;
   // add to unlocked course array in database
   useUpdateUserStore({
-    coursesUnlock: userStore.user.coursesUnlock,
+    coursesUnlocked: userStore.user.coursesUnlocked,
   });
 };
 // breakpoint of slide vue-carousel
@@ -134,19 +134,6 @@ const breakpoints = ref({
       button {
         margin-top: 1rem;
       }
-      span:not(.more-detail) {
-        margin-left: 0.3rem;
-        opacity: 0.3;
-        font-size: 0.8rem;
-      }
-      .more-detail {
-        font-size: 0.9rem;
-        opacity: 0.7;
-      }
-      .more-detail:hover {
-        opacity: 1;
-        color: var(--primary-color);
-      }
     }
   }
   .card-item:hover .card-right {
@@ -162,12 +149,6 @@ const breakpoints = ref({
   .card-right {
     padding-right: 0.1rem !important;
     padding-top: 0.5rem !important;
-  }
-  .more-detail {
-    font-size: 0.7rem !important;
-  }
-  .or {
-    font-size: 0.5rem !important;
   }
 }
 // ---------------------------------- END COURSE CSS STYLE----------------------------------------------

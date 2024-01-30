@@ -20,6 +20,7 @@ import {
   useGetImageUrlStorage,
   useGetVideoUrlStorage,
 } from "./useFirebaseStorage";
+import { useCheckNewCourses } from "./useCheckNewCourses";
 
 export const useGetUserStore = async () => {
   try {
@@ -66,7 +67,8 @@ export const useUpdateUserStore = async (updateUser: any) => {
       updateUser,
       dataUpdate
     );
-    window.location.reload();
+    useGetCoursesStore();
+    // window.location.reload();
   } catch (error) {
     console.log(error);
   }
@@ -91,8 +93,10 @@ export const useGetCoursesStore = async () => {
     );
     const querySnapshot = await getDocs(q);
     const courses = ref<any>({});
+    const newCourses = ref<any>({});
 
     const unApprovedCourses = ref<any>({});
+
     querySnapshot.forEach(async (doc) => {
       const course = doc.data();
       // FETCH URL IMG THUMBNAIL
@@ -103,10 +107,15 @@ export const useGetCoursesStore = async () => {
       const videoUrl = await useGetVideoUrlStorage(
         `videos-${course.idUser}/${course.thumbnailVideo}`
       );
-      // Separate two store - first is approved and second is unapproved
-      if (course.isApproved === true) {
+      const userStore = useUserStore();
+      // Separate two store - first is approved+remove course unlocked and second is unapproved
+      if (
+        course.isApproved === true &&
+        !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
+      ) {
         var size = Object.keys(courses.value).length;
         if (size < 10) {
+          console.log("A");
           // unapprove -> for normal user
           courses.value[doc.id] = {
             id: doc.id,
@@ -114,6 +123,21 @@ export const useGetCoursesStore = async () => {
             videoUrl: videoUrl,
             ...course,
           };
+        }
+        // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
+        const newCourse = useCheckNewCourses(course);
+        if (newCourse) {
+          console.log("B");
+          newCourses.value[doc.id] = {
+            ...newCourse,
+            id: doc.id,
+            imgUrl: imgUrl,
+            videoUrl: videoUrl,
+          };
+          console.log(
+            "NEW Course",
+            !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
+          );
         }
       } else if (course.isApproved === false) {
         // unapprove -> for admin
@@ -123,7 +147,6 @@ export const useGetCoursesStore = async () => {
           videoUrl: videoUrl,
           ...course,
         };
-
       }
     });
     // declare the function to RANDOMIZE (shuffle) ARRAY COURSES APPROVED
@@ -136,7 +159,23 @@ export const useGetCoursesStore = async () => {
     };
 
     coursesStore.courses = shuffle(courses.value);
+    coursesStore.newCourses = shuffle(newCourses.value);
     coursesStore.unApprovedCourses = unApprovedCourses.value;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useUpdateCourseStore = async (updateCourse: any, id: string) => {
+  try {
+    const docRef = doc(db, "courses", id);
+    const dataUpdate = await updateDoc(docRef, updateCourse);
+    console.log(
+      "A New Document Field has been updated to an existing document",
+      updateCourse,
+      dataUpdate
+    );
+    useGetUserStore();
   } catch (error) {
     console.log(error);
   }

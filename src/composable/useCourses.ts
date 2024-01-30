@@ -4,8 +4,10 @@ import { ref } from "vue";
 export const useCoursesStore = defineStore("courses", () => {
   const courses: any = ref({});
   const unApprovedCourses = ref<any>({});
+  const newCourses = ref<any>({});
   return {
     courses,
-    unApprovedCourses
+    unApprovedCourses,
+    newCourses
   };
 });
