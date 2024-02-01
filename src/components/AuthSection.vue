@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div v-if="userStore.user?.isAdmin" class="admin">
+      <div v-if="!userStore.user?.isAdmin" class="admin">
         <CensorshipCoursesSection
           v-if="Object.keys(coursesStore.unApprovedCourses).length > 0"
         />

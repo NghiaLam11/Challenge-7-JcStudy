@@ -20,13 +20,15 @@ import {
   useGetImageUrlStorage,
   useGetVideoUrlStorage,
 } from "./useFirebaseStorage";
-import { useCheckNewCourses } from "./useCheckNewCourses";
+import { useCheckNewItem } from "./useCheckNewItem";
+import { useBlogsStore } from "./useBlogs";
 
 export const useGetUserStore = async () => {
   try {
     const loaderStore = useLoaderStore();
     const userStore = useUserStore();
     await useGetCoursesStore();
+    await useGetBlogsStore();
     const querySnapshot = await getDocs(collection(db, "users"));
     const users = ref<any>([]);
     const idUser = localStorage.getItem("idUser");
@@ -125,7 +127,7 @@ export const useGetCoursesStore = async () => {
           };
         }
         // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
-        const newCourse = useCheckNewCourses(course);
+        const newCourse = useCheckNewItem(course);
         if (newCourse) {
           console.log("B");
           newCourses.value[doc.id] = {
@@ -149,17 +151,9 @@ export const useGetCoursesStore = async () => {
         };
       }
     });
-    // declare the function to RANDOMIZE (shuffle) ARRAY COURSES APPROVED
-    const shuffle = (array: string[]) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    };
 
-    coursesStore.courses = shuffle(courses.value);
-    coursesStore.newCourses = shuffle(newCourses.value);
+    coursesStore.courses = courses.value;
+    coursesStore.newCourses = newCourses.value;
     coursesStore.unApprovedCourses = unApprovedCourses.value;
   } catch (error) {
     console.log(error);
@@ -181,11 +175,61 @@ export const useUpdateCourseStore = async (updateCourse: any, id: string) => {
   }
 };
 
-
 export const useAddBlogStore = async (blog: any) => {
   try {
     const docRef = await addDoc(collection(db, "blogs"), blog);
     console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useGetBlogsStore = async () => {
+  try {
+    const q = query(
+      collection(db, "blogs"),
+      orderBy("view", "desc"),
+      limit(20)
+    );
+    const blogsStore = useBlogsStore();
+
+    const querySnapshot = await getDocs(q);
+    const blogs = ref<any>({});
+    const newBlogs = ref<any>({});
+
+    const unApprovedBlogs = ref<any>({});
+    querySnapshot.forEach(async (doc) => {
+      const blog = doc.data();
+      // Separate two store - first is approved+remove course unlocked and second is unapproved
+      if (blog.isApproved === true) {
+        var size = Object.keys(blogs.value).length;
+        if (size < 10) {
+          // unapprove -> for normal user
+          blogs.value[doc.id] = {
+            id: doc.id,
+            ...blog,
+          };
+        }
+        // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
+        const newBlog = useCheckNewItem(blog);
+        if (newBlog) {
+          newBlogs.value[doc.id] = {
+            ...newBlog,
+            id: doc.id,
+          };
+        }
+      } else if (blog.isApproved === false) {
+        // unapprove -> for admin
+        unApprovedBlogs.value[doc.id] = {
+          id: doc.id,
+          ...blog,
+        };
+      }
+    });
+    console.log(unApprovedBlogs.value, "BLOGS");
+    blogsStore.blogs = blogs.value;
+    blogsStore.newBlogs = newBlogs.value;
+    blogsStore.unApprovedBlogs = unApprovedBlogs.value;
   } catch (error) {
     console.log(error);
   }

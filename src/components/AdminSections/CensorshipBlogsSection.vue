@@ -11,25 +11,18 @@
                 :snap-align="'start'"
                 :breakpoints="breakpoints"
               >
-                <Slide v-for="slide in 10" :key="slide">
+                <Slide
+                  v-for="(blog, key) in blogsStore.unApprovedBlogs"
+                  :key="key"
+                >
                   <div class="card-item">
                     <div class="thumbnail">
-                      <img
-                        src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-                        alt=""
-                      />
+                      <img :src="blog.imgUrl" alt="" />
                     </div>
                     <div class="card-right bg-primary">
                       <h3 class="multiline-ellipsis-1">
-                        Lorem islem posile delao adipisicing elit!
+                        {{ blog.title }}
                       </h3>
-                      <p class="multiline-ellipsis-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Amet eos voluptatem iusto delectus, minus sapiente!
-                        Distinctio atque dolore reprehenderit laboriosam? Sit et
-                        possimus assumenda! Quas aspernatur dolore nulla cumque
-                        odio.
-                      </p>
                       <div class="card-auth">
                         <div class="wrapper-img">
                           <img src="/src/images/peep-82.png" alt="" />
@@ -37,7 +30,9 @@
 
                         <span>Jclahi</span>
                       </div>
-                    <div><button class="btn-more">More details...</button></div>
+                      <div>
+                        <button class="btn-more">More details...</button>
+                      </div>
                     </div>
                   </div>
                 </Slide>
@@ -59,7 +54,8 @@ import { ref } from "vue";
 
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-
+import { useBlogsStore } from "../../composable/useBlogs";
+const blogsStore = useBlogsStore();
 const breakpoints = ref({
   0: {
     itemsToShow: 1,
@@ -158,8 +154,7 @@ const breakpoints = ref({
 
             object-fit: cover;
             width: 100%;
-            min-height: 180px;
-            height: 100%;
+            height: 160px;
             border-radius: 5px;
           }
         }
@@ -171,7 +166,6 @@ const breakpoints = ref({
           .btn-more {
             margin-top: 0 !important;
             font-size: 0.8rem !important;
-            
           }
           h3 {
             font-size: 1.3rem;
@@ -221,7 +215,6 @@ const breakpoints = ref({
               font-weight: bold;
               font-size: 1.1rem;
             }
-
           }
           .card-auth:hover .wrapper-img img {
             scale: 1.05;

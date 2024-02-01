@@ -2,43 +2,52 @@
   <div class="blog-create">
     <div class="container blog-create-container">
       <div class="form-group">
-        <input type="text" placeholder="Title..." />
+        <input type="text" placeholder="Title..." v-model="title" />
         <div class="file-thumbnail">
-          <div>
-            <input type="file" name="file" id="file" class="inputfile" />
+          <div class="select-img">
+            <input
+              @change="onImage"
+              type="file"
+              name="file"
+              ref="fileImgElement"
+              id="file"
+              class="inputfile"
+              required
+            />
             <label for="file"
               ><i class="fas fa-image"></i>
               <p>Upload image!</p></label
             >
           </div>
-          <!-- <div class="img-thumbnail">
-            <img
-              src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-              alt=""
-            />
-          </div> -->
+          <div class="img-thumbnail" v-show="imageUrlReader">
+            <img :src="imageUrlReader" alt="" />
+          </div>
         </div>
       </div>
 
       <div class="form-group">
         <div class="custom-select">
-          <select>
-            <option value="0">Industry</option>
-            <option value="1">Audi</option>
-            <option value="2">BMW</option>
-            <option value="3">Citroen</option>
-            <option value="4">Ford</option>
-            <option value="5">Honda</option>
-            <option value="6">Jaguar</option>
-            <option value="7">Land Rover</option>
-            <option value="8">Mercedes</option>
-            <option value="9">Mini</option>
-            <option value="10">Nissan</option>
-            <option value="11">Toyota</option>
-            <option value="12">Volvo</option>
+          <select v-model="industry">
+            <option>Industry</option>
+            <option>Audi</option>
+            <option>BMW</option>
+            <option>Citroen</option>
+            <option>Ford</option>
+            <option>Honda</option>
+            <option>Jaguar</option>
+            <option>Land Rover</option>
+            <option>Mercedes</option>
+            <option>Mini</option>
+            <option>Nissan</option>
+            <option>Toyota</option>
+            <option>Volvo</option>
           </select>
         </div>
-        <input type="text" placeholder="Tags (Ex: Frontend, Backend,...)" />
+        <input
+          v-model="tags"
+          type="text"
+          placeholder="Tags (Ex: Frontend, Backend,...)"
+        />
       </div>
       <div class="text-editor">
         <QuillEditor
@@ -52,8 +61,10 @@
       <div class="result">
         <h3 class="topic">Your post</h3>
         <div class="result-top">
-          <h2 class="title">Lorem isluti lemi hioseil lami nelo!</h2>
-          <p class="tags"><span>Front-end</span> <span>Back-end</span></p>
+          <h2 class="title">{{ title }}</h2>
+          <p class="tags">
+            <span>{{ tags }}</span> <span>Full-stack</span>
+          </p>
           <div class="auth">
             <div class="img">
               <img src="../images/peep-82.png" alt="" />
@@ -61,7 +72,7 @@
             <div class="text">
               <div class="text-top">
                 <span class="name">Jclahi</span>
-                | <span class="type">Software</span>
+                | <span class="type">{{ industry }}</span>
               </div>
               <div class="date">10/11/2003</div>
             </div>
@@ -88,6 +99,7 @@
 import { ref, watch } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import BlotFormatter from "quill-blot-formatter";
+// @ts-ignore
 import ImageUploader from "quill-image-uploader";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 // import { useAddBlogStore } from "../composable/useFirebaseStore";
@@ -97,6 +109,31 @@ import {
 } from "../composable/useFirebaseStorage";
 import { useAddBlogStore } from "../composable/useFirebaseStore";
 import router from "../router";
+
+const tags = ref("Front-end Back-end");
+const title = ref("Lorem isluti lemi hioseil lami nelo!");
+const industry = ref("Industry");
+
+// INPUT FOR SELECT IMG FILE
+const imageName = ref("");
+const imagePath = ref("");
+const imageUrlReader: any = ref("");
+const fileImgElement = ref();
+const onImage = () => {
+  let file = fileImgElement.value.files[0];
+  let reader = new FileReader();
+  reader.onload = function () {
+    // GET A LINK OF VIDEO TO DISPLAY ON THE SCREEN
+    imageUrlReader.value = reader.result;
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+  imageName.value = file.name; // GET A NAME OF THE FILE
+  imagePath.value = file; // GET A PATH OF THE FILE
+};
+
 const content = ref();
 const contentEle = ref();
 const mediaFiles = ref<any>({});
@@ -144,9 +181,15 @@ const useChangeBase64 = () => {
 };
 const onComplete = async () => {
   useChangeBase64();
+  const idUser: any = localStorage.getItem("idUser");
+  const fullPathThumbnail: any = await useUploadImgStorage(
+    { filePath: imagePath.value, fileName: imageName.value },
+    idUser
+  );
+  const imgThumbnail = await useGetImageUrlStorage(fullPathThumbnail);
 
   const links = useGetLinks();
-  const idUser: any = localStorage.getItem("idUser");
+
   const imgUrls = ref<any>({});
   for (const key in links) {
     const fullPath: any = await useUploadImgStorage(links[key], idUser);
@@ -155,7 +198,17 @@ const onComplete = async () => {
   }
 
   const result: any = document.querySelector(".ql-editor");
-  const data = ref({ content: result.innerHTML, images: imgUrls.value });
+  const data = ref({
+    content: result.innerHTML,
+    images: imgUrls.value,
+    title: title.value,
+    industry: industry.value,
+    tags: tags.value,
+    imgUrl: imgThumbnail,
+    isApproved: false,
+    view: 0,
+    idUser: idUser,
+  });
   await useAddBlogStore(data.value);
   await router.push("/");
 };
@@ -204,17 +257,23 @@ const options = {
         justify-content: center;
         align-items: center;
         width: 20%;
-        background-color: var(--footer-color);
         height: 70px;
         text-align: center;
         border: 2px dashed var(--border-color);
         border-radius: 5px;
+        position: relative;
         overflow: hidden;
-        .video-thumbnail {
-          background-color: var(--bg-secondary);
-          width: 100%;
-          video {
+        .img-thumbnail {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          z-index: -1;
+          img {
+            height: 100%;
             width: 100%;
+            object-fit: cover;
           }
         }
 

@@ -1,4 +1,4 @@
-export const useCheckNewCourses = (course: any) => {
+export const useCheckNewItem = (item: any) => {
   function datediff(first: any, second: any) {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
   }
@@ -8,11 +8,11 @@ export const useCheckNewCourses = (course: any) => {
   }
   const date = new Date();
   const countDaysBetweenTwoDays = datediff(
-    parseDate(course?.createdAt),
+    parseDate(item?.createdAt),
     parseDate(date.toLocaleDateString())
   );
   console.log("ALALALA");
   if (countDaysBetweenTwoDays < 2) {
-    return course;
+    return item;
   }
 };
