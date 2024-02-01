@@ -86,7 +86,7 @@ const breakpoints = ref({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // ------------------------------- START COURSES CSS STYLE----------------------------
 .courses {
   margin: 2rem 0;

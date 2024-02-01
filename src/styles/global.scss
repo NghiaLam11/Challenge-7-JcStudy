@@ -58,6 +58,9 @@ textarea::placeholder {
 .carousel-next {
   font-size: 1rem !important;
 }
+.ql-container {
+  min-height: 70vh !important;
+}
 @media screen and (min-width: 768px) and (max-width: 998px) {
   button {
     margin-top: 0.2rem !important;

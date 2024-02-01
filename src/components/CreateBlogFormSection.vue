@@ -4,19 +4,19 @@
       <div class="form-group">
         <input type="text" placeholder="Title..." />
         <div class="file-thumbnail">
-          <!-- <div>
+          <div>
             <input type="file" name="file" id="file" class="inputfile" />
             <label for="file"
               ><i class="fas fa-image"></i>
               <p>Upload image!</p></label
             >
-          </div> -->
-          <div class="img-thumbnail">
+          </div>
+          <!-- <div class="img-thumbnail">
             <img
               src="../images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
               alt=""
             />
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -67,12 +67,18 @@
             </div>
           </div>
         </div>
-        <div v-show="content !== undefined" class="content-editor" ref="contentEle"></div>
+        <div
+          v-show="content !== undefined"
+          class="content-editor"
+          ref="contentEle"
+        ></div>
         <div v-show="content === undefined" class="empty-post">
           Your post is empty! Write something above!
           {{ content }}
         </div>
-        <button class="btn-complete" type="button">Complete</button>
+        <button @click="onComplete" class="btn-complete" type="button">
+          Complete
+        </button>
       </div>
     </div>
   </div>
@@ -82,31 +88,103 @@
 import { ref, watch } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import BlotFormatter from "quill-blot-formatter";
+import ImageUploader from "quill-image-uploader";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
+// import { useAddBlogStore } from "../composable/useFirebaseStore";
+import {
+  useGetImageUrlStorage,
+  useUploadImgStorage,
+} from "../composable/useFirebaseStorage";
+import { useAddBlogStore } from "../composable/useFirebaseStore";
+import router from "../router";
 const content = ref();
 const contentEle = ref();
+const mediaFiles = ref<any>({});
+const useSaveLinks = (imgName: string, imgPath: any) => {
+  const result: any = document.querySelector(".ql-editor");
+  const images: any = result.querySelectorAll(".image-uploading");
+  for (let i = 0; i < images.length; i++) {
+    let children = images[i].querySelector("img");
+    if (children !== null && children.classList.value === "" && imgName) {
+      children.classList.add(imgName);
+      mediaFiles.value[imgName] = {
+        fileName: imgName,
+        filePath: imgPath,
+      };
+    }
+  }
+  content.value = result.innerHTML;
+};
 
+const useGetLinks = () => {
+  const links = ref<any>({});
+  const result: any = document.querySelector(".ql-editor");
+  const images: any = result.querySelectorAll(".image-uploading");
+  for (let i = 0; i < images.length; i++) {
+    let children = images[i].querySelector("img");
+    if (children?.classList.value) {
+      if (mediaFiles.value.hasOwnProperty(children.classList.value)) {
+        links.value[children.classList.value] =
+          mediaFiles.value[children.classList.value];
+      }
+    }
+  }
+  return links.value;
+};
+
+const useChangeBase64 = () => {
+  const result: any = document.querySelector(".ql-editor");
+  const images: any = result.querySelectorAll(".image-uploading");
+  for (let i = 0; i < images.length; i++) {
+    let children = images[i].querySelector("img");
+    if (children != null) {
+      children.src = "https://unsplash.com/photos/text-jf1EomjlQi0";
+    }
+  }
+};
+const onComplete = async () => {
+  useChangeBase64();
+
+  const links = useGetLinks();
+  const idUser: any = localStorage.getItem("idUser");
+  const imgUrls = ref<any>({});
+  for (const key in links) {
+    const fullPath: any = await useUploadImgStorage(links[key], idUser);
+    const url = await useGetImageUrlStorage(fullPath);
+    imgUrls.value[key] = url;
+  }
+
+  const result: any = document.querySelector(".ql-editor");
+  const data = ref({ content: result.innerHTML, images: imgUrls.value });
+  await useAddBlogStore(data.value);
+  await router.push("/");
+};
 watch(content, (val: any) => {
-  console.log(val);
   contentEle.value.innerHTML = val;
 });
-// const onTest = (val: any) => {
-//   console.log(val.value.className);
-// };
-// const onTest2 = (val: any) => {
-//   console.log(val);
-// };
-const modules = {
-  name: "blotFormatter",
-  module: BlotFormatter,
-};
+const modules = [
+  {
+    name: "blotFormatter",
+    module: BlotFormatter,
+  },
+  {
+    name: "imageUploader",
+    module: ImageUploader,
+    options: {
+      upload: (file: any) => {
+        setTimeout(() => {
+          useSaveLinks(file.name, file);
+        }, 500);
+      },
+    },
+  },
+];
 const options = {
   debug: "info",
   // readOnly: true,
   placeholder: "Compose an epic...",
   theme: "snow",
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -241,9 +319,7 @@ const options = {
       }
     }
     .text-editor {
-      height: 70vh;
-      min-height: 70vh;
-      margin-bottom: 5rem;
+      margin-bottom: 2rem;
     }
     .result {
       max-width: 889px;
@@ -318,15 +394,8 @@ const options = {
     }
   }
 }
-@media screen and (min-width: 534px) and (max-width:1245px){
-  .text-editor {
-    margin-bottom: 8rem !important;
-  }
-}
+
 @media screen and (max-width: 534px) {
-  .text-editor {
-    margin-bottom: 10rem !important;
-  }
   .result-top {
     .title {
       font-size: 2rem !important;
@@ -336,9 +405,6 @@ const options = {
 }
 
 @media screen and (max-width: 374px) {
-  .text-editor {
-    margin-bottom: 13rem !important;
-  }
   .topic {
     font-size: 0.9rem !important;
   }
@@ -349,6 +415,5 @@ const options = {
       letter-spacing: 0.2px !important;
     }
   }
-
 }
 </style>

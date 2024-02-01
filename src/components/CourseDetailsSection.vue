@@ -10,10 +10,10 @@
             <p class="multiline-ellipsis-1">
               {{ courseUnapproved?.desc }}
             </p>
-            <div class="lesson-progress">
+            <!-- <div class="lesson-progress">
               <progress class="accent-color" value="32" max="100"></progress>
               <span class="percent"> 43% </span>
-            </div>
+            </div> -->
           </div>
 
           <hr />

@@ -119,6 +119,7 @@ export const autoUpdateStudyTime = () => {
       JSON.stringify(currentTimeArray)
     );
     currentTime = 0;
+    return;
   });
   console.log(JSON.parse(timeArray));
 };

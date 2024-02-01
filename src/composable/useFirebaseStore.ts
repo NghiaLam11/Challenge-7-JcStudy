@@ -180,3 +180,13 @@ export const useUpdateCourseStore = async (updateCourse: any, id: string) => {
     console.log(error);
   }
 };
+
+
+export const useAddBlogStore = async (blog: any) => {
+  try {
+    const docRef = await addDoc(collection(db, "blogs"), blog);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};

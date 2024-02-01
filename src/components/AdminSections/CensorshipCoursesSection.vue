@@ -184,14 +184,20 @@ const onMoreDetails = (course: Course) => {
               font-size: 0.7rem !important;
               margin-top: 0 !important;
             }
+            span {
+              margin-left: 0.5rem;
+              font-size: 0.8rem;
+              opacity: 0.6;
+            }
             span:hover {
+              color: var(--primary-color);
               opacity: 1 !important;
             }
           }
         }
       }
       .card-item:hover .card-right {
-        transform: translateX(-50%);
+        transform: translateX(-1rem);
         padding-left: 1rem;
         border-radius: 5px;
       }

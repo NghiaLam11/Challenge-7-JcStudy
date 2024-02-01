@@ -17,6 +17,8 @@ export const useUploadImgStorage = async (
       `images-${idUser}/${mediaLink.fileName}`
     );
     const img = await uploadBytes(mediaImageRef, mediaLink.filePath);
+    uploaderStore.onToggleUploading();
+
     return img.metadata.fullPath;
   } catch (error) {
     console.log(error);
@@ -56,7 +58,6 @@ export const useGetVideoUrlStorage = async (fullPath: string) => {
   try {
     const videoUrl = await getDownloadURL(ref(storage, fullPath));
     return videoUrl;
-
   } catch (error) {
     console.log(error);
   }
