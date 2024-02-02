@@ -206,6 +206,7 @@ const onComplete = async () => {
     tags: tags.value,
     imgUrl: imgThumbnail,
     isApproved: false,
+    createdAt: new Date().toLocaleDateString(),
     view: 0,
     idUser: idUser,
   });

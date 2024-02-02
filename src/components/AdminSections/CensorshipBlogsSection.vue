@@ -20,18 +20,27 @@
                       <img :src="blog.imgUrl" alt="" />
                     </div>
                     <div class="card-right bg-primary">
+                      <p class="related">
+                        <span>{{ blog.createdAt }}</span> |
+                        <span>{{ blog.industry }}</span>
+                      </p>
                       <h3 class="multiline-ellipsis-1">
                         {{ blog.title }}
                       </h3>
                       <div class="card-auth">
                         <div class="wrapper-img">
-                          <img src="/src/images/peep-82.png" alt="" />
+                          <img :src="users[blog.idUser].avatar" alt="" />
                         </div>
-
-                        <span>Jclahi</span>
+                        <div class="name-auth">
+                          <span>{{ users[blog.idUser].name }}</span>
+                          <span>Software</span>
+                        </div>
                       </div>
-                      <div>
-                        <button class="btn-more">More details...</button>
+                      <div class="btn-group">
+                        <button @click="onApprove(blog)">Approve</button>
+                        <span @click="onMoreDetails(blog)">
+                          More details...
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -55,7 +64,18 @@ import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useBlogsStore } from "../../composable/useBlogs";
+import { useUserStore } from "../../composable/useUser";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const blogsStore = useBlogsStore();
+const userStore = useUserStore();
+const users: any = userStore.users;
+const onMoreDetails = (blog: any) => {
+  router.push(`/blogs/${blog.id}`);
+};
+const onApprove = (blog: any) => {
+  console.log(blog);
+};
 const breakpoints = ref({
   0: {
     itemsToShow: 1,
@@ -163,19 +183,31 @@ const breakpoints = ref({
           text-align: start;
           transition: all 0.8s ease;
           padding: 0 1rem;
-          .btn-more {
-            margin-top: 0 !important;
-            font-size: 0.8rem !important;
+          .related {
+            font-size: 0.7rem;
+            color: var(--primary-color);
+          }
+          .btn-group {
+            display: flex;
+            align-items: center;
+            button {
+              font-size: 0.7rem !important;
+              margin-top: 0 !important;
+            }
+            span {
+              margin-left: 0.5rem;
+              font-size: 0.8rem;
+              opacity: 0.6;
+            }
+            span:hover {
+              color: var(--primary-color);
+              opacity: 1 !important;
+            }
           }
           h3 {
             font-size: 1.3rem;
             line-height: 1.8rem;
-            margin-bottom: 0.2rem;
-          }
-          p {
-            font-size: 0.8rem;
-            line-height: 1.2rem;
-            opacity: 0.7;
+            margin-bottom: 0rem;
           }
 
           .card-auth {
@@ -183,6 +215,17 @@ const breakpoints = ref({
             align-items: center;
             padding: 0.2rem;
             margin: 0.5rem 0;
+            .name-auth {
+              display: flex;
+              flex-direction: column;
+              span {
+                font-size: 0.9rem;
+              }
+              span:last-child {
+                font-size: 0.5rem;
+                opacity: 0.7;
+              }
+            }
             .wrapper-img {
               width: 35px;
               height: 35px;
@@ -234,7 +277,7 @@ const breakpoints = ref({
         }
       }
       .card-item:hover .card-right {
-        transform: translateY(1.5rem);
+        transform: translateY(0.1rem);
         border-radius: 5px;
       }
       .card-item:hover .thumbnail {

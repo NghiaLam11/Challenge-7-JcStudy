@@ -19,7 +19,7 @@ const routes = [
   { path: "/auth", component: Auth },
   { path: "/auth-anonymus", component: AuthAnonymus },
   { path: "/blogs", component: Blogs },
-  { path: "/blogs/:title", component: BlogDetails },
+  { path: "/blogs/:id", component: BlogDetails },
   { path: "/create-blog", component: CreateBlog },
   { path: "/utilities", component: Utilities },
   { path: "/courses", component: Courses },

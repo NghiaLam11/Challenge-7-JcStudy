@@ -30,11 +30,11 @@ export const useGetUserStore = async () => {
     await useGetCoursesStore();
     await useGetBlogsStore();
     const querySnapshot = await getDocs(collection(db, "users"));
-    const users = ref<any>([]);
+    const users = ref<any>({});
     const idUser = localStorage.getItem("idUser");
     // const date = new Date();
     querySnapshot.forEach((doc) => {
-      users.value.push({ id: doc.id, ...doc.data() });
+      users.value[doc.id] = { id: doc.id, ...doc.data() };
       if (idUser === doc.id) {
         userStore.user = { id: doc.id, ...doc.data() };
         userStore.studyTime = doc.data().studyTime;
@@ -42,6 +42,7 @@ export const useGetUserStore = async () => {
     });
     autoUpdateStudyTime();
     loaderStore.onToggleLoading();
+    userStore.users = users.value;
   } catch (error) {
     console.log(error);
   }

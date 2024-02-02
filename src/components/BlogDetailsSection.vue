@@ -3,18 +3,20 @@
     <div class="container">
       <div class="result">
         <div class="result-top">
-          <h2 class="title">{{ $route.params.title }}</h2>
-          <p class="tags"><span>Front-end</span> <span>Back-end</span></p>
+          <h2 class="title">{{ blog.title }}</h2>
+          <p class="tags">
+            <span>{{ blog.tags }}</span>
+          </p>
           <div class="auth">
             <div class="img">
-              <img src="../images/peep-82.png" alt="" />
+              <img :src="users[blog.idUser].avatar" alt="" />
             </div>
             <div class="text">
               <div class="text-top">
-                <span class="name">Jclahi</span>
-                | <span class="type">Software</span>
+                <span class="name">{{ users[blog.idUser].name }}</span>
+                | <span class="type">{{ blog.industry }}</span>
               </div>
-              <div class="date">10/11/2003</div>
+              <div class="date">{{ blog.createdAt }}</div>
             </div>
           </div>
         </div>
@@ -121,7 +123,36 @@
 <script lang="ts" setup>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { useBlogsStore } from "../composable/useBlogs";
+import { useUserStore } from "../composable/useUser";
+const blogsStore = useBlogsStore();
+const route: any = useRoute();
+const userStore = useUserStore();
+const users: any = userStore.users;
+// console.log(route.params.id);
+const blog = computed(() => {
+  return blogsStore.unApprovedBlogs[route.params.id];
+});
+
+onMounted(() => {
+  const content: any = document.querySelector(".content-editor");
+  console.log(content, "After");
+  content.innerHTML = blogsStore.unApprovedBlogs[route.params.id].content;
+  const images: any = content.querySelectorAll(".image-uploading");
+  for (let i = 0; i < images.length; i++) {
+    let children = images[i].querySelector("img");
+    if (children != null) {
+      console.log(children.classList.value, "CHILD");
+      children.src =
+        blogsStore.unApprovedBlogs[route.params.id].images[
+          children.classList.value
+        ];
+    }
+  }
+});
+
 const breakpointsblogs = ref({
   0: {
     itemsToShow: 1,
@@ -146,9 +177,8 @@ const breakpointsblogs = ref({
 
 <style lang="scss" scoped>
 .blog-detail {
-    padding: 0.8rem;
-    padding-top: 2rem;
-
+  padding: 0.8rem;
+  padding-top: 2rem;
   .result {
     max-width: 889px;
     margin: 0 auto;
@@ -342,10 +372,9 @@ const breakpointsblogs = ref({
     }
   }
 }
-@media screen and (max-width: 534px) { 
-
-    .title {
-        font-size: 2.4rem !important;
-    }
+@media screen and (max-width: 534px) {
+  .title {
+    font-size: 2.4rem !important;
+  }
 }
 </style>
