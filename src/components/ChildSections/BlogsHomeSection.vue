@@ -3,34 +3,36 @@
     <div class="topic">
       <h3>Blogs</h3>
     </div>
-    <Carousel :breakpoints="breakpointsblogs">
-      <Slide v-for="slide in 10" :key="slide">
+    <Carousel
+      :items-to-show="2"
+      :snap-align="'start'"
+      :breakpoints="breakpointsblogs"
+    >
+      <Slide v-for="(blog, key) in blogsStore.blogsApproved" :key="key">
         <div class="card-item">
-          <div class="thumbnail">
-            <img
-              src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-              alt=""
-            />
-          </div>
-          <div class="card-right bg-primary">
-            <h3 class="multiline-ellipsis-1">
-              Lorem islem posile delao adipisicing elit!
-            </h3>
-            <p class="multiline-ellipsis-2">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
-            </p>
-            <div class="card-auth">
-              <div class="wrapper-img">
-                <img src="/src/images/peep-82.png" alt="" />
-              </div>
-
-              <span>Jclahi</span>
+          <router-link :to="`/blogs/${blog.id}`">
+            <div class="thumbnail">
+              <img :src="blog.imgUrl" alt="" />
             </div>
-            <div><button @click="onUnlock">Read more...</button></div>
-          </div>
+            <div class="card-right bg-primary">
+              <p class="related">
+                <span>{{ blog.createdAt }}</span> |
+                <span>{{ blog.industry }}</span>
+              </p>
+              <h3 class="multiline-ellipsis-1">
+                {{ blog.title }}
+              </h3>
+              <div class="card-auth">
+                <div class="wrapper-img">
+                  <img :src="users[blog.idUser].avatar" alt="" />
+                </div>
+                <div class="name-auth">
+                  <span>{{ users[blog.idUser].name }}</span>
+                  <span>Software</span>
+                </div>
+              </div>
+            </div></router-link
+          >
         </div>
       </Slide>
 
@@ -45,14 +47,12 @@
 import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { useSound } from "../../../src/composable/useSound.ts";
+import { useBlogsStore } from "../../composable/useBlogs";
+import { useUserStore } from "../../composable/useUser";
+const blogsStore = useBlogsStore();
+const userStore = useUserStore();
+const users: any = userStore.users;
 
-
-// Play sound when btn is clicked
-const soundStore = useSound();
-const onUnlock = () => {
-  soundStore.playSound();
-};
 const breakpointsblogs = ref({
   0: {
     itemsToShow: 1,
@@ -78,7 +78,7 @@ const breakpointsblogs = ref({
   },
 });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 // ------------------------------- START NEW CSS STYLE----------------------------
 .blogs {
   margin: 2rem 0;
@@ -91,6 +91,9 @@ const breakpointsblogs = ref({
     cursor: pointer;
     padding-bottom: 2rem;
     padding-top: 0;
+    a {
+      text-decoration: none;
+    }
     .thumbnail {
       width: 100%;
       height: 100%;
@@ -103,8 +106,7 @@ const breakpointsblogs = ref({
 
         object-fit: cover;
         width: 100%;
-        min-height: 180px;
-        height: 100%;
+        height: 160px;
         border-radius: 5px;
       }
     }
@@ -113,15 +115,14 @@ const breakpointsblogs = ref({
       text-align: start;
       transition: all 0.8s ease;
       padding: 0 1rem;
+      .related {
+        font-size: 0.7rem;
+        color: var(--primary-color);
+      }
       h3 {
         font-size: 1.3rem;
         line-height: 1.8rem;
-        margin-bottom: 0.2rem;
-      }
-      p {
-        font-size: 0.8rem;
-        line-height: 1.2rem;
-        opacity: 0.7;
+        margin-bottom: 0rem;
       }
 
       .card-auth {
@@ -129,6 +130,17 @@ const breakpointsblogs = ref({
         align-items: center;
         padding: 0.2rem;
         margin: 0.5rem 0;
+        .name-auth {
+          display: flex;
+          flex-direction: column;
+          span {
+            font-size: 0.9rem;
+          }
+          span:last-child {
+            font-size: 0.5rem;
+            opacity: 0.7;
+          }
+        }
         .wrapper-img {
           width: 35px;
           height: 35px;
@@ -180,7 +192,7 @@ const breakpointsblogs = ref({
     }
   }
   .card-item:hover .card-right {
-    transform: translateY(1.5rem);
+    transform: translateY(0.1rem);
     border-radius: 5px;
   }
   .card-item:hover .thumbnail {

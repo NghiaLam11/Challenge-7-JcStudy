@@ -3,20 +3,20 @@
     <div class="container">
       <div class="result">
         <div class="result-top">
-          <h2 class="title">{{ blog.title }}</h2>
+          <h2 class="title">{{ blog?.title }}</h2>
           <p class="tags">
-            <span>{{ blog.tags }}</span>
+            <span>{{ blog?.tags }}</span>
           </p>
           <div class="auth">
             <div class="img">
-              <img :src="users[blog.idUser].avatar" alt="" />
+              <img :src="users[blog?.idUser]?.avatar" alt="" />
             </div>
             <div class="text">
               <div class="text-top">
-                <span class="name">{{ users[blog.idUser].name }}</span>
-                | <span class="type">{{ blog.industry }}</span>
+                <span class="name">{{ users[blog?.idUser]?.name }}</span>
+                | <span class="type">{{ blog?.industry }}</span>
               </div>
-              <div class="date">{{ blog.createdAt }}</div>
+              <div class="date">{{ blog?.createdAt }}</div>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
 <script lang="ts" setup>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useBlogsStore } from "../composable/useBlogs";
 import { useUserStore } from "../composable/useUser";
@@ -132,21 +132,19 @@ const route: any = useRoute();
 const userStore = useUserStore();
 const users: any = userStore.users;
 // console.log(route.params.id);
-const blog = computed(() => {
-  return blogsStore.unApprovedBlogs[route.params.id];
-});
+const blog = blogsStore.blogs[route.params.id];
 
 onMounted(() => {
   const content: any = document.querySelector(".content-editor");
   console.log(content, "After");
-  content.innerHTML = blogsStore.unApprovedBlogs[route.params.id].content;
+  content.innerHTML = blogsStore.blogs[route.params.id].content;
   const images: any = content.querySelectorAll(".image-uploading");
   for (let i = 0; i < images.length; i++) {
     let children = images[i].querySelector("img");
     if (children != null) {
       console.log(children.classList.value, "CHILD");
       children.src =
-        blogsStore.unApprovedBlogs[route.params.id].images[
+        blogsStore.blogs[route.params.id].images[
           children.classList.value
         ];
     }

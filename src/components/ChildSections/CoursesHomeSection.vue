@@ -97,6 +97,7 @@ const breakpoints = ref({
     display: flex;
     cursor: pointer;
     width: 100%;
+    height: 100%;
     .thumbnail {
       width: 50%;
       height: 100%;

@@ -197,20 +197,26 @@ export const useGetBlogsStore = async () => {
     const querySnapshot = await getDocs(q);
     const blogs = ref<any>({});
     const newBlogs = ref<any>({});
+    const blogsApproved = ref<any>({});
 
     const unApprovedBlogs = ref<any>({});
     querySnapshot.forEach(async (doc) => {
       const blog = doc.data();
+      var size = Object.keys(blogs.value).length;
+      if (size < 20) {
+        // unapprove -> for normal user
+        blogs.value[doc.id] = {
+          id: doc.id,
+          ...blog,
+        };
+      }
       // Separate two store - first is approved+remove course unlocked and second is unapproved
       if (blog.isApproved === true) {
-        var size = Object.keys(blogs.value).length;
-        if (size < 10) {
-          // unapprove -> for normal user
-          blogs.value[doc.id] = {
-            id: doc.id,
-            ...blog,
-          };
-        }
+        blogsApproved.value[doc.id] = {
+          id: doc.id,
+          ...blog,
+        };
+
         // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
         const newBlog = useCheckNewItem(blog);
         if (newBlog) {
@@ -229,8 +235,24 @@ export const useGetBlogsStore = async () => {
     });
     console.log(unApprovedBlogs.value, "BLOGS");
     blogsStore.blogs = blogs.value;
+    blogsStore.blogsApproved = blogsApproved.value;
     blogsStore.newBlogs = newBlogs.value;
     blogsStore.unApprovedBlogs = unApprovedBlogs.value;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useUpdateBlogStore = async (updateBlog: any, id: string) => {
+  try {
+    const docRef = doc(db, "blogs", id);
+    const dataUpdate = await updateDoc(docRef, updateBlog);
+    console.log(
+      "A New Document Field has been updated to an existing document",
+      updateBlog,
+      dataUpdate
+    );
+    window.location.reload();
   } catch (error) {
     console.log(error);
   }

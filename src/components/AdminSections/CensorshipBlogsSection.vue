@@ -66,6 +66,7 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useBlogsStore } from "../../composable/useBlogs";
 import { useUserStore } from "../../composable/useUser";
 import { useRouter } from "vue-router";
+import { useUpdateBlogStore } from "../../composable/useFirebaseStore";
 const router = useRouter();
 const blogsStore = useBlogsStore();
 const userStore = useUserStore();
@@ -75,6 +76,7 @@ const onMoreDetails = (blog: any) => {
 };
 const onApprove = (blog: any) => {
   console.log(blog);
+  useUpdateBlogStore({ isApproved: true }, blog.id);
 };
 const breakpoints = ref({
   0: {
