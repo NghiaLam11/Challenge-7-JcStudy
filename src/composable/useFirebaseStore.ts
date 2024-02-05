@@ -41,7 +41,7 @@ export const useGetUserStore = async () => {
       }
     });
     autoUpdateStudyTime();
-    loaderStore.onToggleLoading();
+    loaderStore.isLoading = false;
     userStore.users = users.value;
   } catch (error) {
     console.log(error);
@@ -95,7 +95,7 @@ export const useGetCoursesStore = async () => {
       limit(20)
     );
     const querySnapshot = await getDocs(q);
-    const courses = ref<any>({});
+    const coursesApproved = ref<any>({});
     const newCourses = ref<any>({});
 
     const unApprovedCourses = ref<any>({});
@@ -116,11 +116,11 @@ export const useGetCoursesStore = async () => {
         course.isApproved === true &&
         !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
       ) {
-        var size = Object.keys(courses.value).length;
+        var size = Object.keys(coursesApproved.value).length;
         if (size < 10) {
           console.log("A");
           // unapprove -> for normal user
-          courses.value[doc.id] = {
+          coursesApproved.value[doc.id] = {
             id: doc.id,
             imgUrl: imgUrl,
             videoUrl: videoUrl,
@@ -153,7 +153,7 @@ export const useGetCoursesStore = async () => {
       }
     });
 
-    coursesStore.courses = courses.value;
+    coursesStore.coursesApproved = coursesApproved.value;
     coursesStore.newCourses = newCourses.value;
     coursesStore.unApprovedCourses = unApprovedCourses.value;
   } catch (error) {
@@ -252,7 +252,7 @@ export const useUpdateBlogStore = async (updateBlog: any, id: string) => {
       updateBlog,
       dataUpdate
     );
-    window.location.reload();
+    useGetUserStore();
   } catch (error) {
     console.log(error);
   }

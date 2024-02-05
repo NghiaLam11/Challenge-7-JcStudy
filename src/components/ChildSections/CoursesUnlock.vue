@@ -4,23 +4,20 @@
       <h3>Courses unlock</h3>
     </div>
     <Carousel :breakpoints="breakpointsunlock">
-      <Slide v-for="course in userStore.user?.coursesUnlocked" :key="course?.id">
+      <Slide
+        v-for="course in userStore.user?.coursesUnlocked"
+        :key="course?.id"
+      >
         <div class="card-item">
           <div class="thumbnail">
-            <img
-              :src="course.imgUrl"
-              alt=""
-            />
+            <img :src="course.imgUrl" alt="" />
           </div>
           <div class="card-right bg-primary">
             <h3 class="multiline-ellipsis-1">
-              Lorem islem posile delao 
+              {{ course.title }}
             </h3>
             <p class="multiline-ellipsis-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
+              {{ course.desc }}
             </p>
 
             <button @click="onContinue">Continue ...</button>

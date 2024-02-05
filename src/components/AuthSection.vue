@@ -15,11 +15,13 @@
         </div>
       </div>
 
-      <div v-if="!userStore.user?.isAdmin" class="admin">
+      <div v-if="userStore.user?.isAdmin" class="admin">
         <CensorshipCoursesSection
           v-if="Object.keys(coursesStore.unApprovedCourses).length > 0"
         />
-        <CensorshipBlogsSection />
+        <CensorshipBlogsSection
+          v-if="Object.keys(blogsStore.unApprovedBlogs).length > 0"
+        />
       </div>
 
       <div v-else class="user">
@@ -73,6 +75,8 @@ import CoursesRegisterSection from "./AuthChildSections/CoursesRegisterSection.v
 import BlogsRegisterSection from "./AuthChildSections/BlogsRegisterSection.vue";
 import { useUserStore } from "../composable/useUser";
 import { useCoursesStore } from "../composable/useCourses";
+import { useBlogsStore } from "../composable/useBlogs";
+const blogsStore = useBlogsStore();
 const userStore = useUserStore();
 const coursesStore = useCoursesStore();
 const isToggleFormEdit = ref(false);
@@ -95,6 +99,7 @@ const onSignout = () => {
   padding: 2rem;
   .auth-container {
     .btn-signout {
+      margin-top: 2rem;
       text-align: center;
     }
     .auth-top {

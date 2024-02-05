@@ -8,7 +8,7 @@
       :snap-align="'start'"
       :breakpoints="breakpoints"
     >
-      <Slide v-for="(course, key) in coursesStore.courses" :key="key">
+      <Slide v-for="(course, key) in coursesStore.coursesApproved" :key="key">
         <div class="card-item">
           <div class="thumbnail">
             <img :src="course?.imgUrl" alt="" />

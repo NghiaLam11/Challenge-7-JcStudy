@@ -1,5 +1,7 @@
 <template>
-  <div class="censorship">
+  <div
+    class="censorship"
+  >
     <div class="container">
       <div class="censorship-moderate">
         <div class="content-moderate">

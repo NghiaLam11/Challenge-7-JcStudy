@@ -1,5 +1,5 @@
 <template>
-  <div class="new">
+  <div class="new" v-if="Object.keys(coursesStore.newCourses).length > 0">
     <div class="topic">
       <h3>New Courses</h3>
     </div>

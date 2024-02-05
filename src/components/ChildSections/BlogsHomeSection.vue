@@ -22,15 +22,6 @@
               <h3 class="multiline-ellipsis-1">
                 {{ blog.title }}
               </h3>
-              <div class="card-auth">
-                <div class="wrapper-img">
-                  <img :src="users[blog.idUser].avatar" alt="" />
-                </div>
-                <div class="name-auth">
-                  <span>{{ users[blog.idUser].name }}</span>
-                  <span>Software</span>
-                </div>
-              </div>
             </div></router-link
           >
         </div>
@@ -48,11 +39,7 @@ import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useBlogsStore } from "../../composable/useBlogs";
-import { useUserStore } from "../../composable/useUser";
 const blogsStore = useBlogsStore();
-const userStore = useUserStore();
-const users: any = userStore.users;
-
 const breakpointsblogs = ref({
   0: {
     itemsToShow: 1,
@@ -101,9 +88,8 @@ const breakpointsblogs = ref({
       border-radius: 5px;
       overflow: hidden;
       filter: grayscale(1);
+      transition: all 0.25s ease;
       img {
-        transition: all 0.9s ease;
-
         object-fit: cover;
         width: 100%;
         height: 160px;
@@ -123,71 +109,6 @@ const breakpointsblogs = ref({
         font-size: 1.3rem;
         line-height: 1.8rem;
         margin-bottom: 0rem;
-      }
-
-      .card-auth {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.2rem;
-        margin: 0.5rem 0;
-        .name-auth {
-          display: flex;
-          flex-direction: column;
-          span {
-            font-size: 0.9rem;
-          }
-          span:last-child {
-            font-size: 0.5rem;
-            opacity: 0.7;
-          }
-        }
-        .wrapper-img {
-          width: 35px;
-          height: 35px;
-          padding: 0.2rem;
-          position: relative;
-          padding-bottom: 0.4rem;
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.35s ease;
-          }
-        }
-
-        .wrapper-img::after {
-          content: "";
-          position: absolute;
-          z-index: 2;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          scale: 1.03;
-          border-radius: 50%;
-          border: 1px dashed;
-          transition: all 0.35s ease;
-        }
-        span {
-          margin-left: 0.3rem;
-          font-weight: bold;
-          font-size: 1.1rem;
-        }
-      }
-      .card-auth:hover .wrapper-img img {
-        scale: 1.05;
-      }
-      .card-auth:hover .wrapper-img::after {
-        scale: 1.1;
-        animation: spinAni 10s ease-in-out infinite;
-      }
-      @keyframes spinAni {
-        from {
-          transform: rotate(0);
-        }
-        to {
-          transform: rotate(360deg);
-        }
       }
     }
   }

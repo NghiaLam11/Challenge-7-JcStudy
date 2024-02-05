@@ -10,6 +10,11 @@
   --utility-color-second: #fde047;
   background-image: linear-gradient(to right, #e2e8f0, #e5e7eb);
   color: var(--text-color);
+  .carousel__next,
+  .carousel__prev {
+    color: var(--text-color) !important;
+    font-size: 1.2rem !important;
+  }
   .gradient-color-text {
     background: -webkit-linear-gradient(#facc15, var(--primary-color));
     -webkit-background-clip: text;
@@ -50,6 +55,11 @@
 
   background-image: linear-gradient(to right, #0f172a, #111827);
   color: var(--text-color) !important;
+  .carousel__next,
+  .carousel__prev {
+    color: var(--text-color) !important;
+    font-size: 1.2rem !important;
+  }
   .gradient-color-text {
     background: -webkit-linear-gradient(#84ff00, var(--primary-color));
     -webkit-background-clip: text;

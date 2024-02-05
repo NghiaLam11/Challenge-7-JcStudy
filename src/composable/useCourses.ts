@@ -2,12 +2,12 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 // import { User } from "../types/types";
 export const useCoursesStore = defineStore("courses", () => {
-  const courses: any = ref({});
+  const coursesApproved: any = ref({});
   const unApprovedCourses = ref<any>({});
   const newCourses = ref<any>({});
   return {
-    courses,
+    coursesApproved,
     unApprovedCourses,
-    newCourses
+    newCourses,
   };
 });
