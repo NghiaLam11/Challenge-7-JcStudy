@@ -20,7 +20,6 @@ onMounted(() => {
   // Set color of the carousel icon when render
   const iconNext: any = document.querySelectorAll(".carousel__next");
   const iconPrev: any = document.querySelectorAll(".carousel__prev");
-  console.log(iconNext.length, iconPrev.length);
   if (theme === "dark") {
     for (let i = 0; i < iconNext.length; i++) {
       iconNext[i].style.color = "white";

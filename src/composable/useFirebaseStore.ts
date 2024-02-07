@@ -27,9 +27,10 @@ export const useGetUserStore = async () => {
   try {
     const loaderStore = useLoaderStore();
     const userStore = useUserStore();
+
+    const querySnapshot = await getDocs(collection(db, "users"));
     await useGetCoursesStore();
     await useGetBlogsStore();
-    const querySnapshot = await getDocs(collection(db, "users"));
     const users = ref<any>({});
     const idUser = localStorage.getItem("idUser");
     // const date = new Date();
@@ -97,7 +98,8 @@ export const useGetCoursesStore = async () => {
     const querySnapshot = await getDocs(q);
     const coursesApproved = ref<any>({});
     const newCourses = ref<any>({});
-
+    const courses = ref<any>({});
+    const coursesTrend = ref<any>({});
     const unApprovedCourses = ref<any>({});
 
     querySnapshot.forEach(async (doc) => {
@@ -111,16 +113,30 @@ export const useGetCoursesStore = async () => {
         `videos-${course.idUser}/${course.thumbnailVideo}`
       );
       const userStore = useUserStore();
-      // Separate two store - first is approved+remove course unlocked and second is unapproved
+      courses.value[doc.id] = {
+        id: doc.id,
+        imgUrl: imgUrl,
+        videoUrl: videoUrl,
+        ...course,
+      };
+      // Separate two store - first is approved+remove course user's unlocked and second is unapproved
       if (
         course.isApproved === true &&
         !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
       ) {
         var size = Object.keys(coursesApproved.value).length;
         if (size < 10) {
-          console.log("A");
           // unapprove -> for normal user
           coursesApproved.value[doc.id] = {
+            id: doc.id,
+            imgUrl: imgUrl,
+            videoUrl: videoUrl,
+            ...course,
+          };
+        }
+        // IF VIEWED HIGH
+        if (course.countUnlocked > 10) {
+          coursesTrend.value[doc.id] = {
             id: doc.id,
             imgUrl: imgUrl,
             videoUrl: videoUrl,
@@ -152,7 +168,8 @@ export const useGetCoursesStore = async () => {
         };
       }
     });
-
+    coursesStore.courses = courses.value;
+    coursesStore.coursesTrend = coursesTrend.value;
     coursesStore.coursesApproved = coursesApproved.value;
     coursesStore.newCourses = newCourses.value;
     coursesStore.unApprovedCourses = unApprovedCourses.value;
@@ -233,7 +250,6 @@ export const useGetBlogsStore = async () => {
         };
       }
     });
-    console.log(unApprovedBlogs.value, "BLOGS");
     blogsStore.blogs = blogs.value;
     blogsStore.blogsApproved = blogsApproved.value;
     blogsStore.newBlogs = newBlogs.value;

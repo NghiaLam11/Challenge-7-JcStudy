@@ -1,32 +1,25 @@
 <template>
-  <div class="courses-gallery">
+  <div
+    class="courses-gallery"
+    v-if="Object.keys(coursesStore.coursesTrend).length > 0"
+  >
     <Carousel
       id="gallery"
       :items-to-show="1"
       :wrap-around="false"
       v-model="currentSlide"
     >
-      <Slide v-for="slide in 10" :key="slide">
+      <Slide v-for="(course, key) in coursesStore.coursesTrend" :key="key">
         <div class="card-gallery bg-gallery">
           <div class="blur"></div>
           <div class="card-text">
-            <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+            <h3 class="multiline-ellipsis-1">{{ course.title }}</h3>
             <p class="multiline-ellipsis-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
+              {{ course.desc }}
             </p>
-            <div class="card-progress">
-              <progress class="accent-color" value="32" max="100"></progress>
-              <span class="percent">32%</span>
-            </div>
-            <button @click="onUnlock">Continue</button>
+            <button @click="onToggleUnlock(course)">Unlock</button>
           </div>
-          <img
-            src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-            alt=""
-          />
+          <img :src="course.imgUrl" alt="" />
         </div>
       </Slide>
     </Carousel>
@@ -41,29 +34,22 @@
       v-model="currentSlide"
       ref="carousel"
     >
-      <Slide v-for="slide in 10" :key="slide">
-        <div class="carousel__item" @click="slideTo(slide - 1)">
+      <Slide
+        v-for="(course, key, index) in coursesStore.coursesTrend"
+        :key="key"
+      >
+        <div class="carousel__item" @click="slideTo(index - 1)">
           <div class="card-item">
             <div class="thumbnail">
               <div class="badge-trend">Trend</div>
-              <img
-                src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-                alt=""
-              />
+              <img :src="course.imgUrl" alt="" />
             </div>
             <div class="card-right bg-primary">
-              <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+              <h3 class="multiline-ellipsis-1">{{ course.title }}</h3>
               <p class="multiline-ellipsis-4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-                eos voluptatem iusto delectus, minus sapiente! Distinctio atque
-                dolore reprehenderit laboriosam? Sit et possimus assumenda! Quas
-                aspernatur dolore nulla cumque odio.
+                {{ course.desc }}
               </p>
-              <div class="card-progress">
-                <progress class="accent-color" value="32" max="100"></progress>
-                <span class="percent">32%</span>
-              </div>
-              <button @click="onUnlock">Continue</button>
+              <button @click="onToggleUnlock(course)">Unlock</button>
             </div>
           </div>
         </div>
@@ -74,19 +60,45 @@
         <Pagination />
       </template>
     </Carousel>
+    <MoreDetailsForm
+      v-if="isToggleUnlock"
+      :course="courseSelected"
+      @on-toggle-unlock="onToggleUnlock"
+      @on-unlock="onUnlock"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
+import MoreDetailsForm from "./MoreDetailsForm.vue";
 import { ref } from "vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
+import { useCoursesStore } from "../../composable/useCourses";
+import { Course } from "../../types/types";
+import { useUserStore } from "../../composable/useUser";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 
 // Play sound when btn is clicked
 const soundStore = useSound();
-const onUnlock = () => {
+const coursesStore = useCoursesStore();
+const isToggleUnlock = ref(false);
+const courseSelected = ref<any>();
+const onToggleUnlock = (course: Course) => {
+  isToggleUnlock.value = !isToggleUnlock.value;
+  courseSelected.value = course;
+  console.log(course);
   soundStore.playSound();
+};
+const userStore = useUserStore();
+const onUnlock = () => {
+  userStore.user.coursesUnlocked[courseSelected.value?.id] =
+    courseSelected.value;
+  // add to unlocked course array in database
+  useUpdateUserStore({
+    coursesUnlocked: userStore.user.coursesUnlocked,
+  });
 };
 const currentSlide = ref(0);
 const slideTo = (val: any) => {
@@ -108,6 +120,9 @@ const breakpoints = ref({
 
 <style scoped lang="scss">
 .courses-gallery {
+  .carousel__item {
+    height: 100%;
+  }
   .carousel__slide--active {
     .thumbnail {
       filter: grayscale(0) !important;
@@ -185,6 +200,8 @@ const breakpoints = ref({
   .card-item {
     display: flex;
     cursor: pointer;
+    height: 100%;
+    width: 100%;
     .thumbnail {
       width: 50%;
       height: 100%;
@@ -203,7 +220,7 @@ const breakpoints = ref({
       img {
         object-fit: cover;
         width: 100%;
-        min-height: 180px;
+        max-height: 180px;
         height: 100%;
         border-radius: 5px;
       }
@@ -215,6 +232,9 @@ const breakpoints = ref({
       padding: 1rem;
       padding-left: 0;
       padding-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       h3 {
         font-size: 1.3rem;
         line-height: 1.8rem;
@@ -225,24 +245,14 @@ const breakpoints = ref({
         line-height: 1.2rem;
         opacity: 0.7;
       }
-      .percent {
-        font-size: 0.6rem;
-        opacity: 0.7;
-        margin-left: 2px;
-      }
-      progress {
-        height: 10px;
-        margin-bottom: 1.5px;
-        outline: none;
-        opacity: 0.7;
-      }
       button {
-        margin-top: 0.4rem !important;
+        margin-top: auto;
+        width: 100px;
       }
     }
   }
   .card-item:hover .card-right {
-    transform: translateX(-50%);
+    transform: translateX(-1.5rem);
     padding-left: 1rem;
     border-radius: 5px;
   }
@@ -275,12 +285,6 @@ const breakpoints = ref({
         -webkit-line-clamp: 2 !important;
         // padding-bottom: 0.6rem !important;
       }
-    }
-  }
-  .card-right {
-    .card-progress {
-      display: flex;
-      align-items: center;
     }
   }
 }

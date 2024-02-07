@@ -98,6 +98,7 @@
 .utilities {
   min-height: 100vh;
   padding-top: 3rem;
+  padding: 1rem;
   .utilities-container {
     .utilities-list {
       display: flex;
@@ -426,7 +427,8 @@
   .utilities-item {
     min-width: calc(100% / 2 - 0.5rem) !important;
     padding: 0.8rem 0.5rem !important;
-    span, i {
+    span,
+    i {
       font-size: 0.7rem !important;
     }
   }
@@ -440,6 +442,11 @@
   .task-item {
     min-width: calc(100% / 1.5);
     margin-bottom: 0.5rem;
+  }
+}
+@media screen and (max-width: 738px) {
+  .utilities {
+    padding: 0.5rem !important;
   }
 }
 </style>

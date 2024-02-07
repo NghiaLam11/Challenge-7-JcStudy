@@ -5,15 +5,11 @@
         <div>
           <div class="course-text">
             <h3 class="title multiline-ellipsis-1">
-              {{ courseUnapproved?.title }}
+              {{ course?.title }}
             </h3>
             <p class="multiline-ellipsis-1">
-              {{ courseUnapproved?.desc }}
+              {{ course?.desc }}
             </p>
-            <!-- <div class="lesson-progress">
-              <progress class="accent-color" value="32" max="100"></progress>
-              <span class="percent"> 43% </span>
-            </div> -->
           </div>
 
           <hr />
@@ -26,7 +22,7 @@
               </button>
             </div>
             <div
-              v-for="(chapter, key) in courseUnapproved?.chapters"
+              v-for="(chapter, key) in course?.chapters"
               :key="key"
               class="chapter-collapse"
             >
@@ -49,10 +45,10 @@
                   <router-link
                     class="lesson-link"
                     active-class="active"
-                    :to="`/courses/${courseUnapproved?.id}/${
+                    :to="`/courses/${course?.id}/${
                       Number(key) + 1
                     }/${index}`"
-                    ><span>{{ lesson.title }}</span>
+                    ><span class="multiline-ellipsis-1">{{ lesson.title }}</span>
                     <i class="far fa-play-circle"></i
                   ></router-link>
                 </li>
@@ -227,8 +223,8 @@ const coursesStore = useCoursesStore();
 const route: any = useRoute();
 console.log(route.params, "PARAMS");
 
-const courseUnapproved = computed(() => {
-  return coursesStore.unApprovedCourses[route.params.idCourse];
+const course = computed(() => {
+  return coursesStore.courses[route.params.idCourse];
 });
 const lessonSelected = ref();
 const videoElement = ref();
@@ -257,19 +253,19 @@ const getLesson = async (course: any) => {
 };
 // FETCH URL WHEN COURSE CHANGE
 watch(coursesStore, async (newCourse) => {
-  await getLesson(newCourse.unApprovedCourses[route.params.idCourse]);
+  await getLesson(newCourse.courses[route.params.idCourse]);
 });
 // FETCH URL WHEN ROUTE CHANGE
 watch(
   () => route.fullPath,
   () => {
-    getLesson(coursesStore.unApprovedCourses[route.params.idCourse]);
+    getLesson(coursesStore.courses[route.params.idCourse]);
   }
 );
 
 onMounted(() => {
   // WHEN URL WHEN FIRST ACCESS
-  getLesson(coursesStore.unApprovedCourses[route.params.idCourse]);
+  getLesson(coursesStore.courses[route.params.idCourse]);
   let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
 
   if (isMobile) {

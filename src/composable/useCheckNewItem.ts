@@ -11,7 +11,6 @@ export const useCheckNewItem = (item: any) => {
     parseDate(item?.createdAt),
     parseDate(date.toLocaleDateString())
   );
-  console.log("ALALALA");
   if (countDaysBetweenTwoDays < 2) {
     return item;
   }

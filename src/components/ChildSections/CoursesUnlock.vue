@@ -1,5 +1,8 @@
 <template>
-  <div class="courses-unlock">
+  <div
+    class="courses-unlock"
+    v-if="Object.keys(userStore.user?.coursesUnlocked).length > 0"
+  >
     <div class="topic">
       <h3>Courses unlock</h3>
     </div>
@@ -20,7 +23,7 @@
               {{ course.desc }}
             </p>
 
-            <button @click="onContinue">Continue ...</button>
+            <button @click="onMoreDetails(course)">Continue ...</button>
           </div>
         </div>
       </Slide>
@@ -39,11 +42,16 @@ import "vue3-carousel/dist/carousel.css";
 import { ref } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 import { useUserStore } from "../../composable/useUser";
+import { useRouter } from "vue-router";
+import { Course } from "../../types/types";
 const userStore = useUserStore();
+const router = useRouter();
 // Play sound when btn is clicked
 const soundStore = useSound();
-const onContinue = () => {
+
+const onMoreDetails = (course: Course) => {
   soundStore.playSound();
+  router.push(`/courses/${course.id}/0/overview`);
 };
 const breakpointsunlock = ref({
   0: {

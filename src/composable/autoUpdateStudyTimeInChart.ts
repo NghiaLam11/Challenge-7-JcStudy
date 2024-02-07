@@ -5,7 +5,6 @@ export const autoUpdateStudyTime = () => {
   const date = new Date();
   let currentTime = 0;
   const idUser: any = localStorage.getItem("idUser");
-  console.log(idUser);
   // DATA TimeArray IS DATA WHEN USER RELOAD OF LEAVE WILL BE SAVE HERE!
   const timeArray: any = localStorage.getItem(`currentTimeArray-${idUser}`);
   // IF NEW DAY ,TIMEARRAY WILL RESET (timeArray === NULL) AND CHANGE TO NEW LIST
@@ -29,13 +28,11 @@ export const autoUpdateStudyTime = () => {
   const whenChangedDay = () => {
     // IF DEFFERENT DAY => AUTO GENERATE PAST STUDYTIME IN LOCALSTORE TO DATABASE
     if (date.toLocaleDateString() !== currentTimeArray.timeDay) {
-      console.log("OTHER DAY", currentTimeArray);
       // HOW MANY DAY BETWWEN THE LAST ACCESS TO WEBSITE
       const countDaysBetweenTwoDays = datediff(
         parseDate(currentTimeArray.timeDay),
         parseDate(date.toLocaleDateString())
       );
-      console.log("MANY DAYS", countDaysBetweenTwoDays);
       const initialValue = 0;
       const timeArray: any = localStorage.getItem(`currentTimeArray-${idUser}`);
       // SUM OF THE PAST STUDY TIME (SAVED IN LOCALSTORE)
@@ -53,11 +50,6 @@ export const autoUpdateStudyTime = () => {
           userStore.studyTime.shift();
           userStore.studyTime.push(0);
         }
-
-        console.log(
-          "countDaysBetweenTwoDays > 1 && <= 4",
-          countDaysBetweenTwoDays
-        );
         useUpdateUserStore({
           streak: 0,
           studyTime: userStore.studyTime,
@@ -66,7 +58,6 @@ export const autoUpdateStudyTime = () => {
         // THESE UNCCESSED DAYS (IF LARGER > 4 DAYS) WILL BE REPLACE = [0, 0, 0, 0, 0] STUDYTIME
 
         userStore.studyTime = [0, 0, 0, 0, 0];
-        console.log("countDaysBetweenTwoDays < 1", countDaysBetweenTwoDays);
         useUpdateUserStore({
           streak: 0,
           studyTime: userStore.studyTime,
@@ -98,7 +89,7 @@ export const autoUpdateStudyTime = () => {
         };
       }, 2000);
     } else {
-      console.log("SAME DAY", currentTimeArray);
+      console.log("SAME DAY");
     }
   };
   whenChangedDay();
@@ -112,8 +103,6 @@ export const autoUpdateStudyTime = () => {
     if (currentTime > 0) {
       currentTimeArray.timeList.push(currentTime);
     }
-    console.log("a");
-    // localStorage.removeItem("currentTimeArray");
     localStorage.setItem(
       `currentTimeArray-${idUser}`,
       JSON.stringify(currentTimeArray)
@@ -121,5 +110,4 @@ export const autoUpdateStudyTime = () => {
     currentTime = 0;
     return;
   });
-  console.log(JSON.parse(timeArray));
 };
