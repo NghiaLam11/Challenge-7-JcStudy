@@ -99,6 +99,7 @@ export const useGetCoursesStore = async () => {
     const coursesApproved = ref<any>({});
     const newCourses = ref<any>({});
     const courses = ref<any>({});
+    const coursesArray = ref<any>([]);
     const coursesTrend = ref<any>({});
     const unApprovedCourses = ref<any>({});
 
@@ -124,6 +125,12 @@ export const useGetCoursesStore = async () => {
         course.isApproved === true &&
         !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
       ) {
+        coursesArray.value.push({
+          id: doc.id,
+          imgUrl: imgUrl,
+          videoUrl: videoUrl,
+          ...course,
+        });
         var size = Object.keys(coursesApproved.value).length;
         if (size < 10) {
           // unapprove -> for normal user
@@ -169,6 +176,7 @@ export const useGetCoursesStore = async () => {
       }
     });
     coursesStore.courses = courses.value;
+    coursesStore.coursesArray = coursesArray.value;
     coursesStore.coursesTrend = coursesTrend.value;
     coursesStore.coursesApproved = coursesApproved.value;
     coursesStore.newCourses = newCourses.value;
@@ -213,6 +221,7 @@ export const useGetBlogsStore = async () => {
 
     const querySnapshot = await getDocs(q);
     const blogs = ref<any>({});
+    const blogsArray = ref<any>([]);
     const newBlogs = ref<any>({});
     const blogsApproved = ref<any>({});
 
@@ -233,6 +242,10 @@ export const useGetBlogsStore = async () => {
           id: doc.id,
           ...blog,
         };
+        blogsArray.value.push({
+          id: doc.id,
+          ...blog,
+        });
 
         // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
         const newBlog = useCheckNewItem(blog);
@@ -251,6 +264,7 @@ export const useGetBlogsStore = async () => {
       }
     });
     blogsStore.blogs = blogs.value;
+    blogsStore.blogsArray = blogsArray.value;
     blogsStore.blogsApproved = blogsApproved.value;
     blogsStore.newBlogs = newBlogs.value;
     blogsStore.unApprovedBlogs = unApprovedBlogs.value;

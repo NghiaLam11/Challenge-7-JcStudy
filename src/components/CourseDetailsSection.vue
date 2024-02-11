@@ -45,10 +45,10 @@
                   <router-link
                     class="lesson-link"
                     active-class="active"
-                    :to="`/courses/${course?.id}/${
-                      Number(key) + 1
-                    }/${index}`"
-                    ><span class="multiline-ellipsis-1">{{ lesson.title }}</span>
+                    :to="`/courses/${course?.id}/${Number(key) + 1}/${index}`"
+                    ><span class="multiline-ellipsis-1">{{
+                      lesson.title
+                    }}</span>
                     <i class="far fa-play-circle"></i
                   ></router-link>
                 </li>

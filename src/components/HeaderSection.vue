@@ -30,7 +30,7 @@
           </li>
           <li class="nav-item">
             <router-link
-              to="/create-blog"
+              to="/contact"
               active-class="active"
               class="nav-link"
               >Contact</router-link
