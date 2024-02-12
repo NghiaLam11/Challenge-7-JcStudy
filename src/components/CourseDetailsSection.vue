@@ -100,7 +100,8 @@
             </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
-            <div class="quiz">
+            <h4>Coming soon!</h4>
+            <!-- <div class="quiz">
               <h3 class="detail-title">
                 Quiz ipsum dolor sit amet consectetur adipisicing elit.
               </h3>
@@ -117,38 +118,46 @@
                 </div>
               </div>
               <div class="question-submit"><button>Submit</button></div>
-            </div>
+            </div> -->
           </div>
           <div
             style="display: none"
             id="comments"
             class="tabcontent lesson-detail"
           >
-            <form class="form-comment">
-              <input placeholder="Write your comment..." type="text" />
-              <button><i class="fas fa-paper-plane"></i></button>
+            <form @submit.prevent="onComment" class="form-comment">
+              <input
+                v-model="comment"
+                placeholder="Write your comment..."
+                type="text"
+              />
+              <button type="submit"><i class="fas fa-paper-plane"></i></button>
             </form>
             <div class="comment-group">
-              <div class="comment-item">
+              <div
+                class="comment-item"
+                v-for="comment in lessonSelected?.comments"
+              >
                 <div class="comment-top">
                   <div class="comment-auth">
-                    <h4>JcLahi</h4>
+                    <h4>{{ comment?.auth }}</h4>
                   </div>
-                  <span class="comment-time">10/11/2003</span>
+                  <span class="comment-time">{{ comment?.createdAt }}</span>
                 </div>
 
                 <div class="comment-text">
                   <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Animi excepturi neque voluptatibus eaque nostrum eveniet
-                    ipsa doloribus.
+                    {{ comment?.comment }}
                   </p>
                 </div>
                 <div class="comment-react">
-                  <div><i class="fa-solid fa-heart"></i><span>1</span></div>
-                  <span>Reply</span>
+                  <div>
+                    <i class="fa-solid fa-heart"></i
+                    ><span>{{ comment?.reaction }}</span>
+                  </div>
+                  <!-- <span>Reply</span> -->
                 </div>
-                <div class="comment-reply">
+                <!-- <div class="comment-reply">
                   <div class="comment-item">
                     <div class="comment-top">
                       <div class="comment-auth">
@@ -168,7 +177,7 @@
                       <div><i class="fa-solid fa-heart"></i><span>1</span></div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -183,6 +192,8 @@ import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSec
 import { useRoute } from "vue-router";
 import { useCoursesStore } from "../composable/useCourses";
 import { useGetVideoUrlStorage } from "../composable/useFirebaseStorage";
+import { useUserStore } from "../composable/useUser";
+import { useUpdateCourseStore } from "../composable/useFirebaseStore";
 
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
@@ -226,7 +237,39 @@ console.log(route.params, "PARAMS");
 const course = computed(() => {
   return coursesStore.courses[route.params.idCourse];
 });
+const userStore = useUserStore();
+const comment = ref();
 const lessonSelected = ref();
+const onComment = () => {
+  const data = ref({
+    createdAt: new Date().toLocaleDateString(),
+    auth: userStore.user.name,
+    reaction: 0,
+    comment: comment.value,
+  });
+  if (route.params.idLesson === "overview") {
+    console.log("Overview");
+    lessonSelected.value.comments.push(data.value);
+    useUpdateCourseStore(
+      {
+        comments: lessonSelected.value.comments,
+      },
+      route.params.idCourse
+    );
+  } else if (course) {
+    const chapters = coursesStore.courses[route.params.idCourse].chapters;
+    chapters[Number(route.params.idChapter) - 1][
+      route.params.idLesson
+    ].comments.push(data.value);
+    useUpdateCourseStore(
+      {
+        chapters: chapters,
+      },
+      route.params.idCourse
+    );
+  }
+  comment.value = "";
+};
 const videoElement = ref();
 const sourceElement = ref();
 const getLesson = async (course: any) => {

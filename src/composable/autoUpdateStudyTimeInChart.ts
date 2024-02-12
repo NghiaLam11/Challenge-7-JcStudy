@@ -69,7 +69,7 @@ export const autoUpdateStudyTime = () => {
         console.log("countDaysBetweenTwoDays = 1", countDaysBetweenTwoDays);
         useUpdateUserStore({
           studyTime: userStore.studyTime,
-          streak: userStore.user.streak + 1,
+          streak: userStore.user.streak++,
         });
       }
       console.log(userStore.studyTime, "USERSTORE");

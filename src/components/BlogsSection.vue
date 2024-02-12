@@ -14,7 +14,7 @@
           <h3 class="multiline-ellipsis-1">
             {{ blog.title }}
           </h3>
-          <div><button @click="onUnlock">Read more...</button></div>
+          <div><button @click="onReadMore(blog)">Read more...</button></div>
         </div>
       </div>
     </div>
@@ -23,13 +23,12 @@
 
 <script lang="ts" setup>
 import BlogsSearchSection from "./ChildSections/BlogsSearchSection.vue";
-import { useSound } from "../composable/useSound.ts";
 import { useBlogsStore } from "../composable/useBlogs";
+import { useRouter } from "vue-router";
 const blogsStore = useBlogsStore();
-// Play sound when btn is clicked
-const soundStore = useSound();
-const onUnlock = () => {
-  soundStore.playSound();
+const router = useRouter();
+const onReadMore = (blog: any) => {
+  router.push(`/blogs/${blog.id}`);
 };
 </script>
 
