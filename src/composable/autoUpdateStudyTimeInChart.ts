@@ -66,10 +66,11 @@ export const autoUpdateStudyTime = () => {
         // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
         userStore.studyTime.shift();
         userStore.studyTime.push(sumTimeOfAllDay);
-        console.log("countDaysBetweenTwoDays = 1", countDaysBetweenTwoDays);
+        const streak = userStore.user.streak + 1;
+        console.log("countDaysBetweenTwoDays = 1", streak);
         useUpdateUserStore({
           studyTime: userStore.studyTime,
-          streak: userStore.user.streak++,
+          streak: streak,
         });
       }
       console.log(userStore.studyTime, "USERSTORE");
@@ -108,6 +109,6 @@ export const autoUpdateStudyTime = () => {
       JSON.stringify(currentTimeArray)
     );
     currentTime = 0;
-    return;
+    return "";
   });
 };

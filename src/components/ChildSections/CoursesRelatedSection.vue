@@ -8,23 +8,17 @@
       :snap-align="'start'"
       :breakpoints="breakpointsnew"
     >
-      <Slide v-for="slide in 10" :key="slide">
+      <Slide v-for="course in props.coursesRelated" :key="course.id">
         <div class="card-item">
           <div class="thumbnail">
-            <img
-              src="/src/images/florian-olivo-4hbJ-eymZ1o-unsplash.jpg"
-              alt=""
-            />
+            <img :src="course.imgUrl" alt="" />
           </div>
           <div class="card-right bg-primary">
-            <h3 class="multiline-ellipsis-1">Lorem islem posile delao</h3>
+            <h3 class="multiline-ellipsis-1">{{ course.title }}</h3>
             <p class="multiline-ellipsis-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet eos
-              voluptatem iusto delectus, minus sapiente! Distinctio atque dolore
-              reprehenderit laboriosam? Sit et possimus assumenda! Quas
-              aspernatur dolore nulla cumque odio.
+              {{ course.desc }}
             </p>
-            <button @click="onUnlock">Unlock (Free)</button>
+            <button @click="onToggleUnlock(course)">Unlock (Free)</button>
           </div>
         </div>
       </Slide>
@@ -34,19 +28,47 @@
         <Pagination />
       </template>
     </Carousel>
+    <MoreDetailsForm
+      v-if="isToggleUnlock"
+      :course="courseSelected"
+      @on-toggle-unlock="onToggleUnlock"
+      @on-unlock="onUnlock"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import MoreDetailsForm from "./MoreDetailsForm.vue";
+
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
-
+import { Course } from "../../types/types";
+import { useUserStore } from "../../composable/useUser";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+const props = defineProps<{
+  coursesRelated: any;
+}>();
+console.log(props.coursesRelated);
 // Play sound when btn is clicked
 const soundStore = useSound();
-const onUnlock = () => {
+const isToggleUnlock = ref(false);
+const courseSelected = ref<any>();
+const onToggleUnlock = (course: Course) => {
+  isToggleUnlock.value = !isToggleUnlock.value;
+  courseSelected.value = course;
   soundStore.playSound();
+};
+const userStore = useUserStore();
+const onUnlock = () => {
+  userStore.user.coursesUnlocked[courseSelected.value?.id] =
+    courseSelected.value;
+  // add to unlocked course array in database
+  useUpdateUserStore({
+    coursesUnlocked: userStore.user.coursesUnlocked,
+  });
+  isToggleUnlock.value = !isToggleUnlock.value;
 };
 const breakpointsnew = ref({
   0: {
@@ -87,6 +109,9 @@ const breakpointsnew = ref({
     }
     .card-right {
       width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       text-align: start;
       transition: all 0.35s ease;
       padding: 1rem;
@@ -102,12 +127,13 @@ const breakpointsnew = ref({
         opacity: 0.7;
       }
       button {
-        margin-top: 1rem;
+        margin-top: auto;
+        width: 120px;
       }
     }
   }
   .card-item:hover .card-right {
-    transform: translateX(-50%);
+    transform: translateX(-0.5rem);
     padding-left: 1rem;
     border-radius: 5px;
   }

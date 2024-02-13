@@ -96,7 +96,7 @@
               {{ lessonSelected?.desc }}
             </p>
             <div class="course-related">
-              <CoursesRelatedSection />
+              <CoursesRelatedSection :courses-related="coursesRelated"/>
             </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
@@ -288,6 +288,7 @@ const onComment = () => {
   }
   comment.value = "";
 };
+const coursesRelated = ref();
 const videoElement = ref();
 const sourceElement = ref();
 const getLesson = async (course: any) => {
@@ -310,9 +311,20 @@ const getLesson = async (course: any) => {
       videoUrl: videoUrl,
     };
   }
+  coursesRelated.value = coursesStore.coursesArray.filter(
+    (courseRelated: any) => {
+      const industry = courseRelated.industry;
+      if (industry.toLowerCase().includes(course?.industry.toLowerCase())) {
+        return courseRelated;
+      }
+      console.log(courseRelated?.industry, industry);
+    }
+  );
+  console.log(coursesRelated.value, "courses related");
   videoElement.value.load();
 };
 // FETCH URL WHEN COURSE CHANGE
+
 watch(coursesStore, async (newCourse) => {
   await getLesson(newCourse.courses[route.params.idCourse]);
 });
@@ -327,6 +339,7 @@ watch(
 onMounted(() => {
   // WHEN URL WHEN FIRST ACCESS
   getLesson(coursesStore.courses[route.params.idCourse]);
+
   let isMobile = window.matchMedia("screen and (max-width: 768px)").matches;
 
   if (isMobile) {
