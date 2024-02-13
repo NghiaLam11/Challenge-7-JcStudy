@@ -195,7 +195,7 @@ export const useUpdateCourseStore = async (updateCourse: any, id: string) => {
       updateCourse,
       dataUpdate
     );
-    useGetUserStore();
+    // useGetUserStore();
   } catch (error) {
     console.log(error);
   }

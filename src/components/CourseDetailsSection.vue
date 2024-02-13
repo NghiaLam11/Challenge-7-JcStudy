@@ -136,7 +136,8 @@
             <div class="comment-group">
               <div
                 class="comment-item"
-                v-for="comment in lessonSelected?.comments"
+                v-for="(comment, key) in lessonSelected?.comments"
+                :key="key"
               >
                 <div class="comment-top">
                   <div class="comment-auth">
@@ -152,7 +153,7 @@
                 </div>
                 <div class="comment-react">
                   <div>
-                    <i class="fa-solid fa-heart"></i
+                    <i class="fa-solid fa-heart" @click="onReaction(key)"></i
                     ><span>{{ comment?.reaction }}</span>
                   </div>
                   <!-- <span>Reply</span> -->
@@ -240,16 +241,33 @@ const course = computed(() => {
 const userStore = useUserStore();
 const comment = ref();
 const lessonSelected = ref();
+const onReaction = (key: any) => {
+  const chapters = coursesStore.courses[route.params.idCourse].chapters;
+
+  chapters[Number(route.params.idChapter) - 1][route.params.idLesson].comments[
+    key
+  ].reaction++;
+
+  // chapters[Number(route.params.idChapter) - 1][route.params.idLesson]
+  //   .reaction++;
+  useUpdateCourseStore(
+    {
+      chapters: chapters,
+    },
+    route.params.idCourse
+  );
+};
 const onComment = () => {
   const data = ref({
     createdAt: new Date().toLocaleDateString(),
     auth: userStore.user.name,
     reaction: 0,
     comment: comment.value,
+    id: new Date().getTime() + userStore.user.name,
   });
   if (route.params.idLesson === "overview") {
     console.log("Overview");
-    lessonSelected.value.comments.push(data.value);
+    lessonSelected.value.comments[data.value.id] = data.value;
     useUpdateCourseStore(
       {
         comments: lessonSelected.value.comments,
@@ -260,7 +278,7 @@ const onComment = () => {
     const chapters = coursesStore.courses[route.params.idCourse].chapters;
     chapters[Number(route.params.idChapter) - 1][
       route.params.idLesson
-    ].comments.push(data.value);
+    ].comments[data.value.id] = data.value;
     useUpdateCourseStore(
       {
         chapters: chapters,
