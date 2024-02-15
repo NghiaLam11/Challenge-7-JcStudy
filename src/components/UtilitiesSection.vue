@@ -90,9 +90,14 @@
         </div>
       </div>
     </div>
+    <!-- <CreateNoteSection /> -->
+    <CreateTaskSection />
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
+import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
+</script>
 
 <style scoped lang="scss">
 .utilities {

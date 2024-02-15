@@ -3,6 +3,7 @@
     <div class="courses-container container">
       <CoursesSearchSection />
       <CoursesGallery />
+      <CoursesHomeSection />
       <NewSection />
       <CoursesUnlock />
     </div>
@@ -13,6 +14,7 @@
 import NewSection from "./ChildSections/NewSection.vue";
 import CoursesSearchSection from "./ChildSections/CoursesSearchSection.vue";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
+import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import CoursesGallery from "./ChildSections/CoursesGallery.vue";
 </script>
 

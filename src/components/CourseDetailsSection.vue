@@ -96,7 +96,7 @@
               {{ lessonSelected?.desc }}
             </p>
             <div class="course-related">
-              <CoursesRelatedSection :courses-related="coursesRelated"/>
+              <CoursesRelatedSection :courses-related="coursesRelated" />
             </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
@@ -533,7 +533,7 @@ a {
       width: 22%;
       height: 100%;
       overflow-y: scroll;
-      border-right: 2px solid;
+      border-right: 0.5px solid;
       padding: 0 1rem;
       hr {
         margin: 1rem 0;

@@ -2,7 +2,7 @@
   <div class="registration">
     <div class="container">
       <div class="btn-regis">
-        <router-link to="/course-register">
+        <router-link to="/create-blog">
           <p class="plus">+</p>
           <p>Create your blog!</p>
         </router-link>

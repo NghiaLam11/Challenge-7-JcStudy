@@ -48,7 +48,7 @@ import { Course } from "../../types/types";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 const props = defineProps<{
-  coursesRelated: any;
+  coursesRelated: Course;
 }>();
 console.log(props.coursesRelated);
 // Play sound when btn is clicked
