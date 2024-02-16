@@ -3,16 +3,63 @@
     <div class="create-note-container">
       <div class="blur"></div>
       <form class="form-create">
-        <input type="text" placeholder="Title..." />
-        <textarea cols="10" rows="12" placeholder="Note"></textarea>
+        <input v-model="title" type="text" placeholder="Title..." />
+        <textarea
+          v-model="text"
+          cols="10"
+          rows="12"
+          placeholder="Note"
+        ></textarea>
         <div class="btn-group">
-          <button>Complete</button>
-          <button>Cancel</button>
+          <button type="button" @click="onComplete">Complete</button>
+          <button @click="onCancel" type="button">Cancel</button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { useUserStore } from "../../composable/useUser";
+const emit = defineEmits(["onCancel"]);
+const props = defineProps<{ note: any }>();
+const userStore = useUserStore();
+const title = ref(props.note.title || "");
+const text = ref(props.note.text || "");
+const onCancel = () => {
+  emit("onCancel", props.note);
+};
+const onComplete = async () => {
+  console.log("COMPLETE", text.value);
+  const idUser = localStorage.getItem("idUser");
+  if (props.note === "") {
+    console.log("CREATE");
+    const data = ref({
+      title: title.value,
+      text: text.value,
+      idUser: idUser,
+      createdAt: new Date().toLocaleDateString(),
+      id: new Date().getTime().toString() + Math.random() * 10,
+    });
+    userStore.user.notes[data.value.id] = data.value;
+    useUpdateUserStore({ notes: userStore.user.notes });
+  } else {
+    console.log("UPDATE");
+    const data = ref({
+      title: title.value,
+      text: text.value,
+      idUser: idUser,
+      createdAt: props.note.createdAt,
+      id: props.note.id,
+    });
+    userStore.user.notes[data.value.id] = data.value;
+    useUpdateUserStore({ notes: userStore.user.notes });
+  }
+  emit("onCancel", props.note);
+};
+</script>
 
 <style lang="scss" scoped>
 .create-note {
@@ -71,4 +118,12 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .form-create {
+    min-width: 95% !important;
+  }
+}
+  
+
 </style>

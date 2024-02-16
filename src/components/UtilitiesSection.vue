@@ -2,7 +2,7 @@
   <div class="utilities">
     <div class="utilities-container container">
       <div class="utilities-list">
-        <div class="utilities-item">
+        <div class="utilities-item" @click="onToggleCreateNote('')">
           <div class="item">
             <span class="text">Notes</span>
             <i class="fa-solid fa-clipboard"></i>
@@ -35,17 +35,15 @@
         <div class="utilities-notes">
           <h3>Notes</h3>
           <div class="notes-list">
-            <div v-for="n in 6" :key="n" class="notes-item">
-              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+            <div
+              v-for="note in userStore.user?.notes"
+              :key="note.id"
+              class="notes-item"
+              @click="onToggleCreateNote(note)"
+            >
+              <h4 class="multiline-ellipsis-3">{{ note.title }}</h4>
               <p class="multiline-ellipsis-10">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Voluptate eligendi eum minus perferendis excepturi ea
-                voluptatibus vero quis eaque, autem maxime nihil in? Recusandae
-                ab repellendus perferendis magni ullam tempora. -Lorem, ipsum
-                dolor sit amet consectetur adipisicing elit. Ullam beatae at
-                aliquid veritatis itaque placeat ipsam pariatur sequi quae nihil
-                dolores nisi tempore ut, ex doloribus repellat temporibus quia
-                odio!
+                {{ note.text }}
               </p>
             </div>
           </div>
@@ -90,13 +88,28 @@
         </div>
       </div>
     </div>
-    <!-- <CreateNoteSection /> -->
-    <CreateTaskSection />
+    <CreateNoteSection
+      v-if="isToggleCreateNote"
+      :note="noteSelected"
+      @on-cancel="onToggleCreateNote"
+    />
+    <!-- <CreateTaskSection /> -->
   </div>
 </template>
 <script setup lang="ts">
-// import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
-import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
+import { ref } from "vue";
+import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
+import { useUserStore } from "../composable/useUser";
+// import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
+const userStore = useUserStore();
+
+const isToggleCreateNote = ref(false);
+const noteSelected = ref();
+const onToggleCreateNote = (n: any) => {
+  isToggleCreateNote.value = !isToggleCreateNote.value;
+  noteSelected.value = n;
+  console.log(n);
+};
 </script>
 
 <style scoped lang="scss">

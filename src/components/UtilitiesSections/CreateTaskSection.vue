@@ -5,6 +5,15 @@
       <div class="form-create">
         <input type="text" placeholder="Title..." class="title" />
         <div class="tasks">
+          <div class="task-list">
+            <div class="task-item">
+              <div>
+                <input type="checkbox" />
+                <p class="task-text">Task 1</p>
+              </div>
+              <span class="remove">&#128465;</span>
+            </div>
+          </div>
           <form class="add-task">
             <input type="text" placeholder="New task..." /><button>Add</button>
           </form>
@@ -17,6 +26,8 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped>
 .create-task {
@@ -57,6 +68,23 @@
         margin-bottom: 0.8rem;
         border: 1px solid;
         position: relative;
+        .task-list {
+          .task-item {
+            display: flex;
+            align-items: center;
+            .task-text {
+              margin-left: 0.3rem;
+              display: inline-block;
+              transform: translateY(-1.5px);
+              font-size: 0.9rem;
+            }
+            .remove {
+              margin-left: auto;
+              font-size: 1.2rem;
+            }
+          }
+        }
+
         .add-task {
           display: flex;
           justify-content: space-between;
@@ -109,6 +137,11 @@
         }
       }
     }
+  }
+}
+@media screen and (max-width: 768px) {
+  .form-create {
+    min-width: 95% !important;
   }
 }
 </style>
