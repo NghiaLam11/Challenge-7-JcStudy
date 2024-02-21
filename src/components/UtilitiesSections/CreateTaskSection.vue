@@ -3,31 +3,143 @@
     <div class="create-task-container">
       <div class="blur"></div>
       <div class="form-create">
-        <input type="text" placeholder="Title..." class="title" />
+        <input
+          type="text"
+          v-model="title"
+          placeholder="Title..."
+          class="title"
+        />
         <div class="tasks">
           <div class="task-list">
-            <div class="task-item">
+            <div
+              class="task-item"
+              v-for="(task, key) in tasks['uncompleted']"
+              :key="key"
+            >
               <div>
-                <input type="checkbox" />
-                <p class="task-text">Task 1</p>
+                <input
+                  type="checkbox"
+                  :checked="task.isDone"
+                  @change="onChecked(task, key)"
+                />
+                <p class="task-text uncompleted">{{ task.name }}</p>
               </div>
-              <span class="remove">&#128465;</span>
+              <span class="remove" @click="onRemove('uncompleted', key)"
+                >&#128465;</span
+              >
+            </div>
+            <div
+              class="task-item"
+              v-for="(task, key) in tasks['completed']"
+              :key="key"
+            >
+              <div>
+                <input
+                  type="checkbox"
+                  :checked="task.isDone"
+                  @change="onChecked(task, key)"
+                />
+                <p class="task-text completed">{{ task.name }}</p>
+              </div>
+              <span class="remove" @click="onRemove('completed', key)"
+                >&#128465;</span
+              >
             </div>
           </div>
-          <form class="add-task">
-            <input type="text" placeholder="New task..." /><button>Add</button>
+          <form @submit.prevent="onAddNewTask" class="add-task">
+            <input
+              type="text"
+              placeholder="New task..."
+              v-model="nameTask"
+            /><button type="submit">Add</button>
           </form>
         </div>
         <div class="btn-group">
-          <button>Complete</button>
-          <button>Cancel</button>
+          <button @click="onComplete">Complete</button>
+          <button @click="onCancel">Cancel</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { useUserStore } from "../../composable/useUser";
+const emit = defineEmits(["onCancel"]);
+const props = defineProps<{ task: any }>();
+const userStore = useUserStore();
+const title = ref(props.task.title || "");
+const tasks = ref(props.task.tasks || { uncompleted: {}, completed: {} });
+const onRemove = (status: any, id: any) => {
+  delete tasks.value[status][id];
+  console.log(tasks.value);
+};
+const onChecked = (task: any, id: any) => {
+  console.log(task);
+  if (task.isDone === true) {
+    tasks.value["uncompleted"][id] = {
+      ...task,
+      isDone: false,
+    };
+    delete tasks.value["completed"][id];
+  } else if (task.isDone === false) {
+    tasks.value["completed"][id] = {
+      ...task,
+      isDone: true,
+    };
+    delete tasks.value["uncompleted"][id];
+  }
+};
+const nameTask = ref();
+const onAddNewTask = () => {
+  console.log(nameTask.value);
+  const id = new Date().getTime().toString() + Math.random() * 10;
+  const newTask = ref({
+    name: nameTask.value,
+    isDone: false,
+  });
+  tasks.value["uncompleted"][id] = newTask.value;
+  nameTask.value = "";
+};
+const onCancel = () => {
+  emit("onCancel", props.task);
+};
+const onComplete = async () => {
+  const idUser = localStorage.getItem("idUser");
+  // const countCompletedTask = ref(0);
+  // for (const key in tasks.value) {
+  //   if (tasks.value[key].isDone === true) {
+  //     countCompletedTask.value += 1;
+  //   }
+  // }
+  if (props.task === "") {
+    console.log("CREATE");
+    const data = ref({
+      title: title.value,
+      tasks: tasks.value,
+      idUser: idUser,
+      createdAt: new Date().toLocaleDateString(),
+      id: new Date().getTime().toString() + Math.random() * 10,
+    });
+    userStore.user.tasks[data.value.id] = data.value;
+    useUpdateUserStore({ tasks: userStore.user.tasks });
+  } else {
+    console.log("UPDATE");
+    const data = ref({
+      title: title.value,
+      tasks: tasks.value,
+      idUser: idUser,
+      createdAt: props.task.createdAt,
+      id: props.task.id,
+    });
+    userStore.user.tasks[data.value.id] = data.value;
+    useUpdateUserStore({ tasks: userStore.user.tasks });
+  }
+  emit("onCancel", props.task);
+};
+</script>
 
 <style lang="scss" scoped>
 .create-task {
@@ -77,6 +189,13 @@
               display: inline-block;
               transform: translateY(-1.5px);
               font-size: 0.9rem;
+            }
+            .task-text.completed {
+              text-decoration: line-through;
+              opacity: 0.6;
+            }
+            .task-text.uncompleted {
+              font-weight: 500;
             }
             .remove {
               margin-left: auto;

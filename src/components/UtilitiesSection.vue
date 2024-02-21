@@ -9,14 +9,14 @@
           </div>
           <span>+</span>
         </div>
-        <div class="utilities-item">
+        <div class="utilities-item" @click="onToggleCreateTimetable('')">
           <div class="item">
             <span class="text">Timetable</span>
             <i class="far fa-calendar-alt"></i>
           </div>
           <span>+</span>
         </div>
-        <div class="utilities-item">
+        <div class="utilities-item" @click="onToggleCreateTask('')">
           <div class="item">
             <span class="text">Task</span>
             <i class="fas fa-clipboard-list"></i>
@@ -59,18 +59,47 @@
         <div class="utilities-task">
           <h3>Task</h3>
           <div class="task-list">
-            <div v-for="n in 6" :key="n" class="task-item">
+            <div
+              v-show="Object.keys(userStore.user.tasks).length > 0"
+              v-for="(task, key) in userStore.user.tasks"
+              :key="key"
+              class="task-item"
+              @click="onToggleCreateTask(task)"
+            >
               <div class="completed-task multiline-ellipsis-1">
-                Completed <span>{{ n }}</span
-                >/<span>10 tasks</span>
+                Completed
+                <span>{{ Object.keys(task.tasks["completed"]).length }}</span
+                >/<span>{{
+                  Object.keys(task.tasks["uncompleted"]).length +
+                  Object.keys(task.tasks["completed"]).length
+                }}</span>
               </div>
-              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+              <h4 class="multiline-ellipsis-3">{{ task.title }}</h4>
 
-              <div class="task-group">
-                <div v-for="num in 6" :key="num" class="task-check">
-                  <input class="checkbox" type="checkbox" />
-                  <label>Tasking to do {{ num }}</label>
-                </div>
+              <div class="task-group"></div>
+              <div
+                v-for="(taskChild, keyChild) in task.tasks['uncompleted']"
+                :key="keyChild"
+                class="task-check"
+              >
+                <input
+                  class="checkbox"
+                  type="checkbox"
+                  :checked="taskChild.isDone"
+                />
+                <label>{{ taskChild.name }}</label>
+              </div>
+              <div
+                v-for="(taskChild, keyChild) in task.tasks['completed']"
+                :key="keyChild"
+                class="task-check"
+              >
+                <input
+                  class="checkbox"
+                  type="checkbox"
+                  :checked="taskChild.isDone"
+                />
+                <label class="completed">{{ taskChild.name }}</label>
               </div>
             </div>
           </div>
@@ -93,22 +122,48 @@
       :note="noteSelected"
       @on-cancel="onToggleCreateNote"
     />
-    <!-- <CreateTaskSection /> -->
+    <CreateTaskSection
+      v-if="isToggleCreateTask"
+      :task="taskSelected"
+      @on-cancel="onToggleCreateTask"
+    />
+    <CreateTimetableSection
+      v-if="!isToggleCreateTimetable"
+      :timetable="timetableSelected"
+      @on-cancel="onToggleCreateTimetable"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
 import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
+import CreateTimetableSection from "./UtilitiesSections/CreateTimetableSection.vue";
 import { useUserStore } from "../composable/useUser";
-// import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
+import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
 const userStore = useUserStore();
+
+const isToggleCreateTimetable = ref(false);
+const timetableSelected = ref();
+const onToggleCreateTimetable = (timetable: any) => {
+  isToggleCreateTimetable.value = !isToggleCreateTimetable.value;
+  timetableSelected.value = timetable;
+  console.log(timetable);
+};
 
 const isToggleCreateNote = ref(false);
 const noteSelected = ref();
-const onToggleCreateNote = (n: any) => {
+const onToggleCreateNote = (note: any) => {
   isToggleCreateNote.value = !isToggleCreateNote.value;
-  noteSelected.value = n;
-  console.log(n);
+  noteSelected.value = note;
+  console.log(note);
+};
+
+const isToggleCreateTask = ref(false);
+const taskSelected = ref();
+const onToggleCreateTask = (task: any) => {
+  isToggleCreateTask.value = !isToggleCreateTask.value;
+  taskSelected.value = task;
+  console.log(task);
 };
 </script>
 
@@ -274,12 +329,6 @@ const onToggleCreateNote = (n: any) => {
                 display: flex;
                 align-items: center;
                 padding: 0.3rem 0.2rem;
-                label {
-                  cursor: pointer;
-                  margin-left: 0.2rem;
-                  font-size: 0.8rem;
-                  font-weight: 500;
-                }
                 .checkbox {
                   accent-color: var(--accent-color);
                 }

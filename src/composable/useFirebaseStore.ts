@@ -72,6 +72,7 @@ export const useUpdateUserStore = async (updateUser: any) => {
       dataUpdate
     );
     useGetCoursesStore();
+    useGetUserStore();
     // window.location.reload();
   } catch (error) {
     console.log(error);
