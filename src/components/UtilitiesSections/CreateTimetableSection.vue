@@ -3,6 +3,12 @@
     <div class="create-timetable-container">
       <div class="blur"></div>
       <form class="form-create">
+        <input
+          type="text"
+          placeholder="Title..."
+          class="title"
+          v-model="title"
+        />
         <table style="width: 100%">
           <tr>
             <th>SCHEDULE</th>
@@ -14,7 +20,7 @@
             <th>SAT</th>
             <th>SUN</th>
           </tr>
-          <tr v-for="(row, index) in dataTest" :key="index" class="table-row">
+          <tr v-for="(row, index) in table" :key="index" class="table-row">
             <td
               class="table-item"
               v-for="(item, keyItem) in row['items']"
@@ -43,87 +49,32 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-
+import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import { useUserStore } from "../../composable/useUser";
+const userStore = useUserStore();
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ timetable: any }>();
-const dataTest = ref<any>([
-  {
-    items: {
-      schedule: "4:00 - 5:00",
-      mon: "Happy Day",
-      tue: "Happy Day 2",
-      wed: "Boring Day",
-      thu: "Sad Day",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
+const title = ref(props.timetable?.title || "");
+const table = ref<any>(
+  props.timetable?.table || [
+    {
+      items: {
+        0: "0:00 - 0:00",
+        1: "",
+        2: "",
+        3: "",
+        4: "",
+        5: "",
+        6: "",
+        7: "",
+      },
     },
-  },
-  {
-    items: {
-      schedule: "6:00 - 7:00",
-      mon: "Happy Day",
-      tue: "Sad Day 2",
-      wed: "Boring Day",
-      thu: "Sad Day",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
-    },
-  },
-  {
-    items: {
-      schedule: "6:00 - 7:00",
-      mon: "Happy Day",
-      tue: "Sad Day 2",
-      wed: "Boring Day",
-      thu: "Sad Day",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
-    },
-  },
-  {
-    items: {
-      schedule: "6:00 - 7:00",
-      mon: "Happy Day",
-      tue: "",
-      wed: "Boring Day",
-      thu: "Sad Day",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
-    },
-  },
-  {
-    items: {
-      schedule: "6:00 - 7:00",
-      mon: "Happy Day",
-      tue: "Sad Day 2",
-      wed: "Boring Day",
-      thu: "Sad Day",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
-    },
-  },
-  {
-    items: {
-      schedule: "6:00 - 7:00",
-      mon: "Happy Day",
-      tue: "Sad Day 2",
-      wed: "Boring Day Boring Day Boring Day Boring Day",
-      thu: "",
-      pri: "Crazy Day",
-      sat: "Last Day",
-      Sun: "Mercy Day",
-    },
-  },
-]);
+  ]
+);
 const editText = ref();
 const editItem = ref();
 const onToggleEdit = (keyItem: any, key: any) => {
-  const item = dataTest.value[key].items;
+  const item = table.value[key].items;
   editText.value = item[keyItem];
   editItem.value = item;
 };
@@ -137,25 +88,52 @@ const onEdit = (keyItem: any) => {
 const onAddRow = (position: number) => {
   const newRow = {
     items: {
-      schedule: "0:00 - 0:00",
-      mon: "",
-      tue: "",
-      wed: "",
-      thu: "",
-      pri: "",
-      sat: "",
-      Sun: "",
+      0: "0:00 - 0:00",
+      1: "",
+      2: "",
+      3: "",
+      4: "",
+      5: "",
+      6: "",
+      7: "",
     },
   };
-  dataTest.value.splice(position + 1, 0, newRow);
+  table.value.splice(position + 1, 0, newRow);
 };
 const onRemoveRow = (position: number) => {
-  dataTest.value.splice(position, 1);
+  table.value.splice(position, 1);
 };
 const onCancel = () => {
   emit("onCancel", props.timetable);
 };
-const onComplete = async () => {};
+const onComplete = async () => {
+  const idUser = localStorage.getItem("idUser");
+
+  if (props.timetable === "") {
+    console.log("Creating Timetable");
+    const data = ref({
+      title: title.value,
+      table: table.value,
+      idUser: idUser,
+      createdAt: new Date().toLocaleDateString(),
+      id: new Date().getTime().toString() + Math.random() * 10,
+    });
+    userStore.user.timetables[data.value.id] = data.value;
+    useUpdateUserStore({ timetables: userStore.user.timetables });
+  } else {
+    console.log("UPDATE");
+    const data = ref({
+      title: title.value,
+      table: table.value,
+      idUser: idUser,
+      createdAt: props.timetable.createdAt,
+      id: props.timetable.id,
+    });
+    userStore.user.timetables[data.value.id] = data.value;
+    useUpdateUserStore({ timetables: userStore.user.timetables });
+  }
+  emit("onCancel", props.timetable);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -191,7 +169,22 @@ const onComplete = async () => {};
       overflow-x: scroll;
       transform: translateY(-10px);
       padding: 2rem;
-
+      .title {
+        width: 100%;
+        padding: 0.5rem;
+        color: inherit;
+        margin-bottom: 0.8rem;
+        background-color: transparent;
+        border: 1px solid;
+        border-radius: 3px;
+        border-bottom: 0.3rem solid;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border 0.35s ease;
+      }
+      .title:focus {
+        border-bottom: 1px solid;
+      }
       table,
       th,
       td {
@@ -269,7 +262,6 @@ const onComplete = async () => {};
           color: var(--primary-color);
         }
       }
-
 
       .btn-group {
         margin-right: auto;

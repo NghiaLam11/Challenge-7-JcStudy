@@ -51,8 +51,13 @@
         <div class="utilities-timetable">
           <h3>Timetable</h3>
           <div class="timetable-list">
-            <div v-for="n in 6" :key="n" class="timetable-item">
-              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+            <div
+              v-for="(timetable, key) in userStore.user.timetables"
+              :key="key"
+              class="timetable-item"
+              @click="onToggleCreateTimetable(timetable)"
+            >
+              <h4 class="multiline-ellipsis-3">{{ timetable.title }}</h4>
             </div>
           </div>
         </div>
@@ -128,7 +133,7 @@
       @on-cancel="onToggleCreateTask"
     />
     <CreateTimetableSection
-      v-if="!isToggleCreateTimetable"
+      v-if="isToggleCreateTimetable"
       :timetable="timetableSelected"
       @on-cancel="onToggleCreateTimetable"
     />
