@@ -14,7 +14,7 @@
             <th>SAT</th>
             <th>SUN</th>
           </tr>
-          <tr v-for="(row, key) in dataTest" :key="key" class="table-row">
+          <tr v-for="(row, index) in dataTest" :key="index" class="table-row">
             <td
               class="table-item"
               v-for="(item, keyItem) in row['items']"
@@ -24,10 +24,12 @@
               <input
                 class="table-edit"
                 v-model="editText"
-                @mouseover="onToggleEdit(keyItem, key)"
+                @mouseover="onToggleEdit(keyItem, index)"
                 @mouseout="onEdit(keyItem)"
               />
             </td>
+            <span class="row-remove" @click="onRemoveRow(index)">-</span>
+            <span class="row-add" @click="onAddRow(index)">+</span>
           </tr>
         </table>
         <div class="btn-group">
@@ -44,8 +46,8 @@ import { ref } from "vue";
 
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ timetable: any }>();
-const dataTest = ref<any>({
-  1: {
+const dataTest = ref<any>([
+  {
     items: {
       schedule: "4:00 - 5:00",
       mon: "Happy Day",
@@ -57,7 +59,7 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-  2: {
+  {
     items: {
       schedule: "6:00 - 7:00",
       mon: "Happy Day",
@@ -69,7 +71,7 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-  3: {
+  {
     items: {
       schedule: "6:00 - 7:00",
       mon: "Happy Day",
@@ -81,7 +83,7 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-  4: {
+  {
     items: {
       schedule: "6:00 - 7:00",
       mon: "Happy Day",
@@ -93,7 +95,7 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-  5: {
+  {
     items: {
       schedule: "6:00 - 7:00",
       mon: "Happy Day",
@@ -105,7 +107,7 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-  6: {
+  {
     items: {
       schedule: "6:00 - 7:00",
       mon: "Happy Day",
@@ -117,11 +119,11 @@ const dataTest = ref<any>({
       Sun: "Mercy Day",
     },
   },
-});
+]);
 const editText = ref();
 const editItem = ref();
 const onToggleEdit = (keyItem: any, key: any) => {
-  const item = dataTest.value[Number(key)].items;
+  const item = dataTest.value[key].items;
   editText.value = item[keyItem];
   editItem.value = item;
 };
@@ -129,8 +131,26 @@ const onToggleEdit = (keyItem: any, key: any) => {
 const onEdit = (keyItem: any) => {
   if (editText.value !== editItem.value[keyItem]) {
     editItem.value[keyItem] = editText.value;
-    console.log("HAHA")
+    console.log("HAHA");
   }
+};
+const onAddRow = (position: number) => {
+  const newRow = {
+    items: {
+      schedule: "0:00 - 0:00",
+      mon: "",
+      tue: "",
+      wed: "",
+      thu: "",
+      pri: "",
+      sat: "",
+      Sun: "",
+    },
+  };
+  dataTest.value.splice(position + 1, 0, newRow);
+};
+const onRemoveRow = (position: number) => {
+  dataTest.value.splice(position, 1);
 };
 const onCancel = () => {
   emit("onCancel", props.timetable);
@@ -139,6 +159,9 @@ const onComplete = async () => {};
 </script>
 
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+  display: none;
+}
 .create-timetable {
   .create-timetable-container {
     display: flex;
@@ -163,11 +186,12 @@ const onComplete = async () => {};
       // background-color: var(--bg-secondary);
       display: flex;
       justify-content: center;
-      align-items: center;
       flex-direction: column;
-      min-width: 70%;
+      min-width: 80%;
+      overflow-x: scroll;
       transform: translateY(-10px);
       padding: 2rem;
+
       table,
       th,
       td {
@@ -175,26 +199,48 @@ const onComplete = async () => {};
         border-collapse: collapse;
         padding: 0.4rem;
         position: relative;
-        .table-item:hover {
+        .table-row {
+          position: relative;
+          .row-add,
+          .row-remove {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            top: 0;
+            display: none;
+          }
+          .row-remove {
+            right: -70px;
+          }
+          .table-item:hover {
+            .table-edit {
+              display: flex;
+            }
+          }
           .table-edit {
-            display: flex;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: none;
+          }
+          .table-edit:hover {
+            color: var(--primary-color);
           }
         }
-        .table-edit {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background-color: var(--bg-secondary);
-          justify-content: center;
-          align-items: center;
-          font-size: 0.9rem;
-          font-weight: 500;
-          display: none;
-        }
-        .table-edit:hover {
-          color: var(--primary-color);
+        .table-row:hover {
+          .row-add,
+          .row-remove {
+            display: inline;
+            cursor: pointer;
+          }
         }
       }
 
@@ -214,15 +260,16 @@ const onComplete = async () => {};
         font-size: 0.9rem;
         overflow: hidden;
       }
+      input {
+        border: none;
+        outline: none;
+      }
       table {
         th {
           color: var(--primary-color);
         }
       }
 
-      ::-webkit-scrollbar {
-        display: none;
-      }
 
       .btn-group {
         margin-right: auto;
@@ -236,7 +283,7 @@ const onComplete = async () => {};
 
 @media screen and (max-width: 768px) {
   .form-create {
-    min-width: 95% !important;
+    min-width: 90% !important;
   }
 }
 </style>
