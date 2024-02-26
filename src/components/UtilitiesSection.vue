@@ -23,7 +23,7 @@
           </div>
           <span>+</span>
         </div>
-        <div class="utilities-item">
+        <div class="utilities-item" @click="onToggleCreateFlashcard('')">
           <div class="item">
             <span class="text">Flashcard</span>
             <i class="fas fa-dice-d6"></i>
@@ -32,7 +32,10 @@
         </div>
       </div>
       <div class="utilities-group">
-        <div class="utilities-notes">
+        <div
+          class="utilities-notes"
+          v-if="Object.keys(userStore.user?.notes).length > 0"
+        >
           <h3>Notes</h3>
           <div class="notes-list">
             <div
@@ -48,8 +51,11 @@
             </div>
           </div>
         </div>
-        <div class="utilities-timetable">
-          <h3>Timetable</h3>
+        <div
+          class="utilities-timetable"
+          v-if="Object.keys(userStore.user?.timetables).length > 0"
+        >
+          <h3>Timetables</h3>
           <div class="timetable-list">
             <div
               v-for="(timetable, key) in userStore.user.timetables"
@@ -61,7 +67,10 @@
             </div>
           </div>
         </div>
-        <div class="utilities-task">
+        <div
+          class="utilities-task"
+          v-if="Object.keys(userStore.user?.tasks).length > 0"
+        >
           <h3>Task</h3>
           <div class="task-list">
             <div
@@ -109,13 +118,23 @@
             </div>
           </div>
         </div>
-        <div class="utilities-flashcard">
+        <div
+          class="utilities-flashcard"
+          v-if="Object.keys(userStore.user?.flashcards).length > 0"
+        >
           <h3>Flashcard</h3>
           <div class="flashcard-list">
-            <div v-for="n in 6" :key="n" class="flashcard-item">
-              <h4 class="multiline-ellipsis-3">Lorem iplem litsto elit.</h4>
+            <div
+              v-for="(flashcard, key) in userStore.user.flashcards"
+              :key="key"
+              class="flashcard-item"
+              @click="onToggleCreateFlashcard(flashcard)"
+            >
+              <h4 class="multiline-ellipsis-3">{{ flashcard.title }}</h4>
               <div class="count-card">
-                <span>{{ n }} cards</span>
+                <span
+                  >{{ Object.keys(flashcard?.cards).length }} cards</span
+                >
               </div>
             </div>
           </div>
@@ -137,15 +156,29 @@
       :timetable="timetableSelected"
       @on-cancel="onToggleCreateTimetable"
     />
+    <CreateFlashcardSection
+      v-if="isToggleCreateFlashcard"
+      :flashcard="flashcardSelected"
+      @on-cancel="onToggleCreateFlashcard"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import CreateFlashcardSection from "./UtilitiesSections/CreateFlashcardSection.vue";
 import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
 import CreateTimetableSection from "./UtilitiesSections/CreateTimetableSection.vue";
 import { useUserStore } from "../composable/useUser";
 import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
 const userStore = useUserStore();
+
+const isToggleCreateFlashcard = ref(false);
+const flashcardSelected = ref();
+const onToggleCreateFlashcard = (flashcard: any) => {
+  isToggleCreateFlashcard.value = !isToggleCreateFlashcard.value;
+  flashcardSelected.value = flashcard;
+  console.log(flashcard);
+};
 
 const isToggleCreateTimetable = ref(false);
 const timetableSelected = ref();
@@ -225,6 +258,7 @@ const onToggleCreateTask = (task: any) => {
     }
     .utilities-group {
       margin: 1rem 0;
+      min-height: 100vh;
       .utilities-notes {
         h3 {
           margin-bottom: 0.5rem;

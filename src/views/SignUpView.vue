@@ -159,10 +159,13 @@ const onSubmit = () => {
     streak: 0,
     isAdmin: false,
     studyTime: [0, 0, 0, 0, 0],
-    coursesCompleted: [],
-    coursesRegister: [],
-    coursesUnlock: [],
-    blogsRegister: [],
+    timetables: {},
+    tasks: {},
+    notes: {},
+    coursesCompleted: {},
+    coursesRegister: {},
+    coursesUnlock: {},
+    blogsRegister: {},
   });
   useSignupAuth(user.value);
 };
