@@ -147,7 +147,7 @@ const onPrevCharacter = () => {
     presentCharacter.value = characters.value.length - 1;
   }
 };
-const onSubmit = () => {
+const onSubmit = async () => {
   console.log(name.value, password.value, email.value);
 
   const user = ref<any>({
@@ -162,12 +162,14 @@ const onSubmit = () => {
     timetables: {},
     tasks: {},
     notes: {},
+    flashcards: {},
     coursesCompleted: {},
     coursesRegister: {},
-    coursesUnlock: {},
+    coursesUnlocked: {},
     blogsRegister: {},
   });
-  useSignupAuth(user.value);
+  await useSignupAuth(user.value);
+  await router.push("/");
 };
 </script>
 

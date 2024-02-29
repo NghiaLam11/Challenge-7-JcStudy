@@ -117,7 +117,7 @@ const onComplete = async () => {
       z-index: -1;
     }
     .form-create {
-      // background-color: var(--bg-secondary);
+      background-color: var(--bg-secondary);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -144,6 +144,7 @@ const onComplete = async () => {
             height: 250px;
             position: relative;
             transition: all 0.7s ease;
+            border: 1px solid var(--border-color);
             i {
               position: absolute;
               top: 10px;

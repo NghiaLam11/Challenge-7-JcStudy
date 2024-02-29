@@ -40,6 +40,7 @@ export const useSigninAuth = async (email: string, password: string) => {
       email,
       password
     );
+    localStorage.setItem("idUser", userCredential.user.uid);
     const user = userCredential.user;
     console.log(user);
     await useGetUserStore();
@@ -56,6 +57,7 @@ export const useSignoutAuth = () => {
   signOut(auth)
     .then(() => {
       // Sign-out successful.
+      localStorage.removeItem("idUser");
       console.log("Sign-out successful");
     })
     .catch((error: any) => {
@@ -66,8 +68,9 @@ export const useSignoutAuth = () => {
 
 export const useAnonymusAuth = () => {
   signInAnonymously(auth)
-    .then(() => {
+    .then((userCredential) => {
       console.log("Anonymously signed");
+      localStorage.setItem("idUser", userCredential.user.uid);
     })
     .catch((error) => {
       const errorMessage = error.message;

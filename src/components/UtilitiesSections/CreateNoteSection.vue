@@ -79,11 +79,11 @@ const onComplete = async () => {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.4);
       z-index: -1;
     }
     .form-create {
-      // background-color: var(--bg-secondary);
+      background-color: var(--bg-secondary);
       display: flex;
       justify-content: center;
       align-items: center;

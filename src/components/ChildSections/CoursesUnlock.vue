@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="courses-unlock"
-    v-if="Object.keys(userStore.user?.coursesUnlocked).length > 0"
-  >
+  <div class="courses-unlock" v-if="Object.keys(coursesUnlocked).length > 0">
     <div class="topic">
       <h3>Courses unlock</h3>
     </div>
@@ -44,11 +41,12 @@ import { useSound } from "../../../src/composable/useSound.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useRouter } from "vue-router";
 import { Course } from "../../types/types";
+// import { useGetCoursesStore } from "../../composable/useFirebaseStore";
 const userStore = useUserStore();
 const router = useRouter();
 // Play sound when btn is clicked
 const soundStore = useSound();
-
+const coursesUnlocked = ref(userStore.user?.coursesUnlocked || {});
 const onMoreDetails = (course: Course) => {
   soundStore.playSound();
   router.push(`/courses/${course.id}/0/overview`);

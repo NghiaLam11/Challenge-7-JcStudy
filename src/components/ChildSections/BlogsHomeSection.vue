@@ -3,11 +3,7 @@
     <div class="topic">
       <h3>Blogs</h3>
     </div>
-    <Carousel
-      :items-to-show="2"
-      :snap-align="'start'"
-      :breakpoints="breakpointsblogs"
-    >
+    <Carousel :breakpoints="breakpointsblogs">
       <Slide v-for="(blog, key) in blogsStore.blogsApproved" :key="key">
         <div class="card-item">
           <router-link :to="`/blogs/${blog.id}`">
@@ -42,10 +38,6 @@ import { useBlogsStore } from "../../composable/useBlogs";
 const blogsStore = useBlogsStore();
 const breakpointsblogs = ref({
   0: {
-    itemsToShow: 1,
-    snapAlign: "center",
-  },
-  534: {
     itemsToShow: 2,
     snapAlign: "start",
     autoplay: 3000,

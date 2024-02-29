@@ -32,8 +32,9 @@ const onReadMore = (blog: any) => {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .blogs {
+  min-height: 100vh;
   .blogs-container {
     display: flex;
     flex-wrap: wrap;
@@ -105,7 +106,7 @@ const onReadMore = (blog: any) => {
   .blogs {
     .blogs-container {
       .card-item {
-        width: calc(100% / 1);
+        width: calc(100% / 2);
         button {
           font-size: 0.6rem !important;
         }

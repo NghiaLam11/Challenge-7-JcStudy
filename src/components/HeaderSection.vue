@@ -29,10 +29,7 @@
             >
           </li>
           <li class="nav-item">
-            <router-link
-              to="/contact"
-              active-class="active"
-              class="nav-link"
+            <router-link to="/contact" active-class="active" class="nav-link"
               >Contact</router-link
             >
           </li>
@@ -127,6 +124,7 @@ import { useSound } from "../composable/useSound";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useUserStore } from "../composable/useUser";
+
 const userStore = useUserStore();
 const isAnonymous = ref(false);
 onAuthStateChanged(auth, (user: any) => {

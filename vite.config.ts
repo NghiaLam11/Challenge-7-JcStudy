@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -8,6 +9,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 1600,
   },
   optimizeDeps: {
-    include: ["quill-blot-formatter"],
+    include: ["quill-blot-formatter", "quill-image-uploader"],
   },
 });

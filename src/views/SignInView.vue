@@ -71,20 +71,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useSigninAuth } from "../composable/useFirebaseAuth";
-// import { useErrorStore } from "../composable/useError";
-// import { useRouter } from "vue-router";
-// const errorStore = useErrorStore();
+import { useErrorStore } from "../composable/useError";
+import { useRouter } from "vue-router";
+const errorStore = useErrorStore();
 const email = ref("");
 const password = ref("");
 const name = ref("JcLearn-er");
-// const router = useRouter();
-const onSubmit = () => {
+const router = useRouter();
+const onSubmit = async () => {
   console.log(name.value, password.value, email.value);
-  useSigninAuth(email.value, password.value);
-  // if (!errorStore.isError && errorStore.errorMessage === "") {
-  //   router.push("/");
-  // }
-
+  await useSigninAuth(email.value, password.value);
+  if (!errorStore.isError && errorStore.errorMessage === "") {
+    await router.push("/");
+  }
 };
 
 // Feature reveal the password

@@ -4,8 +4,6 @@
       <h3>Courses</h3>
     </div>
     <Carousel
-      :items-to-show="2"
-      :snap-align="'start'"
       :breakpoints="breakpoints"
     >
       <Slide v-for="(course, key) in coursesStore.coursesApproved" :key="key">
@@ -75,7 +73,7 @@ const onUnlock = () => {
 const breakpoints = ref({
   0: {
     itemsToShow: 1,
-    snapAlign: "center",
+    snapAlign: "start",
   },
   768: {
     autoplay: 3000,

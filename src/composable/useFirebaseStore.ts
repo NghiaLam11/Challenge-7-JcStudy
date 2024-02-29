@@ -10,7 +10,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { Course, User } from "../types/types";
+import { User } from "../types/types";
 import { useLoaderStore } from "./useLoader";
 import { useUserStore } from "./useUser";
 import { useCoursesStore } from "./useCourses";
@@ -26,6 +26,7 @@ import { useBlogsStore } from "./useBlogs";
 export const useGetUserStore = async () => {
   try {
     const loaderStore = useLoaderStore();
+    loaderStore.isLoading = true;
     const userStore = useUserStore();
 
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -42,8 +43,8 @@ export const useGetUserStore = async () => {
       }
     });
     autoUpdateStudyTime();
-    loaderStore.isLoading = false;
     userStore.users = users.value;
+    loaderStore.isLoading = false;
   } catch (error) {
     console.log(error);
   }
@@ -71,8 +72,6 @@ export const useUpdateUserStore = async (updateUser: any) => {
       updateUser,
       dataUpdate
     );
-    useGetCoursesStore();
-    useGetUserStore();
     // window.location.reload();
   } catch (error) {
     console.log(error);
@@ -90,6 +89,7 @@ export const useAddCourseStore = async (course: any) => {
 
 export const useGetCoursesStore = async () => {
   try {
+    const loaderStore = useLoaderStore();
     const coursesStore = useCoursesStore();
     const q = query(
       collection(db, "courses"),
@@ -176,12 +176,14 @@ export const useGetCoursesStore = async () => {
         };
       }
     });
+
     coursesStore.courses = courses.value;
     coursesStore.coursesArray = coursesArray.value;
     coursesStore.coursesTrend = coursesTrend.value;
     coursesStore.coursesApproved = coursesApproved.value;
     coursesStore.newCourses = newCourses.value;
     coursesStore.unApprovedCourses = unApprovedCourses.value;
+    loaderStore.isLoading = false;
   } catch (error) {
     console.log(error);
   }
@@ -219,6 +221,7 @@ export const useGetBlogsStore = async () => {
       limit(20)
     );
     const blogsStore = useBlogsStore();
+    const loaderStore = useLoaderStore();
 
     const querySnapshot = await getDocs(q);
     const blogs = ref<any>({});
@@ -269,6 +272,7 @@ export const useGetBlogsStore = async () => {
     blogsStore.blogsApproved = blogsApproved.value;
     blogsStore.newBlogs = newBlogs.value;
     blogsStore.unApprovedBlogs = unApprovedBlogs.value;
+    loaderStore.isLoading = false;
   } catch (error) {
     console.log(error);
   }
@@ -288,5 +292,3 @@ export const useUpdateBlogStore = async (updateBlog: any, id: string) => {
     console.log(error);
   }
 };
-
-

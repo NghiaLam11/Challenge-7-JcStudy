@@ -122,7 +122,7 @@
           class="utilities-flashcard"
           v-if="Object.keys(userStore.user?.flashcards).length > 0"
         >
-          <h3>Flashcard</h3>
+          <h3>Flashcards</h3>
           <div class="flashcard-list">
             <div
               v-for="(flashcard, key) in userStore.user.flashcards"

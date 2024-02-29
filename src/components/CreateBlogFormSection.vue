@@ -97,12 +97,14 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
+
 import { QuillEditor } from "@vueup/vue-quill";
-import BlotFormatter from "quill-blot-formatter";
+// @ts-ignore
+import BlotFormatter from "quill-blot-formatter/dist/BlotFormatter";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 // @ts-ignore
 import ImageUploader from "quill-image-uploader";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-// import { useAddBlogStore } from "../composable/useFirebaseStore";
+
 import {
   useGetImageUrlStorage,
   useUploadImgStorage,

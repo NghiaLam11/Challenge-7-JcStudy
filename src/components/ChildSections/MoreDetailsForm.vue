@@ -23,8 +23,8 @@
               >&#129299;{{ countChapters }} chapters &
               {{ countLessons }} lessons</span
             ><span> &#9997;{{ course?.industry }}</span
-            ><span> &#128339;{{ course?.createdAt }}</span
-            > <span> &#128275;{{ course?.countUnlocked }}</span>
+            ><span> &#128339;{{ course?.createdAt }}</span>
+            <span> &#128275;{{ course?.countUnlocked }}</span>
           </div>
           <div class="text-details">
             <h4 class="title">{{ course?.title }}</h4>
@@ -89,7 +89,7 @@ const onToggleUnlock = () => {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
+
     z-index: 100;
     .blur {
       position: fixed;
@@ -97,10 +97,11 @@ const onToggleUnlock = () => {
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.6);
       z-index: -1;
     }
     .confirm-details {
+      background-color: var(--bg-secondary);
       width: 75vw;
       height: 80vh;
       border: 1px solid;
@@ -143,7 +144,6 @@ const onToggleUnlock = () => {
             font-size: 0.9rem;
             line-height: 1.3rem;
             opacity: 0.8;
-            color: var(--text-color);
           }
         }
       }
