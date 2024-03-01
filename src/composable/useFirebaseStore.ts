@@ -275,6 +275,7 @@ export const useGetBlogsStore = async () => {
     loaderStore.isLoading = false;
   } catch (error) {
     console.log(error);
+    alert("An error occurred");
   }
 };
 
@@ -290,5 +291,16 @@ export const useUpdateBlogStore = async (updateBlog: any, id: string) => {
     useGetUserStore();
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const useAddMessageStore = async (message: any) => {
+  try {
+    const docRef = await addDoc(collection(db, "messages"), message);
+    console.log("Document written with ID: ", docRef.id);
+    alert("Sended");
+  } catch (error) {
+    console.log(error);
+    alert("Somethings went wrong! :((");
   }
 };

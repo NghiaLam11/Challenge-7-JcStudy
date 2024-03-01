@@ -10,6 +10,7 @@
                 ref="fileImgElement"
                 @change="onImage"
                 type="file"
+                accept="image/*"
                 name="file-img-edit"
                 id="file-img-edit"
                 class="inputfile"
@@ -29,6 +30,7 @@
                 @change="onVideo"
                 ref="fileVideoElement"
                 type="file"
+                accept="video/*"
                 name="file-video-edit"
                 id="file-video-edit"
                 class="inputfile"
@@ -75,7 +77,12 @@ const fileVideoElement = ref();
 const onVideo = () => {
   let file = fileVideoElement.value.files[0];
   let reader = new FileReader();
-
+  if (file.size > 5000000) {
+    alert(
+      "Please select a video less than 5MB because this page just is a test version"
+    );
+    return;
+  }
   if (file) {
     reader.readAsDataURL(file);
   }

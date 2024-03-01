@@ -24,35 +24,28 @@
             >
           </li>
         </ul>
-        <form class="contact-form">
+        <form @submit.prevent="onSubmit" class="contact-form">
           <h3>Send Message &#128236;</h3>
           <div class="form-group">
             <label for="name">Name</label>
             <input
-              placeholder="Ex: JcStudy"
+              v-model="name"
+              placeholder="Ex: John Smith"
               class="name"
               type="text"
               required
             />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              placeholder="Ex: JcStudy@gmail.com"
-              class="email"
-              type="email"
-              required
-            />
-          </div>
-          <div class="form-group">
             <label for="message">Message</label>
             <textarea
+              v-model="message"
               placeholder="Ex: Write your message!"
               class="message"
               type="text"
               required
               cols="20"
-              rows="5"
+              rows="9"
             ></textarea>
           </div>
           <div class="form-btn">
@@ -81,6 +74,25 @@
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { ref } from "vue";
+import { useAddMessageStore } from "../composable/useFirebaseStore";
+
+const name = ref();
+const message = ref();
+
+const onSubmit = () => {
+  if (
+    name.value.split(" ").length < 20 &&
+    message.value.split(" ").length < 1000
+  ) {
+    useAddMessageStore({ name: name.value, message: message.value });
+  }
+  name.value = "";
+  message.value = "";
+};
+</script>
 
 <style lang="scss" scoped>
 .contact {

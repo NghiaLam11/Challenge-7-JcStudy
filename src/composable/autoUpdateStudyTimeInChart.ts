@@ -67,6 +67,7 @@ export const autoUpdateStudyTime = () => {
         userStore.studyTime.shift();
         userStore.studyTime.push(sumTimeOfAllDay);
         const streak = userStore.user.streak + 1;
+        userStore.user.streak += 1;
         console.log("countDaysBetweenTwoDays = 1", streak);
         useUpdateUserStore({
           studyTime: userStore.studyTime,
