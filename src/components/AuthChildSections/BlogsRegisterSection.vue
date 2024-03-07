@@ -7,43 +7,46 @@
           <p>Create your blog!</p>
         </router-link>
       </div>
-      <div v-if="userStore.user?.blogsRegister.length > 0" class="regis-moderate">
+      <div
+        v-if="Object.keys(blogsStore.blogsRegister).length > 0"
+        class="regis-moderate"
+      >
         <div class="content-moderate">
           <div class="courses">
             <div class="topic">Blogs Moderation</div>
             <div>
               <Carousel
-                :items-to-show="2"
-                :snap-align="'start'"
                 :breakpoints="breakpoints"
               >
-                <Slide v-for="slide in 10" :key="slide">
+                <Slide
+                  v-for="(blog, key) in blogsStore.blogsRegister"
+                  :key="key"
+                >
                   <div class="card-item">
                     <div class="thumbnail">
-                      <img
-                        src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-                        alt=""
-                      />
+                      <img :src="blog?.imgUrl" alt="" />
                     </div>
                     <div class="card-right bg-primary">
+                      <p class="related">
+                        <span>{{ blog.createdAt }}</span> |
+                        <span>{{ blog.industry }}</span>
+                      </p>
                       <h3 class="multiline-ellipsis-1">
-                        Lorem islem posile delao adipisicing elit!
+                        {{ blog.title }}
                       </h3>
                       <p class="multiline-ellipsis-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Amet eos voluptatem iusto delectus, minus sapiente!
-                        Distinctio atque dolore reprehenderit laboriosam? Sit et
-                        possimus assumenda! Quas aspernatur dolore nulla cumque
-                        odio.
+                        {{ blog.desc }}
                       </p>
-                      <div class="card-auth">
-                        <div class="wrapper-img">
-                          <img src="/src/images/peep-82.png" alt="" />
-                        </div>
-
-                        <span>Jclahi</span>
+                      <div class="checking">
+                        <b
+                          ><span v-if="blog.isApprove === false"
+                            >Censoring...</span
+                          ><span v-else>Approved</span></b
+                        >
+                        <span @click="onReadMore">
+                          | <u><small>Read more...</small></u>
+                        </span>
                       </div>
-                      <div class="checking" disabled>Censoring...</div>
                     </div>
                   </div>
                 </Slide>
@@ -65,8 +68,13 @@ import { ref } from "vue";
 
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { useUserStore } from "../../composable/useUser";
-const userStore = useUserStore();
+import { useBlogsStore } from "../../composable/useBlogs";
+import { useRouter } from "vue-router";
+const blogsStore = useBlogsStore();
+const router = useRouter();
+const onReadMore = (blog: any) => {
+  router.push(`/blogs/${blog.id}`);
+};
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -176,6 +184,10 @@ const breakpoints = ref({
           text-align: start;
           transition: all 0.8s ease;
           padding: 0 1rem;
+          .related {
+            font-size: 0.7rem;
+            color: var(--primary-color);
+          }
           .checking {
             font-size: 0.9rem;
             color: var(--primary-color);
@@ -190,70 +202,32 @@ const breakpoints = ref({
             line-height: 1.2rem;
             opacity: 0.7;
           }
-
-          .card-auth {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.2rem;
-            margin: 0.5rem 0;
-            .wrapper-img {
-              width: 35px;
-              height: 35px;
-              padding: 0.2rem;
-              position: relative;
-              padding-bottom: 0.4rem;
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: all 0.35s ease;
-              }
-            }
-
-            .wrapper-img::after {
-              content: "";
-              position: absolute;
-              z-index: 2;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              scale: 1.03;
-              border-radius: 50%;
-              border: 1px dashed;
-              transition: all 0.35s ease;
-            }
-            span {
-              margin-left: 0.3rem;
-              font-weight: bold;
-              font-size: 1.1rem;
-            }
-          }
-          .card-auth:hover .wrapper-img img {
-            scale: 1.05;
-          }
-          .card-auth:hover .wrapper-img::after {
-            scale: 1.1;
-            animation: spinAni 10s ease-in-out infinite;
-          }
-          @keyframes spinAni {
-            from {
-              transform: rotate(0);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
         }
       }
       .card-item:hover .card-right {
-        transform: translateY(1.5rem);
+        transform: translateY(0.2rem);
         border-radius: 5px;
       }
       .card-item:hover .thumbnail {
         filter: grayscale(0);
       }
     }
+  }
+}
+@media screen and (max-width: 738px) {
+  .btn-regis {
+    margin-top: 1rem !important;
+    padding: 0.5rem !important;
+    a {
+      p {
+        font-size: 0.8rem !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 538px) {
+  .regis-moderate {
+    margin: 1rem 0 !important;
   }
 }
 </style>

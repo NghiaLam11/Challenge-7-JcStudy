@@ -113,8 +113,7 @@ const breakpointsunlock = ref({
     }
   }
   .card-item:hover .card-right {
-    transform: translateY(-50%);
-    padding-left: 1.5rem;
+    transform: translateY(-0.5rem);
     border-radius: 5px;
   }
   .card-item:hover .thumbnail {

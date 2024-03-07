@@ -264,7 +264,9 @@ const onTogglePassword = () => {
 }
 @media screen and (min-width: 0px) and (max-width: 789px) {
   .register {
-    padding: 2rem !important;
+    padding: 1rem !important;
+    width: 100% !important;
+    box-shadow: none !important;
   }
   .form-register {
     width: 100% !important;

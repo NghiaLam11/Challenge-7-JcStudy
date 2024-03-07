@@ -1,15 +1,23 @@
 <template>
-  <div class="courses">
+  <div
+    class="courses"
+    v-if="Object.keys(coursesStore.coursesApproved).length > 0"
+  >
     <div class="topic">
       <h3>Courses</h3>
     </div>
-    <Carousel
-      :breakpoints="breakpoints"
-    >
+    <Carousel :breakpoints="breakpoints">
       <Slide v-for="(course, key) in coursesStore.coursesApproved" :key="key">
         <div class="card-item">
           <div class="thumbnail">
-            <img :src="course?.imgUrl" alt="" />
+            <img
+              :src="
+                course?.imgUrl
+                  ? course?.imgUrl
+                  : '/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg'
+              "
+              :alt="course?.title"
+            />
           </div>
           <div class="card-right bg-primary">
             <h3 class="multiline-ellipsis-1">{{ course?.title }}</h3>
@@ -50,6 +58,7 @@ import { useCoursesStore } from "../../composable/useCourses";
 import { Course } from "../../types/types";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
+import router from "../../router";
 
 // Play sound when btn is clicked
 const soundStore = useSound();
@@ -63,12 +72,18 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
-  
-  userStore.user.coursesUnlocked[courseSelected.value?.id] = courseSelected.value;
-  // add to unlocked course array in database
-  useUpdateUserStore({
-    coursesUnlocked: userStore.user.coursesUnlocked,
-  });
+  if (userStore.user?.coursesUnlocked) {
+    userStore.user.coursesUnlocked[courseSelected.value?.id] =
+      courseSelected.value;
+    // add to unlocked course array in database
+    useUpdateUserStore({
+      coursesUnlocked: userStore.user.coursesUnlocked,
+    });
+    onToggleUnlock(courseSelected.value);
+  } else {
+    alert("You don't have account!");
+    router.push("/signin");
+  }
 };
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
@@ -77,10 +92,8 @@ const breakpoints = ref({
     snapAlign: "start",
   },
   768: {
-    autoplay: 3000,
     itemsToShow: 2,
     snapAlign: "start",
-    pauseAutoplayOnHover: true,
   },
 });
 </script>

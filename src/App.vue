@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <header v-if="!isSpecialPage" class="header"><NavBar /></header>
-    <main class="body" v-if="userStore.user">
+    <main class="body" v-if="userStore.user || isSpecialPage || isAnonymous">
       <router-view></router-view>
     </main>
     <footer v-if="!isSpecialPage"><FooterSection /></footer>
@@ -40,6 +40,7 @@ import {
 import { useSignoutAuth } from "./composable/useFirebaseAuth";
 
 import { useUserStore } from "./composable/useUser";
+import { autoUpdateStudyTime } from "./composable/autoUpdateStudyTimeInChart";
 const loaderStore = useLoaderStore();
 loaderStore.isLoading = true;
 
@@ -53,18 +54,20 @@ const effectStore = useEffectChangeRoute();
 const isStopChangeRoute = ref(false);
 const isAnonymous = ref(false);
 const router = useRouter();
-onAuthStateChanged(auth, (user: any) => {
+onAuthStateChanged(auth, async (user: any) => {
   if (user?.isAnonymous === true) {
     isAnonymous.value = true;
     useGetCoursesStore();
     useGetBlogsStore();
   } else if (user) {
     console.log("USER", user);
-    useGetUserStore();
+    await useGetUserStore();
+    autoUpdateStudyTime();
     isStopChangeRoute.value = false;
   } else {
     console.log("SIGNUP");
     isStopChangeRoute.value = true;
+    useGetUserStore();
     router.push("/signup");
   }
 });
@@ -155,11 +158,11 @@ onMounted(() => {
     () => route.fullPath,
     (newPath) => {
       // Loading when changing the route
-      if (isAnonymous.value === true) {
+      if (isAnonymous.value === true && newPath !== "/signup") {
         loaderStore.isLoading = true;
         useSignoutAuth();
-        router.push("/signup");
         alert("You need to sign in!");
+        router.push("/signup");
         window.location.reload();
       } else {
         if (newPath === "/signin" || newPath === "/signup") {
@@ -174,6 +177,8 @@ onMounted(() => {
           console.log("FALSE: " + newPath);
         }
       }
+      // loaderStore.isLoading = false;
+
       // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {

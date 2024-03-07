@@ -34,7 +34,7 @@
               <span class="number"> {{ userStore.user?.streak }}</span>
             </div>
             <div class="statistic-group">
-              <span class="topic">Courses(unclock): </span>
+              <span class="topic">Courses(unlocked): </span>
               <span class="number">
                 {{ Object.keys(userStore.user?.coursesUnlocked).length }}</span
               >
@@ -99,7 +99,7 @@ const onSignout = () => {
   padding: 2rem;
   .auth-container {
     .btn-signout {
-      margin-top: 2rem;
+      margin: 2rem 0;
       text-align: center;
     }
     .auth-top {

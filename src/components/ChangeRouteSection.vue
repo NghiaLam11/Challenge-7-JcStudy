@@ -95,7 +95,7 @@
         }
         30%,
         50% {
-          transform: translateX(0%) scale(2);
+          transform: translateX(0%) scale(3);
         }
         100% {
           transform: translateX(100%) scale(0);
@@ -108,7 +108,7 @@
         }
         30%,
         50% {
-          transform: translateX(0%) scale(2);
+          transform: translateX(0%) scale(3);
         }
         100% {
           transform: translateX(-100%) scale(0);

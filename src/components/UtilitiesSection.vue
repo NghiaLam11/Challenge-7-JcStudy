@@ -32,12 +32,12 @@
         </div>
       </div>
       <div class="utilities-group">
-        <div
-          class="utilities-notes"
-          v-if="Object.keys(userStore.user?.notes).length > 0"
-        >
+        <div class="utilities-notes">
           <h3>Notes</h3>
-          <div class="notes-list">
+          <div
+            v-if="Object.keys(userStore.user?.notes).length > 0"
+            class="notes-list"
+          >
             <div
               v-for="note in userStore.user?.notes"
               :key="note.id"
@@ -50,13 +50,18 @@
               </p>
             </div>
           </div>
+          <div v-else>
+            <i
+              ><sup><small>No items!</small></sup>
+            </i>
+          </div>
         </div>
-        <div
-          class="utilities-timetable"
-          v-if="Object.keys(userStore.user?.timetables).length > 0"
-        >
+        <div class="utilities-timetable">
           <h3>Timetables</h3>
-          <div class="timetable-list">
+          <div
+            v-if="Object.keys(userStore.user?.timetables).length > 0"
+            class="timetable-list"
+          >
             <div
               v-for="(timetable, key) in userStore.user.timetables"
               :key="key"
@@ -66,13 +71,18 @@
               <h4 class="multiline-ellipsis-3">{{ timetable.title }}</h4>
             </div>
           </div>
+          <div v-else>
+            <i
+              ><sup><small>No items!</small></sup>
+            </i>
+          </div>
         </div>
-        <div
-          class="utilities-task"
-          v-if="Object.keys(userStore.user?.tasks).length > 0"
-        >
+        <div class="utilities-task">
           <h3>Task</h3>
-          <div class="task-list">
+          <div
+            v-if="Object.keys(userStore.user?.tasks).length > 0"
+            class="task-list"
+          >
             <div
               v-show="Object.keys(userStore.user.tasks).length > 0"
               v-for="(task, key) in userStore.user.tasks"
@@ -117,13 +127,18 @@
               </div>
             </div>
           </div>
+          <div v-else>
+            <i
+              ><sup><small>No items!</small></sup>
+            </i>
+          </div>
         </div>
-        <div
-          class="utilities-flashcard"
-          v-if="Object.keys(userStore.user?.flashcards).length > 0"
-        >
+        <div class="utilities-flashcard">
           <h3>Flashcards</h3>
-          <div class="flashcard-list">
+          <div
+            class="flashcard-list"
+            v-if="Object.keys(userStore.user?.flashcards).length > 0"
+          >
             <div
               v-for="(flashcard, key) in userStore.user.flashcards"
               :key="key"
@@ -132,11 +147,14 @@
             >
               <h4 class="multiline-ellipsis-3">{{ flashcard.title }}</h4>
               <div class="count-card">
-                <span
-                  >{{ Object.keys(flashcard?.cards).length }} cards</span
-                >
+                <span>{{ Object.keys(flashcard?.cards).length }} cards</span>
               </div>
             </div>
+          </div>
+          <div v-else>
+            <i
+              ><sup><small>No items!</small></sup>
+            </i>
           </div>
         </div>
       </div>

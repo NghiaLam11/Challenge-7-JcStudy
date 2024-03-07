@@ -9,36 +9,37 @@
       </div>
       <div
         class="regis-moderate"
-        v-if="userStore.user?.coursesRegister.length > 0"
+        v-if="Object.keys(coursesStore.coursesRegister).length > 0"
       >
         <div class="content-moderate">
           <div class="courses">
             <div class="topic">Courses Moderation</div>
-            <Carousel
-              :items-to-show="2"
-              :snap-align="'start'"
-              :breakpoints="breakpoints"
-            >
-              <Slide v-for="slide in 10" :key="slide">
+            <Carousel :breakpoints="breakpoints">
+              <Slide
+                v-for="(course, key) in coursesStore.coursesRegister"
+                :key="key"
+              >
                 <div class="card-item">
                   <div class="thumbnail">
-                    <img
-                      src="/src/images/jackson-sophat-wUbNvDTsOIc-unsplash.jpg"
-                      alt=""
-                    />
+                    <img :src="course.imgUrl" :alt="course.title" />
                   </div>
                   <div class="card-right bg-primary">
                     <h3 class="multiline-ellipsis-1">
-                      Lorem islem posile delao
+                      {{ course.title }}
                     </h3>
                     <p class="multiline-ellipsis-4">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Amet eos voluptatem iusto delectus, minus sapiente!
-                      Distinctio atque dolore reprehenderit laboriosam? Sit et
-                      possimus assumenda! Quas aspernatur dolore nulla cumque
-                      odio.
+                      {{ course.desc }}
                     </p>
-                    <div class="checking" disabled>Censoring...</div>
+                    <div class="checking">
+                      <b
+                        ><span v-if="course.isApprove === false"
+                          >Censoring...</span
+                        ><span v-else>Approved</span></b
+                      >
+                      <span @click="onToggleUnlock(course)">
+                        | <u><small>More details...</small></u>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Slide>
@@ -51,6 +52,12 @@
           </div>
         </div>
       </div>
+      <MoreDetailsForm
+        v-if="isToggleUnlock"
+        :course="courseSelected"
+        @on-toggle-unlock="onToggleUnlock"
+        @on-unlock="onUnlock"
+      />
     </div>
   </div>
 </template>
@@ -58,8 +65,22 @@
 import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { useUserStore } from "../../composable/useUser";
-const userStore = useUserStore();
+import MoreDetailsForm from "../ChildSections/MoreDetailsForm.vue";
+import { useCoursesStore } from "../../composable/useCourses";
+import { Course } from "../../types/types";
+import { useSound } from "../../composable/useSound";
+const coursesStore = useCoursesStore();
+const soundStore = useSound();
+const isToggleUnlock = ref(false);
+const courseSelected = ref<any>();
+const onToggleUnlock = (course: Course) => {
+  isToggleUnlock.value = !isToggleUnlock.value;
+  courseSelected.value = course;
+  soundStore.playSound();
+};
+const onUnlock = () => {
+  alert("Sorry, you are not allowed to unlock it because it's your course!");
+};
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -171,7 +192,7 @@ const breakpoints = ref({
         }
       }
       .card-item:hover .card-right {
-        transform: translateX(-50%);
+        transform: translateX(-1rem);
         padding-left: 1rem;
         border-radius: 5px;
       }
@@ -179,6 +200,30 @@ const breakpoints = ref({
         filter: grayscale(0);
       }
     }
+  }
+}
+@media screen and (max-width: 738px) {
+  .btn-regis {
+    margin-top: 1rem !important;
+
+    padding: 0.5rem !important;
+    a {
+      p {
+        font-size: 0.8rem !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 538px) {
+  .card-item {
+    flex-direction: column;
+    .thumbnail,
+    .card-right {
+      width: 100% !important;
+    }
+  }
+  .regis-moderate {
+    margin: 1rem 0 !important;
   }
 }
 </style>

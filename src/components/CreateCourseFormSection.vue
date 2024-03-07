@@ -1,7 +1,7 @@
 <template>
   <section class="registration">
     <div class="container">
-      <form class="regis-form">
+      <form @submit.prevent="onSend" class="regis-form">
         <div class="form-group form-file">
           <div class="file-thumbnail">
             <div class="select-img">
@@ -61,7 +61,7 @@
         </div>
         <div class="form-group">
           <div class="custom-select">
-            <select v-model="industry">
+            <select v-model="industry" required>
               <option v-for="industry in industries">{{ industry }}</option>
             </select>
           </div>
@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="form-btn">
-          <button @click="onSend" type="button">Send it!</button>
+          <button type="submit">Send it!</button>
         </div>
       </form>
       <AddChapterLesson
@@ -185,6 +185,7 @@ import {
 } from "../composable/useFirebaseStorage";
 import { useAddCourseStore } from "../composable/useFirebaseStore";
 import { useRouter } from "vue-router";
+import { useUploaderStore } from "../composable/useLoader";
 const router = useRouter();
 
 // CREATE CHAPTERS
@@ -491,6 +492,8 @@ const industries = ref([
 ]);
 // SEND TO THE MODERATION
 const onSend = async () => {
+  const uploaderStore = useUploaderStore();
+  uploaderStore.isUploading = true;
   console.log("SENDED");
   const mediaImgLink = ref({
     filePath: imagePath.value,
@@ -567,6 +570,7 @@ const onSend = async () => {
   });
   await useAddCourseStore(data.value);
   router.push("/");
+  uploaderStore.isUploading = false;
 };
 </script>
 

@@ -3,6 +3,7 @@ import { ref } from "vue";
 // import { User } from "../types/types";
 export const useBlogsStore = defineStore("blogs", () => {
   const blogs = ref<any>({});
+  const blogsRegister = ref<any>({});
   const blogsArray = ref<any>([]);
   const blogsApproved = ref<any>({});
   const unApprovedBlogs = ref<any>({});
@@ -13,5 +14,6 @@ export const useBlogsStore = defineStore("blogs", () => {
     blogsApproved,
     unApprovedBlogs,
     newBlogs,
+    blogsRegister,
   };
 });

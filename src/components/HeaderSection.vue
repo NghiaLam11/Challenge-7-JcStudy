@@ -51,7 +51,7 @@
               ><img
                 :src="
                   isAnonymous
-                    ? '/src/images/peep-94.png'
+                    ? 'https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-69.svg?alt=media&token=00be572a-cefa-487a-886a-46cbb157f8db'
                     : userStore.user?.avatar
                 "
                 alt=""
@@ -64,8 +64,14 @@
       <ul class="nav-list">
         <i @click="onOpenNavMobile" class="fas fa-bars"></i>
         <li class="nav-auth" @click="onAuth">
-          <router-link to="/auth"
-            ><img src="../images/peep-82.png" alt=""
+          <router-link :to="isAnonymous ? '/auth-anonymus' : '/auth'"
+            ><img
+              :src="
+                isAnonymous
+                  ? 'https://firebasestorage.googleapis.com/v0/b/jcstudyy.appspot.com/o/avatars%2Fpeep-69.svg?alt=media&token=00be572a-cefa-487a-886a-46cbb157f8db'
+                  : userStore.user?.avatar
+              "
+              alt=""
           /></router-link>
         </li>
       </ul>
@@ -128,9 +134,7 @@ import { useUserStore } from "../composable/useUser";
 const userStore = useUserStore();
 const isAnonymous = ref(false);
 onAuthStateChanged(auth, (user: any) => {
-  if (user) {
-    const uid = user.uid;
-    localStorage.setItem("idUser", uid);
+  if (user?.isAnonymous === true) {
     isAnonymous.value = user.isAnonymous;
   }
 });

@@ -5,7 +5,6 @@ import BlogDetails from "./views/BlogDetailsView.vue";
 import CreateBlog from "./views/CreateBlogView.vue";
 import Auth from "./views/AuthView.vue";
 
-import AuthAnonymus from "./views/AuthAnonymusView.vue";
 import Contact from "./views/ContactView.vue";
 import CreateCourse from "./views/CreateCourseView.vue";
 import Utilities from "./views/UtilitiesView.vue";
@@ -17,7 +16,6 @@ const routes = [
   { path: "/", component: Home },
   { path: "/contact", component: Contact },
   { path: "/auth", component: Auth },
-  { path: "/auth-anonymus", component: AuthAnonymus },
   { path: "/blogs", component: Blogs },
   { path: "/blogs/:id", component: BlogDetails },
   { path: "/create-blog", component: CreateBlog },

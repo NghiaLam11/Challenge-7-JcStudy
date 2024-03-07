@@ -29,7 +29,7 @@
                 {{ course?.desc }}
               </p>
 
-              <button @click="onToggleUnlock(course)">Continue ...</button>
+              <button @click="onToggleUnlock(course)">Unlock (Free) ...</button>
             </div>
           </div>
         </div>

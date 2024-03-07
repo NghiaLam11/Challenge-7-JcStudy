@@ -2,7 +2,7 @@
   <div class="add-lesson">
     <div class="container add-container">
       <div class="blur"></div>
-      <div class="form-add">
+      <form @submit.prevent="onChange" class="form-add">
         <div class="form-group form-file">
           <div class="file-thumbnail">
             <div>
@@ -14,6 +14,7 @@
                 name="file-img-edit"
                 id="file-img-edit"
                 class="inputfile"
+                required
               />
               <label for="file-img-edit"
                 ><i class="fas fa-image"></i>
@@ -34,6 +35,7 @@
                 name="file-video-edit"
                 id="file-video-edit"
                 class="inputfile"
+                required
               />
               <label for="file-video-edit"
                 ><i class="fas fa-play-circle"></i>
@@ -48,19 +50,20 @@
           </div>
         </div>
         <div class="form-group">
-          <input v-model="title" type="text" placeholder="Title..." />
+          <input v-model="title" type="text" placeholder="Title..."  required/>
           <textarea
             v-model="desc"
             placeholder="Description..."
             cols="30"
             rows="5"
+            required
           ></textarea>
         </div>
         <div class="form-btn">
-          <button @click="onChange" type="button">Change</button>
+          <button type="submit">Change</button>
           <button type="button" @click="onCancel">Cancel</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>

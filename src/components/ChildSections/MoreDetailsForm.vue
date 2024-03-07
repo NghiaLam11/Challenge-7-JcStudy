@@ -156,4 +156,11 @@ const onToggleUnlock = () => {
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .confirm-details {
+    width: 95vw !important;
+    padding: 1rem !important;
+  }
+}
 </style>

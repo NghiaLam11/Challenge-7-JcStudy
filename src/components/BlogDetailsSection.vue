@@ -31,7 +31,7 @@
             >
           </div>
           <div class="relate-blogs">
-            <h3>The others by Author</h3>
+            <h3>The others by Author (Comming soon!)</h3>
             <div class="relate-list">
               <Carousel :breakpoints="breakpointsblogs">
                 <Slide v-for="slide in 10" :key="slide">
@@ -72,7 +72,7 @@
               </Carousel>
             </div>
           </div>
-          <div class="relate-blogs">
+          <!-- <div class="relate-blogs">
             <h3>#Related</h3>
             <div class="relate-list">
               <Carousel :breakpoints="breakpointsblogs">
@@ -113,7 +113,7 @@
                 </template>
               </Carousel>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

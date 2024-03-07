@@ -60,7 +60,7 @@
       <div class="lesson-right">
         <div>
           <div class="band">
-            <video ref="videoElement" controls>
+            <video ref="videoElement" controls :poster="lessonSelected?.imgUrl">
               <source
                 ref="sourceElement"
                 :src="lessonSelected?.videoUrl"
@@ -192,7 +192,10 @@ import { computed, onMounted, ref, watch } from "vue";
 import CoursesRelatedSection from "../components/ChildSections/CoursesRelatedSection.vue";
 import { useRoute } from "vue-router";
 import { useCoursesStore } from "../composable/useCourses";
-import { useGetVideoUrlStorage } from "../composable/useFirebaseStorage";
+import {
+  useGetImageUrlStorage,
+  useGetVideoUrlStorage,
+} from "../composable/useFirebaseStorage";
 import { useUserStore } from "../composable/useUser";
 import { useUpdateCourseStore } from "../composable/useFirebaseStore";
 
@@ -305,10 +308,16 @@ const getLesson = async (course: any) => {
         course.chapters[idChapter][route.params.idLesson].videoName
       }`
     );
+    const imgUrl = await useGetImageUrlStorage(
+      `images-${course.idUser}/${
+        course.chapters[idChapter][route.params.idLesson].imageName
+      }`
+    );
     sourceElement.value.src = videoUrl;
     lessonSelected.value = {
       ...course.chapters[idChapter][route.params.idLesson],
       videoUrl: videoUrl,
+      imgUrl,
     };
   }
   coursesRelated.value = coursesStore.coursesArray.filter(

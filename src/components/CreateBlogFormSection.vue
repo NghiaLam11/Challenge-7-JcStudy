@@ -2,7 +2,7 @@
   <div class="blog-create">
     <div class="container blog-create-container">
       <div class="form-group">
-        <input type="text" placeholder="Title..." v-model="title" />
+        <input type="text" placeholder="Title..." v-model="title" required />
         <div class="file-thumbnail">
           <div class="select-img">
             <input
@@ -27,11 +27,12 @@
 
       <div class="form-group">
         <div class="custom-select">
-          <select v-model="industry">
+          <select v-model="industry" required>
             <option v-for="industry in industries">{{ industry }}</option>
           </select>
         </div>
         <input
+          required
           v-model="tags"
           type="text"
           placeholder="Tags (Ex: Frontend, Backend,...)"
@@ -51,7 +52,7 @@
         <div class="result-top">
           <h2 class="title">{{ title }}</h2>
           <p class="tags">
-            <span>{{ tags }}</span> <span>Full-stack</span>
+            <span>{{ tags }}</span> <span>{{ industry }}</span>
           </p>
           <div class="auth">
             <div class="img">
@@ -99,6 +100,7 @@ import {
 } from "../composable/useFirebaseStorage";
 import { useAddBlogStore } from "../composable/useFirebaseStore";
 import router from "../router";
+import { useUploaderStore } from "../composable/useLoader";
 
 const tags = ref("Front-end Back-end");
 const title = ref("Lorem isluti lemi hioseil lami nelo!");
@@ -319,7 +321,10 @@ const useChangeBase64 = () => {
     }
   }
 };
+const uploaderStore = useUploaderStore();
+
 const onComplete = async () => {
+  uploaderStore.isUploading = true;
   useChangeBase64();
   const idUser: any = localStorage.getItem("idUser");
   const fullPathThumbnail: any = await useUploadImgStorage(
@@ -352,6 +357,7 @@ const onComplete = async () => {
   });
   await useAddBlogStore(data.value);
   await router.push("/");
+  uploaderStore.isUploading = false;
 };
 watch(content, (val: any) => {
   contentEle.value.innerHTML = val;

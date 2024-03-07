@@ -40,19 +40,13 @@ const breakpointsblogs = ref({
   0: {
     itemsToShow: 2,
     snapAlign: "start",
-    autoplay: 3000,
-    pauseAutoplayOnHover: true,
   },
   768: {
     itemsToShow: 3,
     snapAlign: "start",
-    autoplay: 3000,
-    pauseAutoplayOnHover: true,
   },
   1024: {
-    autoplay: 4000,
     itemsToShow: 4,
-    pauseAutoplayOnHover: true,
     snapAlign: "start",
   },
 });

@@ -96,6 +96,7 @@ export const useGetCoursesStore = async () => {
       orderBy("countUnlocked", "desc"),
       limit(20)
     );
+    const idUser = localStorage.getItem("idUser");
     const querySnapshot = await getDocs(q);
     const coursesApproved = ref<any>({});
     const newCourses = ref<any>({});
@@ -103,7 +104,7 @@ export const useGetCoursesStore = async () => {
     const coursesArray = ref<any>([]);
     const coursesTrend = ref<any>({});
     const unApprovedCourses = ref<any>({});
-
+    const coursesRegister = ref<any>({});
     querySnapshot.forEach(async (doc) => {
       const course = doc.data();
       // FETCH URL IMG THUMBNAIL
@@ -121,6 +122,14 @@ export const useGetCoursesStore = async () => {
         videoUrl: videoUrl,
         ...course,
       };
+      if (course.idUser == idUser) {
+        coursesRegister.value[doc.id] = {
+          id: doc.id,
+          ...course,
+          imgUrl: imgUrl,
+          videoUrl: videoUrl,
+        };
+      }
       // Separate two store - first is approved+remove course user's unlocked and second is unapproved
       if (
         course.isApproved === true &&
@@ -178,6 +187,7 @@ export const useGetCoursesStore = async () => {
     });
 
     coursesStore.courses = courses.value;
+    coursesStore.coursesRegister = coursesRegister.value;
     coursesStore.coursesArray = coursesArray.value;
     coursesStore.coursesTrend = coursesTrend.value;
     coursesStore.coursesApproved = coursesApproved.value;
@@ -228,7 +238,8 @@ export const useGetBlogsStore = async () => {
     const blogsArray = ref<any>([]);
     const newBlogs = ref<any>({});
     const blogsApproved = ref<any>({});
-
+    const blogsRegister = ref<any>({});
+    const idUser = localStorage.getItem("idUser");
     const unApprovedBlogs = ref<any>({});
     querySnapshot.forEach(async (doc) => {
       const blog = doc.data();
@@ -236,6 +247,12 @@ export const useGetBlogsStore = async () => {
       if (size < 20) {
         // unapprove -> for normal user
         blogs.value[doc.id] = {
+          id: doc.id,
+          ...blog,
+        };
+      }
+      if (blog.idUser == idUser) {
+        blogsRegister.value[doc.id] = {
           id: doc.id,
           ...blog,
         };
@@ -268,6 +285,7 @@ export const useGetBlogsStore = async () => {
       }
     });
     blogsStore.blogs = blogs.value;
+    blogsStore.blogsRegister = blogsRegister.value;
     blogsStore.blogsArray = blogsArray.value;
     blogsStore.blogsApproved = blogsApproved.value;
     blogsStore.newBlogs = newBlogs.value;

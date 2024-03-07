@@ -11,6 +11,10 @@
           <img :src="blog.imgUrl" alt="" />
         </div>
         <div class="card-right bg-primary">
+          <p class="related">
+            <span>{{ blog.createdAt }}</span> |
+            <span>{{ blog.industry }}</span>
+          </p>
           <h3 class="multiline-ellipsis-1">
             {{ blog.title }}
           </h3>
@@ -67,12 +71,15 @@ const onReadMore = (blog: any) => {
         text-align: start;
         transition: all 0.8s ease;
         padding: 0 1rem;
+        .related {
+          font-size: 0.7rem;
+          color: var(--primary-color);
+        }
         h3 {
           font-size: 1.3rem;
           line-height: 1.8rem;
           margin-bottom: 0.2rem;
         }
-
       }
     }
     .card-item:hover .card-right {
