@@ -20,6 +20,7 @@
                 :key="key"
               >
                 <div class="card-item">
+                  
                   <div class="thumbnail">
                     <img :src="course.imgUrl" :alt="course.title" />
                   </div>
@@ -32,7 +33,7 @@
                     </p>
                     <div class="checking">
                       <b
-                        ><span v-if="course.isApprove === false"
+                        ><span v-if="course.isApproved === false"
                           >Censoring...</span
                         ><span v-else>Approved</span></b
                       >

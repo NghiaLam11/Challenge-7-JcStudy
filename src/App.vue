@@ -67,7 +67,8 @@ onAuthStateChanged(auth, async (user: any) => {
   } else {
     console.log("SIGNUP");
     isStopChangeRoute.value = true;
-    useGetUserStore();
+    useGetCoursesStore();
+    useGetBlogsStore();
     router.push("/signup");
   }
 });
@@ -157,13 +158,15 @@ onMounted(() => {
   watch(
     () => route.fullPath,
     (newPath) => {
+      console.log(isAnonymous.value, newPath);
       // Loading when changing the route
-      if (isAnonymous.value === true && newPath !== "/signup") {
+      if (isAnonymous.value === true) {
         loaderStore.isLoading = true;
+        // alert("You need to sign in!");
         useSignoutAuth();
-        alert("You need to sign in!");
         router.push("/signup");
         window.location.reload();
+        isSpecialPage.value = true;
       } else {
         if (newPath === "/signin" || newPath === "/signup") {
           isSpecialPage.value = true;

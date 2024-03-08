@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="censorship"
-  >
+  <div class="censorship">
     <div class="container">
       <div class="censorship-moderate">
         <div class="content-moderate">
@@ -18,6 +16,7 @@
                   :key="key"
                 >
                   <div class="card-item">
+                    <div class="remove" @click="onRemove(key)">&#128465;</div>
                     <div class="thumbnail">
                       <img :src="blog.imgUrl" alt="" />
                     </div>
@@ -35,7 +34,7 @@
                         </div>
                         <div class="name-auth">
                           <span>{{ users[blog.idUser].name }}</span>
-                          <span>Software</span>
+                          <span>{{ blog.industry }}</span>
                         </div>
                       </div>
                       <div class="btn-group">
@@ -68,7 +67,10 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useBlogsStore } from "../../composable/useBlogs";
 import { useUserStore } from "../../composable/useUser";
 import { useRouter } from "vue-router";
-import { useUpdateBlogStore } from "../../composable/useFirebaseStore";
+import {
+  useDeleteBlogStore,
+  useUpdateBlogStore,
+} from "../../composable/useFirebaseStore";
 const router = useRouter();
 const blogsStore = useBlogsStore();
 const userStore = useUserStore();
@@ -79,6 +81,13 @@ const onMoreDetails = (blog: any) => {
 const onApprove = (blog: any) => {
   console.log(blog);
   useUpdateBlogStore({ isApproved: true }, blog.id);
+};
+const onRemove = (key: any) => {
+  if (confirm("Are you sure!") == true) {
+    useDeleteBlogStore(key);
+  } else {
+    return "";
+  }
 };
 const breakpoints = ref({
   0: {
@@ -161,11 +170,22 @@ const breakpoints = ref({
         font-weight: 500;
       }
       .card-item {
+        position: relative;
         display: flex;
         flex-direction: column;
         cursor: pointer;
         padding-bottom: 2rem;
         padding-top: 0;
+        .remove {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          z-index: 10;
+          font-size: 1.3rem;
+        }
+        .remove:hover {
+          color: red;
+        }
         .thumbnail {
           width: 100%;
           height: 100%;

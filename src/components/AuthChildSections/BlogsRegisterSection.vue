@@ -39,7 +39,7 @@
                       </p>
                       <div class="checking">
                         <b
-                          ><span v-if="blog.isApprove === false"
+                          ><span v-if="blog.isApproved === false"
                             >Censoring...</span
                           ><span v-else>Approved</span></b
                         >
@@ -88,16 +88,12 @@ const breakpoints = ref({
     pauseAutoplayOnHover: true,
   },
   768: {
-    autoplay: 3000,
     itemsToShow: 3,
     snapAlign: "start",
-    pauseAutoplayOnHover: true,
   },
   1068: {
-    autoplay: 3000,
     itemsToShow: 4,
     snapAlign: "start",
-    pauseAutoplayOnHover: true,
   },
 });
 </script>

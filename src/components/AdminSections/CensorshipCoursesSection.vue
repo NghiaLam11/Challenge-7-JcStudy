@@ -12,8 +12,9 @@
               :snap-align="'start'"
               :breakpoints="breakpoints"
             >
-              <Slide v-for="course in courseUnapproved" :key="course.id">
+              <Slide v-for="(course, key) in courseUnapproved" :key="course.id">
                 <div class="card-item">
+                  <div class="remove" @click="onRemove(key)">&#128465;</div>
                   <div class="thumbnail">
                     <img :src="course.imgUrl" alt="" />
                   </div>
@@ -54,7 +55,7 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useRouter } from "vue-router";
 import { Course } from "../../types/types";
-import { useUpdateCourseStore } from "../../composable/useFirebaseStore";
+import { useDeleteCourseStore, useUpdateCourseStore } from "../../composable/useFirebaseStore";
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -82,6 +83,13 @@ const courseUnapproved = computed(() => {
 });
 const onMoreDetails = (course: Course) => {
   router.push(`/courses/${course.id}/0/overview`);
+};
+const onRemove = (key: any) => {
+  if (confirm("Are you sure!") == true) {
+    useDeleteCourseStore(key);
+  } else {
+    return "";
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -145,6 +153,17 @@ const onMoreDetails = (course: Course) => {
         cursor: pointer;
         width: 100%;
         height: 100%;
+        position: relative;
+        .remove {
+          position: absolute;
+          top: 10px;
+          left: 15px;
+          z-index: 10;
+          font-size: 1.3rem;
+        }
+        .remove:hover {
+          color: red;
+        }
         .thumbnail {
           width: 40%;
           height: 100%;

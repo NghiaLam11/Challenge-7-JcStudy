@@ -8,6 +8,7 @@ import {
   orderBy,
   query,
   limit,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { User } from "../types/types";
@@ -198,7 +199,15 @@ export const useGetCoursesStore = async () => {
     console.log(error);
   }
 };
-
+export const useDeleteCourseStore = async (id: any) => {
+  try {
+    const docRef = await deleteDoc(doc(db, "courses", id));
+    console.log("Document written with ID: ", id);
+    useGetCoursesStore();
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const useUpdateCourseStore = async (updateCourse: any, id: string) => {
   try {
     const docRef = doc(db, "courses", id);
@@ -218,6 +227,16 @@ export const useAddBlogStore = async (blog: any) => {
   try {
     const docRef = await addDoc(collection(db, "blogs"), blog);
     console.log("Document written with ID: ", docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const useDeleteBlogStore = async (id: any) => {
+  try {
+    const docRef = await deleteDoc(doc(db, "blogs", id));
+    console.log("Document written with ID: ", id);
+    useGetBlogsStore();
   } catch (error) {
     console.log(error);
   }
@@ -306,7 +325,7 @@ export const useUpdateBlogStore = async (updateBlog: any, id: string) => {
       updateBlog,
       dataUpdate
     );
-    useGetUserStore();
+    useGetBlogsStore();
   } catch (error) {
     console.log(error);
   }

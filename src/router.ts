@@ -12,6 +12,7 @@ import Courses from "./views/CoursesView.vue";
 import CourseDetails from "./views/CourseDetailsView.vue";
 import SignUp from "./views/SignUpView.vue";
 import SignIn from "./views/SignInView.vue";
+import NotFound from "./views/NotFoundView.vue";
 const routes = [
   { path: "/", component: Home },
   { path: "/contact", component: Contact },
@@ -25,6 +26,7 @@ const routes = [
   { path: "/courses/:idCourse/:idChapter/:idLesson", component: CourseDetails },
   { path: "/signin", component: SignIn },
   { path: "/signup", component: SignUp },
+  { path: '/:pathMatch(.*)*', component: NotFound },
 ];
 
 const router = createRouter({

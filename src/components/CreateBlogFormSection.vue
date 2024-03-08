@@ -353,6 +353,8 @@ const onComplete = async () => {
     isApproved: false,
     createdAt: new Date().toLocaleDateString(),
     view: 0,
+    reaction: 0,
+    comments: {},
     idUser: idUser,
   });
   await useAddBlogStore(data.value);
