@@ -163,7 +163,6 @@ const onSubmit = async () => {
     tasks: {},
     notes: {},
     flashcards: {},
-    coursesCompleted: {},
     coursesRegister: {},
     coursesUnlocked: {},
     blogsRegister: {},

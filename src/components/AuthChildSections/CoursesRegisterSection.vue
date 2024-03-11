@@ -228,3 +228,4 @@ const breakpoints = ref({
   }
 }
 </style>
+../../types/Course

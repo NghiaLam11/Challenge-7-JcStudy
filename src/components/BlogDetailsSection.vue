@@ -164,19 +164,16 @@ const blogs = blogsStore.blogs;
 const blogsByAuth = ref<any>({});
 onMounted(() => {
   const content: any = document.querySelector(".content-editor");
-  console.log(content, "After");
   content.innerHTML = blogsStore.blogs[route.params.id].content;
   const images: any = content.querySelectorAll(".image-uploading");
   for (let i = 0; i < images.length; i++) {
     let children = images[i].querySelector("img");
     if (children != null) {
-      console.log(children.classList.value, "CHILD");
       children.src =
         blogsStore.blogs[route.params.id].images[children.classList.value];
     }
   }
 
-  console.log(blogs);
 
   for (const key in blogs) {
     if (blogs[key].idUser === blog.idUser && key !== route.params.id) {

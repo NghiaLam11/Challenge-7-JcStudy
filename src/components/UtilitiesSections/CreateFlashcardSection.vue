@@ -38,6 +38,7 @@
 import { ref } from "vue";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
+import { Flashcard } from "../../types/Utilities";
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ flashcard: any }>();
 const title = ref(props.flashcard.title || "");
@@ -70,7 +71,7 @@ const onComplete = async () => {
 
   if (props.flashcard === "") {
     console.log("CREATE");
-    const data = ref({
+    const data = ref<Flashcard>({
       title: title.value,
       cards: cards.value,
       idUser: idUser,

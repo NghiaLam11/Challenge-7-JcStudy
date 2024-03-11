@@ -39,12 +39,12 @@
                 {{ Object.keys(userStore.user?.coursesUnlocked).length }}</span
               >
             </div>
-            <div class="statistic-group">
+            <!-- <div class="statistic-group">
               <span class="topic">Courses(completed): </span>
               <span class="number">
                 {{ Object.keys(userStore.user?.coursesCompleted).length }}</span
               >
-            </div>
+            </div> -->
           </div>
           <ChartSection />
           <div
@@ -88,10 +88,12 @@ const onOpenFormEdit = () => {
 };
 // const router = useRouter();
 const onSignout = () => {
-  useSignoutAuth();
-  // setTimeout(() => {
-  //   router.push("/signup");
-  // }, 500);
+  if (confirm("Are you sure you want to sign out") === true) {
+    useSignoutAuth();
+    window.location.reload();
+  } else {
+    return;
+  }
 };
 </script>
 <style lang="scss" scoped>

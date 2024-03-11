@@ -503,7 +503,6 @@ const onSend = async () => {
     filePath: videoPath.value,
     fileName: videoName.value,
   });
-  console.log(mediaImgLink.value, mediaVideoLink.value, "UNDEATILS");
   // UPLOAD IMAGE/VIDEO OF COURSE THUMBNAIL
   const idUser: any = localStorage.getItem("idUser");
   const imgUrlCourse = await useUploadImgStorage(mediaImgLink.value, idUser);
@@ -511,31 +510,15 @@ const onSend = async () => {
     mediaVideoLink.value,
     idUser
   );
-  console.log(imgUrlCourse, "IMAGE COURSE URL");
-  console.log(videoUrlCourse, "VIDEO COURSE URL");
   // UPLOAD ALL IMAGES/VIDEOS OF THE LESSONS
   for (const i in chapters.value) {
     for (let j = 0; j < chapters.value[i].length; j++) {
-      console.log(
-        {
-          fileName: chapters.value[i][j].imageName,
-          filePath: chapters.value[i][j].imagePath,
-        },
-        "IMAGE__"
-      );
       const imgUrl = await useUploadImgStorage(
         {
           fileName: chapters.value[i][j].imageName,
           filePath: chapters.value[i][j].imagePath,
         },
         idUser
-      );
-      console.log(
-        {
-          fileName: chapters.value[i][j].videoName,
-          filePath: chapters.value[i][j].videoPath,
-        },
-        "VIDEO__"
       );
       const videoUrl = await useUploadVideoStorage(
         {
@@ -548,8 +531,6 @@ const onSend = async () => {
       delete chapters.value[i][j].thumbnailVideo;
       delete chapters.value[i][j].imagePath;
       delete chapters.value[i][j].videoPath;
-      console.log(imgUrl, "IMAGE URL");
-      console.log(videoUrl, "VIDEO URL");
     }
   }
   console.log(chapters.value, "ENDING");
@@ -563,7 +544,7 @@ const onSend = async () => {
     price: 0,
     idUser: idUser,
     countUnlocked: 0,
-    quiz: [],
+    quiz: {},
     chapters: chapters.value,
     isApproved: false,
     createdAt: new Date().toLocaleDateString(),

@@ -23,6 +23,7 @@
 import { ref } from "vue";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
+import { Note } from "../../types/Utilities";
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ note: any }>();
 const userStore = useUserStore();
@@ -36,7 +37,7 @@ const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");
   if (props.note === "") {
     console.log("CREATE");
-    const data = ref({
+    const data = ref<Note>({
       title: title.value,
       text: text.value,
       idUser: idUser,

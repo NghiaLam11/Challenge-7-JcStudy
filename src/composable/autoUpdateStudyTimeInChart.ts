@@ -101,7 +101,7 @@ export const autoUpdateStudyTime = () => {
   }, 60000);
   // WHENEVER LOAD OR LEAVE THE PAGE => DATA OF STUDY TIME WILL BE SAVE TO LOCAL STORAGE
   window.addEventListener("beforeunload", (e: any) => {
-    e.preventDefault();
+    e.stopImmediatePropagation();
     if (currentTime > 0) {
       currentTimeArray.timeList.push(currentTime);
     }

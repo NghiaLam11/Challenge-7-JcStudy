@@ -55,7 +55,7 @@ import { useSound } from "../../../src/composable/useSound.ts";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useCoursesStore } from "../../composable/useCourses";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 import router from "../../router";
@@ -166,3 +166,4 @@ const breakpoints = ref({
 }
 // ---------------------------------- END COURSE CSS STYLE----------------------------------------------
 </style>
+../../types/Course.ts

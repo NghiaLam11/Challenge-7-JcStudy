@@ -4,6 +4,8 @@
     <CoursesHomeSection
       v-if="Object.keys(coursesStore.coursesApproved).length > 0"
     />
+    <CoursesGallery />
+
     <NewSection v-if="Object.keys(coursesStore.newCourses).length > 0" />
     <BlogsHomeSection v-if="Object.keys(blogsStore.blogsApproved).length > 0" />
   </div>
@@ -12,6 +14,7 @@
 <script setup lang="ts">
 import HeroSection from "./ChildSections/HeroSection.vue";
 import NewSection from "./ChildSections/NewSection.vue";
+import CoursesGallery from "./ChildSections/CoursesGallery.vue";
 import BlogsHomeSection from "./ChildSections/BlogsHomeSection.vue";
 import CoursesHomeSection from "./ChildSections/CoursesHomeSection.vue";
 import { useCoursesStore } from "../composable/useCourses";

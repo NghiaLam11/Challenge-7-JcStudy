@@ -44,13 +44,12 @@ import MoreDetailsForm from "./MoreDetailsForm.vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 const props = defineProps<{
   coursesRelated: Course;
 }>();
-console.log(props.coursesRelated);
 // Play sound when btn is clicked
 const soundStore = useSound();
 const isToggleUnlock = ref(false);
@@ -143,3 +142,4 @@ const breakpointsnew = ref({
 }
 // ---------------------------------- END NEW CSS STYLE----------------------------------------------
 </style>
+../../types/Course.ts

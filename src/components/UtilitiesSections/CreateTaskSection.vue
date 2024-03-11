@@ -67,6 +67,7 @@
 import { ref } from "vue";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
+import { Task } from "../../types/Utilities";
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ task: any }>();
 const userStore = useUserStore();
@@ -108,15 +109,9 @@ const onCancel = () => {
 };
 const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");
-  // const countCompletedTask = ref(0);
-  // for (const key in tasks.value) {
-  //   if (tasks.value[key].isDone === true) {
-  //     countCompletedTask.value += 1;
-  //   }
-  // }
   if (props.task === "") {
     console.log("CREATE");
-    const data = ref({
+    const data = ref<Task>({
       title: title.value,
       tasks: tasks.value,
       idUser: idUser,
@@ -127,7 +122,7 @@ const onComplete = async () => {
     useUpdateUserStore({ tasks: userStore.user.tasks });
   } else {
     console.log("UPDATE");
-    const data = ref({
+    const data = ref<Task>({
       title: title.value,
       tasks: tasks.value,
       idUser: idUser,

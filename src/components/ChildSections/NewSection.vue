@@ -156,3 +156,4 @@ const breakpointsnew = ref({
 }
 // ---------------------------------- END NEW CSS STYLE----------------------------------------------
 </style>
+../../types/Course.ts

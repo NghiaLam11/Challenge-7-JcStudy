@@ -51,6 +51,7 @@
 import { ref } from "vue";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 import { useUserStore } from "../../composable/useUser";
+import { Timetable } from "../../types/Utilities";
 const userStore = useUserStore();
 const emit = defineEmits(["onCancel"]);
 const props = defineProps<{ timetable: any }>();
@@ -111,7 +112,7 @@ const onComplete = async () => {
 
   if (props.timetable === "") {
     console.log("Creating Timetable");
-    const data = ref({
+    const data = ref<Timetable>({
       title: title.value,
       table: table.value,
       idUser: idUser,
@@ -122,7 +123,7 @@ const onComplete = async () => {
     useUpdateUserStore({ timetables: userStore.user.timetables });
   } else {
     console.log("UPDATE");
-    const data = ref({
+    const data = ref<Timetable>({
       title: title.value,
       table: table.value,
       idUser: idUser,

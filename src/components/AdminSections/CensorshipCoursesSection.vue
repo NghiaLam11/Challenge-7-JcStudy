@@ -54,7 +54,7 @@ import { useCoursesStore } from "../../composable/useCourses";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useRouter } from "vue-router";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course";
 import { useDeleteCourseStore, useUpdateCourseStore } from "../../composable/useFirebaseStore";
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
@@ -227,3 +227,4 @@ const onRemove = (key: any) => {
   }
 }
 </style>
+../../types/Course

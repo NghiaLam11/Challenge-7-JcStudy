@@ -188,11 +188,12 @@ import CreateNoteSection from "./UtilitiesSections/CreateNoteSection.vue";
 import CreateTimetableSection from "./UtilitiesSections/CreateTimetableSection.vue";
 import { useUserStore } from "../composable/useUser";
 import CreateTaskSection from "./UtilitiesSections/CreateTaskSection.vue";
+import { Flashcard, Note, Task, Timetable } from "../types/Utilities";
 const userStore = useUserStore();
 
 const isToggleCreateFlashcard = ref(false);
 const flashcardSelected = ref();
-const onToggleCreateFlashcard = (flashcard: any) => {
+const onToggleCreateFlashcard = (flashcard: Flashcard | string) => {
   isToggleCreateFlashcard.value = !isToggleCreateFlashcard.value;
   flashcardSelected.value = flashcard;
   console.log(flashcard);
@@ -200,7 +201,7 @@ const onToggleCreateFlashcard = (flashcard: any) => {
 
 const isToggleCreateTimetable = ref(false);
 const timetableSelected = ref();
-const onToggleCreateTimetable = (timetable: any) => {
+const onToggleCreateTimetable = (timetable: Timetable | string) => {
   isToggleCreateTimetable.value = !isToggleCreateTimetable.value;
   timetableSelected.value = timetable;
   console.log(timetable);
@@ -208,7 +209,7 @@ const onToggleCreateTimetable = (timetable: any) => {
 
 const isToggleCreateNote = ref(false);
 const noteSelected = ref();
-const onToggleCreateNote = (note: any) => {
+const onToggleCreateNote = (note: Note | string) => {
   isToggleCreateNote.value = !isToggleCreateNote.value;
   noteSelected.value = note;
   console.log(note);
@@ -216,7 +217,7 @@ const onToggleCreateNote = (note: any) => {
 
 const isToggleCreateTask = ref(false);
 const taskSelected = ref();
-const onToggleCreateTask = (task: any) => {
+const onToggleCreateTask = (task: Task | string) => {
   isToggleCreateTask.value = !isToggleCreateTask.value;
   taskSelected.value = task;
   console.log(task);

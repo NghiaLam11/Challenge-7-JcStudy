@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-// import { User } from "../types/types";
 export const useUserStore = defineStore("user", () => {
-  const users = ref({});
-  const user: any = ref();
-  const studyTime = ref<any>([]);
+  const users = ref<any>();
+  const user = ref<any>();
+  const studyTime = ref<number[]>([]);
   return {
     user,
     users,

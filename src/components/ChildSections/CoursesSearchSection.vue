@@ -51,7 +51,7 @@ import { useSound } from "../../../src/composable/useSound.ts";
 import { useCoursesStore } from "../../composable/useCourses";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course.ts";
 const coursesStore = useCoursesStore();
 const textSearch = ref();
 const coursesSearch = ref<any>([]);
@@ -241,3 +241,4 @@ const onUnlock = () => {
   }
 }
 </style>
+../../types/Course.ts

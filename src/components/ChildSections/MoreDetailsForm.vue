@@ -164,3 +164,4 @@ const onToggleUnlock = () => {
   }
 }
 </style>
+../../types/Course

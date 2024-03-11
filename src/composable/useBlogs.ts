@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-// import { User } from "../types/types";
 export const useBlogsStore = defineStore("blogs", () => {
-  const blogs = ref<any>({});
+  const blogs = ref<any>();
   const blogsRegister = ref<any>({});
   const blogsArray = ref<any>([]);
   const blogsApproved = ref<any>({});

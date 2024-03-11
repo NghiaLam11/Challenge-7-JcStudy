@@ -96,7 +96,10 @@
               {{ lessonSelected?.desc }}
             </p>
             <div class="course-related">
-              <CoursesRelatedSection :courses-related="coursesRelated" />
+              <CoursesRelatedSection
+                :courses-related="coursesRelated"
+                v-if="coursesRelated.length > 0"
+              />
             </div>
           </div>
           <div style="display: none" id="quiz" class="tabcontent lesson-detail">
@@ -198,7 +201,7 @@ import {
 } from "../composable/useFirebaseStorage";
 import { useUserStore } from "../composable/useUser";
 import { useUpdateCourseStore } from "../composable/useFirebaseStore";
-
+import { Comment } from "../types/Course";
 const isToggleCollapse = ref(false);
 const collapseIconElementDown = ref();
 const collapseIconElementUp = ref();
@@ -236,7 +239,6 @@ function openCategory(evt: any, tabName: string) {
 }
 const coursesStore = useCoursesStore();
 const route: any = useRoute();
-console.log(route.params, "PARAMS");
 
 const course = computed(() => {
   return coursesStore.courses[route.params.idCourse];
@@ -261,7 +263,7 @@ const onReaction = (key: any) => {
   );
 };
 const onComment = () => {
-  const data = ref({
+  const data = ref<Comment>({
     createdAt: new Date().toLocaleDateString(),
     auth: userStore.user.name,
     reaction: 0,
@@ -269,7 +271,6 @@ const onComment = () => {
     id: new Date().getTime() + userStore.user.name,
   });
   if (route.params.idLesson === "overview") {
-    console.log("Overview");
     lessonSelected.value.comments[data.value.id] = data.value;
     useUpdateCourseStore(
       {
@@ -291,7 +292,7 @@ const onComment = () => {
   }
   comment.value = "";
 };
-const coursesRelated = ref();
+const coursesRelated = ref<any>([]);
 const videoElement = ref();
 const sourceElement = ref();
 const getLesson = async (course: any) => {
@@ -323,10 +324,10 @@ const getLesson = async (course: any) => {
   coursesRelated.value = coursesStore.coursesArray.filter(
     (courseRelated: any) => {
       const industry = courseRelated.industry;
+      console.log(industry);
       if (industry.toLowerCase().includes(course?.industry.toLowerCase())) {
         return courseRelated;
       }
-      console.log(courseRelated?.industry, industry);
     }
   );
   console.log(coursesRelated.value, "courses related");

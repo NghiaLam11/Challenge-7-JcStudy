@@ -1,7 +1,7 @@
 <template>
   <div class="courses-unlock" v-if="Object.keys(coursesUnlocked).length > 0">
     <div class="topic">
-      <h3>Courses unlock</h3>
+      <h3>Courses unlocked</h3>
     </div>
     <Carousel :breakpoints="breakpointsunlock">
       <Slide
@@ -40,7 +40,7 @@ import { ref } from "vue";
 import { useSound } from "../../../src/composable/useSound.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useRouter } from "vue-router";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course.ts";
 // import { useGetCoursesStore } from "../../composable/useFirebaseStore";
 const userStore = useUserStore();
 const router = useRouter();
@@ -122,4 +122,4 @@ const breakpointsunlock = ref({
   }
 }
 // ------------------------------- END COURSES UNLOCK CSS STYLE------------------------------------------------
-</style>
+</style>../../types/Course.ts

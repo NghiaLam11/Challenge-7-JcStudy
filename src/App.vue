@@ -40,7 +40,7 @@ import {
 import { useSignoutAuth } from "./composable/useFirebaseAuth";
 
 import { useUserStore } from "./composable/useUser";
-import { autoUpdateStudyTime } from "./composable/autoUpdateStudyTimeInChart";
+// import { autoUpdateStudyTime } from "./composable/autoUpdateStudyTimeInChart";
 const loaderStore = useLoaderStore();
 loaderStore.isLoading = true;
 
@@ -60,12 +60,9 @@ onAuthStateChanged(auth, async (user: any) => {
     useGetCoursesStore();
     useGetBlogsStore();
   } else if (user) {
-    console.log("USER", user);
     await useGetUserStore();
-    autoUpdateStudyTime();
     isStopChangeRoute.value = false;
   } else {
-    console.log("SIGNUP");
     isStopChangeRoute.value = true;
     useGetCoursesStore();
     useGetBlogsStore();
@@ -170,18 +167,13 @@ onMounted(() => {
       } else {
         if (newPath === "/signin" || newPath === "/signup") {
           isSpecialPage.value = true;
-          console.log("TRUE: " + newPath);
           if (isStopChangeRoute.value === false) {
             router.push("/");
           }
         } else {
           isSpecialPage.value = false;
-
-          console.log("FALSE: " + newPath);
         }
       }
-      // loaderStore.isLoading = false;
-
       // CLOSE NAV (MOBILE) WHEN CHANGE ROUTE
       navHiddenElement.style.left = -100 + "%";
       setTimeout(() => {

@@ -76,7 +76,7 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
 import { useCoursesStore } from "../../composable/useCourses";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
 
@@ -289,3 +289,4 @@ const breakpoints = ref({
   }
 }
 </style>
+../../types/Course.ts

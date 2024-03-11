@@ -11,7 +11,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { User } from "../types/types";
+import { User } from "../types/User.ts";
 import { useLoaderStore } from "./useLoader";
 import { useUserStore } from "./useUser";
 import { useCoursesStore } from "./useCourses";
@@ -68,6 +68,7 @@ export const useUpdateUserStore = async (updateUser: any) => {
     const idUser = localStorage.getItem("idUser");
     const docRef = doc(db, "users", `${idUser}`);
     const dataUpdate = await updateDoc(docRef, updateUser);
+    useGetCoursesStore();
     console.log(
       "A New Document Field has been added to an existing document",
       updateUser,
@@ -164,17 +165,12 @@ export const useGetCoursesStore = async () => {
         // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
         const newCourse = useCheckNewItem(course);
         if (newCourse) {
-          console.log("B");
           newCourses.value[doc.id] = {
             ...newCourse,
             id: doc.id,
             imgUrl: imgUrl,
             videoUrl: videoUrl,
           };
-          console.log(
-            "NEW Course",
-            !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
-          );
         }
       } else if (course.isApproved === false) {
         // unapprove -> for admin

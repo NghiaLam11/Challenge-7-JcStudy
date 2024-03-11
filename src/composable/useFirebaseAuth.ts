@@ -21,8 +21,8 @@ export const useSignupAuth = async (user: any) => {
       user.email,
       user.password
     );
-    await useAddUserStore(user, userCredential.user.uid);
     localStorage.setItem("idUser", userCredential.user.uid);
+    await useAddUserStore(user, userCredential.user.uid);
     await useGetUserStore();
     window.location.reload();
   } catch (error: any) {
@@ -41,8 +41,7 @@ export const useSigninAuth = async (email: string, password: string) => {
       password
     );
     localStorage.setItem("idUser", userCredential.user.uid);
-    const user = userCredential.user;
-    console.log(user);
+    console.log(userCredential.user.uid);
     await useGetUserStore();
   } catch (error: any) {
     const errorStore = useErrorStore();
