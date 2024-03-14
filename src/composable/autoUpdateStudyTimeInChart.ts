@@ -12,7 +12,7 @@ export const autoUpdateStudyTime = () => {
     timeArray != null
       ? JSON.parse(timeArray)
       : {
-          timeDay: date.toLocaleDateString(),
+          timeDay: date.toLocaleDateString("en-US"),
           timeList: [],
         };
   // THIS FUNCTION HELP TO COUNT HOW MANY DAYS BETWEEN 2 DIFFERENT DAYS
@@ -27,11 +27,11 @@ export const autoUpdateStudyTime = () => {
   // WHHEN USER ACCESS TO WEBSITE, THIS FUNCTION WILL CHECK FOR IF THE DAY SAVED IN LOCALSTORAGE IS DIFFERENT OR NOT
   const whenChangedDay = () => {
     // IF DEFFERENT DAY => AUTO GENERATE PAST STUDYTIME IN LOCALSTORE TO DATABASE
-    if (date.toLocaleDateString() !== currentTimeArray.timeDay) {
+    if (date.toLocaleDateString("en-US") !== currentTimeArray.timeDay) {
       // HOW MANY DAY BETWWEN THE LAST ACCESS TO WEBSITE
       const countDaysBetweenTwoDays = datediff(
         parseDate(currentTimeArray.timeDay),
-        parseDate(date.toLocaleDateString())
+        parseDate(date.toLocaleDateString("en-US"))
       );
       const initialValue = 0;
       const timeArray: any = localStorage.getItem(`currentTimeArray-${idUser}`);
@@ -53,7 +53,7 @@ export const autoUpdateStudyTime = () => {
         useUpdateUserStore({
           streak: 0,
           studyTime: userStore.studyTime,
-        });
+        }, idUser);
       } else if (countDaysBetweenTwoDays > 4) {
         // THESE UNCCESSED DAYS (IF LARGER > 4 DAYS) WILL BE REPLACE = [0, 0, 0, 0, 0] STUDYTIME
 
@@ -61,7 +61,7 @@ export const autoUpdateStudyTime = () => {
         useUpdateUserStore({
           streak: 0,
           studyTime: userStore.studyTime,
-        });
+        }, idUser);
       } else if (countDaysBetweenTwoDays <= 1) {
         // IF YOU HAD LEARNED YESTERDAY AND TODAY YOU ALSO ACCESS
         userStore.studyTime.shift();
@@ -72,7 +72,7 @@ export const autoUpdateStudyTime = () => {
         useUpdateUserStore({
           studyTime: userStore.studyTime,
           streak: streak,
-        });
+        }, idUser);
       }
       console.log(userStore.studyTime, "USERSTORE");
       setTimeout(() => {
@@ -81,12 +81,12 @@ export const autoUpdateStudyTime = () => {
         localStorage.setItem(
           `currentTimeArray-${idUser}`,
           JSON.stringify({
-            timeDay: date.toLocaleDateString(),
+            timeDay: date.toLocaleDateString("en-US"),
             timeList: [],
           })
         );
         currentTimeArray = {
-          timeDay: date.toLocaleDateString(),
+          timeDay: date.toLocaleDateString("en-US"),
           timeList: [],
         };
       }, 2000);

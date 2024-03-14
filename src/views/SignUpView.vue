@@ -166,6 +166,7 @@ const onSubmit = async () => {
     coursesRegister: {},
     coursesUnlocked: {},
     blogsRegister: {},
+    notifications: [],
   });
   await useSignupAuth(user.value);
   await router.push("/");

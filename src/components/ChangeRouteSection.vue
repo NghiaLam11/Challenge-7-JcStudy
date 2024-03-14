@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .change-route {
   position: fixed;
   top: 0;

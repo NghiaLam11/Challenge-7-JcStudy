@@ -264,7 +264,7 @@ const onReaction = (key: any) => {
 };
 const onComment = () => {
   const data = ref<Comment>({
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date().toLocaleDateString("en-US"),
     auth: userStore.user.name,
     reaction: 0,
     comment: comment.value,

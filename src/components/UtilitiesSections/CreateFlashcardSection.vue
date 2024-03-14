@@ -65,6 +65,8 @@ const onAddFlashcard = () => {
   newFrontCard.value = "";
   newBackCard.value = "";
 };
+const idUser = localStorage.getItem("idUser");
+
 const userStore = useUserStore();
 const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");
@@ -75,11 +77,11 @@ const onComplete = async () => {
       title: title.value,
       cards: cards.value,
       idUser: idUser,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toLocaleDateString("en-US"),
       id: new Date().getTime().toString() + Math.random() * 10,
     });
     userStore.user.flashcards[data.value.id] = data.value;
-    useUpdateUserStore({ flashcards: userStore.user.flashcards });
+    useUpdateUserStore({ flashcards: userStore.user.flashcards }, idUser);
   } else {
     console.log("UPDATE");
     const data = ref({
@@ -90,7 +92,7 @@ const onComplete = async () => {
       id: props.flashcard.id,
     });
     userStore.user.flashcards[data.value.id] = data.value;
-    useUpdateUserStore({ flashcards: userStore.user.flashcards });
+    useUpdateUserStore({ flashcards: userStore.user.flashcards }, idUser);
   }
   emit("onCancel", props.flashcard);
 };

@@ -104,6 +104,8 @@ const onAddRow = (position: number) => {
 const onRemoveRow = (position: number) => {
   table.value.splice(position, 1);
 };
+const idUser = localStorage.getItem("idUser");
+
 const onCancel = () => {
   emit("onCancel", props.timetable);
 };
@@ -116,11 +118,11 @@ const onComplete = async () => {
       title: title.value,
       table: table.value,
       idUser: idUser,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toLocaleDateString("en-US"),
       id: new Date().getTime().toString() + Math.random() * 10,
     });
     userStore.user.timetables[data.value.id] = data.value;
-    useUpdateUserStore({ timetables: userStore.user.timetables });
+    useUpdateUserStore({ timetables: userStore.user.timetables }, idUser);
   } else {
     console.log("UPDATE");
     const data = ref<Timetable>({
@@ -131,7 +133,7 @@ const onComplete = async () => {
       id: props.timetable.id,
     });
     userStore.user.timetables[data.value.id] = data.value;
-    useUpdateUserStore({ timetables: userStore.user.timetables });
+    useUpdateUserStore({ timetables: userStore.user.timetables }, idUser);
   }
   emit("onCancel", props.timetable);
 };

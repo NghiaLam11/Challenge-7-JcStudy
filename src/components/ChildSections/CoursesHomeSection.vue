@@ -72,13 +72,15 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
+  const idUser = localStorage.getItem("idUser");
+
   if (userStore.user?.coursesUnlocked) {
     userStore.user.coursesUnlocked[courseSelected.value?.id] =
       courseSelected.value;
     // add to unlocked course array in database
     useUpdateUserStore({
       coursesUnlocked: userStore.user.coursesUnlocked,
-    });
+    }, idUser);
     onToggleUnlock(courseSelected.value);
   } else {
     alert("You don't have account!");

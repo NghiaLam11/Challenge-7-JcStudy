@@ -63,10 +63,9 @@ export const useAddUserStore = async (user: User, idUser: string) => {
   }
 };
 
-export const useUpdateUserStore = async (updateUser: any) => {
+export const useUpdateUserStore = async (updateUser: any, idUser: any) => {
   try {
-    const idUser = localStorage.getItem("idUser");
-    const docRef = doc(db, "users", `${idUser}`);
+    const docRef = doc(db, "users", idUser);
     const dataUpdate = await updateDoc(docRef, updateUser);
     useGetCoursesStore();
     console.log(
@@ -137,6 +136,8 @@ export const useGetCoursesStore = async () => {
         course.isApproved === true &&
         !userStore.user?.coursesUnlocked.hasOwnProperty(doc.id)
       ) {
+        // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
+        const newCourse = await useCheckNewItem(course);
         coursesArray.value.push({
           id: doc.id,
           imgUrl: imgUrl,
@@ -153,6 +154,15 @@ export const useGetCoursesStore = async () => {
             ...course,
           };
         }
+
+        if (newCourse) {
+          newCourses.value[doc.id] = {
+            ...newCourse,
+            id: doc.id,
+            imgUrl: imgUrl,
+            videoUrl: videoUrl,
+          };
+        }
         // IF VIEWED HIGH
         if (course.countUnlocked > 10) {
           coursesTrend.value[doc.id] = {
@@ -160,16 +170,6 @@ export const useGetCoursesStore = async () => {
             imgUrl: imgUrl,
             videoUrl: videoUrl,
             ...course,
-          };
-        }
-        // IF THE COURSE IS NEW -> ADD TO NEWCOURSES STORE
-        const newCourse = useCheckNewItem(course);
-        if (newCourse) {
-          newCourses.value[doc.id] = {
-            ...newCourse,
-            id: doc.id,
-            imgUrl: imgUrl,
-            videoUrl: videoUrl,
           };
         }
       } else if (course.isApproved === false) {
@@ -198,7 +198,7 @@ export const useGetCoursesStore = async () => {
 export const useDeleteCourseStore = async (id: any) => {
   try {
     const docRef = await deleteDoc(doc(db, "courses", id));
-    console.log("Document written with ID: ", id);
+    console.log("Document written with ID: ", docRef);
     useGetCoursesStore();
   } catch (error) {
     console.log(error);
@@ -231,7 +231,7 @@ export const useAddBlogStore = async (blog: any) => {
 export const useDeleteBlogStore = async (id: any) => {
   try {
     const docRef = await deleteDoc(doc(db, "blogs", id));
-    console.log("Document written with ID: ", id);
+    console.log("Document written with ID: ", docRef);
     useGetBlogsStore();
   } catch (error) {
     console.log(error);

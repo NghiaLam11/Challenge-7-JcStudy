@@ -351,7 +351,7 @@ const onComplete = async () => {
     tags: tags.value,
     imgUrl: imgThumbnail,
     isApproved: false,
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date().toLocaleDateString("en-US"),
     view: 0,
     reaction: 0,
     comments: {},

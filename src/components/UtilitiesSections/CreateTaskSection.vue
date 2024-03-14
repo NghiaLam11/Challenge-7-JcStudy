@@ -107,6 +107,8 @@ const onAddNewTask = () => {
 const onCancel = () => {
   emit("onCancel", props.task);
 };
+const idUser = localStorage.getItem("idUser");
+
 const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");
   if (props.task === "") {
@@ -115,11 +117,11 @@ const onComplete = async () => {
       title: title.value,
       tasks: tasks.value,
       idUser: idUser,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toLocaleDateString("en-US"),
       id: new Date().getTime().toString() + Math.random() * 10,
     });
     userStore.user.tasks[data.value.id] = data.value;
-    useUpdateUserStore({ tasks: userStore.user.tasks });
+    useUpdateUserStore({ tasks: userStore.user.tasks }, idUser);
   } else {
     console.log("UPDATE");
     const data = ref<Task>({
@@ -130,7 +132,7 @@ const onComplete = async () => {
       id: props.task.id,
     });
     userStore.user.tasks[data.value.id] = data.value;
-    useUpdateUserStore({ tasks: userStore.user.tasks });
+    useUpdateUserStore({ tasks: userStore.user.tasks }, idUser);
   }
   emit("onCancel", props.task);
 };

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="censorship"
-  >
+  <div class="censorship">
     <div class="container">
       <div class="censorship-moderate">
         <div class="content-moderate">
@@ -12,9 +10,11 @@
               :snap-align="'start'"
               :breakpoints="breakpoints"
             >
-              <Slide v-for="(course, key) in courseUnapproved" :key="course.id">
+              <Slide v-for="(course, key) in courseUnapproved" :key="key">
                 <div class="card-item">
-                  <div class="remove" @click="onRemove(key)">&#128465;</div>
+                  <div class="remove" @click="onToggleRemove(course)">
+                    &#128465;
+                  </div>
                   <div class="thumbnail">
                     <img :src="course.imgUrl" alt="" />
                   </div>
@@ -42,6 +42,12 @@
                 <Pagination />
               </template>
             </Carousel>
+            <ConfirmRemoveSection
+              v-if="isToggleRemove"
+              :course="courseSelected"
+              @on-toggle-remove="onToggleRemove"
+              @on-remove="onRemove"
+            />
           </div>
         </div>
       </div>
@@ -50,12 +56,18 @@
 </template>
 <script lang="ts" setup>
 import { computed, ref } from "vue";
+import ConfirmRemoveSection from "./ConfirmRemoveSection.vue";
 import { useCoursesStore } from "../../composable/useCourses";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useRouter } from "vue-router";
 import { Course } from "../../types/Course";
-import { useDeleteCourseStore, useUpdateCourseStore } from "../../composable/useFirebaseStore";
+import {
+  useDeleteCourseStore,
+  useUpdateCourseStore,
+  useUpdateUserStore,
+} from "../../composable/useFirebaseStore";
+import { useUserStore } from "../../composable/useUser";
 // breakpoint of slide vue-carousel
 const breakpoints = ref({
   0: {
@@ -84,9 +96,32 @@ const courseUnapproved = computed(() => {
 const onMoreDetails = (course: Course) => {
   router.push(`/courses/${course.id}/0/overview`);
 };
-const onRemove = (key: any) => {
+
+const isToggleRemove = ref(false);
+const courseSelected = ref<any>();
+const onToggleRemove = (course: Course) => {
+  isToggleRemove.value = !isToggleRemove.value;
+  courseSelected.value = course;
+  console.log(course);
+};
+const userStore = useUserStore();
+const onRemove = (notificationText: any, course: any) => {
   if (confirm("Are you sure!") == true) {
-    useDeleteCourseStore(key);
+    const key = new Date().getTime() + Math.random() * 10;
+    userStore.users[course.idUser].notifications[key] = {
+      notificationText: notificationText,
+      courseTitle: course.title,
+      isApproved: false,
+      createAt: new Date().toLocaleDateString("en-US"),
+      isRead: false,
+    };
+    useUpdateUserStore(
+      {
+        notifications: userStore.users[course.idUser].notifications,
+      },
+      course.idUser
+    );
+    useDeleteCourseStore(course.id);
   } else {
     return "";
   }

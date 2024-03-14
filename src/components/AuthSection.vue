@@ -5,6 +5,12 @@
         <div class="auth-edit" @click="onOpenFormEdit">
           <i class="fas fa-hammer"></i>
         </div>
+        <div
+          :class="[hasNewNotification ? 'unread' : 'read', 'auth-bell']"
+          @click="onToggleNotification"
+        >
+          <i class="fas fa-bell"></i>
+        </div>
 
         <div class="auth-text">
           <h4>{{ userStore.user?.name }}</h4>
@@ -61,11 +67,16 @@
       </div>
     </div>
     <EditProfileSection @onOpen="onCloseFormEdit" v-show="isToggleFormEdit" />
+    <NotificationsSection
+      v-if="isToggleNotification"
+      @onToggleNotification="onToggleNotification"
+    />
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useSignoutAuth } from "../composable/useFirebaseAuth";
+import NotificationsSection from "./AuthChildSections/NotificationsSection.vue";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";
 import CensorshipCoursesSection from "./AdminSections/CensorshipCoursesSection.vue";
 import CensorshipBlogsSection from "./AdminSections/CensorshipBlogsSection.vue";
@@ -94,6 +105,21 @@ const onSignout = () => {
   } else {
     return;
   }
+};
+
+const hasNewNotification = ref(false);
+
+onMounted(() => {
+  for (const key in userStore.user.notifications) {
+    if (userStore.user.notifications[key].isRead === false) {
+      hasNewNotification.value = true;
+    }
+  }
+});
+
+const isToggleNotification = ref(false);
+const onToggleNotification = () => {
+  isToggleNotification.value = !isToggleNotification.value;
 };
 </script>
 <style lang="scss" scoped>
@@ -125,6 +151,43 @@ const onSignout = () => {
         animation: shakeHammer 2s ease;
       }
       @keyframes shakeHammer {
+        0% {
+          rotate: 0deg;
+        }
+        30% {
+          rotate: 40deg;
+        }
+        60% {
+          rotate: -20deg;
+        }
+        100% {
+          rotate: 0deg;
+        }
+      }
+
+      .auth-bell {
+        position: absolute;
+        top: 30px;
+        left: 35px;
+        transform: scaleX(-1);
+        font-size: 1.2rem;
+        opacity: 0.3;
+      }
+
+      .unread {
+        color: red;
+        animation: shakeHammer 2s ease infinite;
+      }
+      .read {
+        color: inherit;
+        animation: none;
+      }
+      .auth-bell:hover {
+        opacity: 1;
+        cursor: pointer;
+        animation: shakeHammer 2s ease;
+      }
+      @keyframes shakeBell {
         0% {
           rotate: 0deg;
         }

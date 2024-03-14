@@ -32,6 +32,8 @@ const text = ref(props.note.text || "");
 const onCancel = () => {
   emit("onCancel", props.note);
 };
+const idUser = localStorage.getItem("idUser");
+
 const onComplete = async () => {
   console.log("COMPLETE", text.value);
   const idUser = localStorage.getItem("idUser");
@@ -41,11 +43,11 @@ const onComplete = async () => {
       title: title.value,
       text: text.value,
       idUser: idUser,
-      createdAt: new Date().toLocaleDateString(),
+      createdAt: new Date().toLocaleDateString("en-US"),
       id: new Date().getTime().toString() + Math.random() * 10,
     });
     userStore.user.notes[data.value.id] = data.value;
-    useUpdateUserStore({ notes: userStore.user.notes });
+    useUpdateUserStore({ notes: userStore.user.notes }, idUser);
   } else {
     console.log("UPDATE");
     const data = ref({
@@ -56,7 +58,7 @@ const onComplete = async () => {
       id: props.note.id,
     });
     userStore.user.notes[data.value.id] = data.value;
-    useUpdateUserStore({ notes: userStore.user.notes });
+    useUpdateUserStore({ notes: userStore.user.notes }, idUser);
   }
   emit("onCancel", props.note);
 };

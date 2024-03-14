@@ -10,13 +10,13 @@
           <router-link to="/" class="footer-link">Home</router-link>
         </li>
         <li class="footer-item">
-          <router-link to="/" class="footer-link">Courses</router-link>
+          <router-link to="/courses" class="footer-link">Courses</router-link>
         </li>
         <li class="footer-item">
-          <router-link to="/" class="footer-link">News</router-link>
+          <router-link to="/utilities" class="footer-link">Utilities</router-link>
         </li>
         <li class="footer-item">
-          <router-link to="/" class="footer-link">Blogs</router-link>
+          <router-link to="/blogs" class="footer-link">Blogs</router-link>
         </li>
       </ul>
       <ul class="footer-list">

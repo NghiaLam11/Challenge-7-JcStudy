@@ -48,13 +48,12 @@
 // import { ref } from "vue";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Navigation } from "vue3-carousel";
-import { Course } from "../../types/types";
 import { computed } from "vue";
 
 const emit = defineEmits(["onToggleUnlock", "onUnlock"]);
 
 const props = defineProps<{
-  course?: Course;
+  course?: any;
 }>();
 
 const course = props.course;
@@ -78,7 +77,7 @@ const onToggleUnlock = () => {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .details-form {
   .form-container {
     display: flex;

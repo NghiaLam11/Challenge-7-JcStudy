@@ -4,8 +4,6 @@
       <h3>New Courses</h3>
     </div>
     <Carousel
-      :items-to-show="2"
-      :snap-align="'start'"
       :breakpoints="breakpointsnew"
     >
       <Slide v-for="(course, key) in coursesStore.newCourses" :key="key">
@@ -46,7 +44,7 @@ import "vue3-carousel/dist/carousel.css";
 import { useSound } from "../../../src/composable/useSound.ts";
 import { useUserStore } from "../../composable/useUser";
 import { useUpdateUserStore } from "../../composable/useFirebaseStore";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course";
 import { useCoursesStore } from "../../composable/useCourses";
 const coursesStore = useCoursesStore();
 // Play sound when btn is clicked
@@ -60,12 +58,14 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
+  const idUser = localStorage.getItem("idUser");
+
   userStore.user.coursesUnlocked[courseSelected.value?.id] =
     courseSelected.value;
-  // add to unlocked course array in database
+  // add to unlocked course map in database
   useUpdateUserStore({
     coursesUnlocked: userStore.user.coursesUnlocked,
-  });
+  }, idUser);
   isToggleUnlock.value = !isToggleUnlock.value;
 };
 const breakpointsnew = ref({
@@ -156,4 +156,3 @@ const breakpointsnew = ref({
 }
 // ---------------------------------- END NEW CSS STYLE----------------------------------------------
 </style>
-../../types/Course.ts

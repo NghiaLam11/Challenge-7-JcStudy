@@ -68,7 +68,7 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import MoreDetailsForm from "../ChildSections/MoreDetailsForm.vue";
 import { useCoursesStore } from "../../composable/useCourses";
-import { Course } from "../../types/types";
+import { Course } from "../../types/Course";
 import { useSound } from "../../composable/useSound";
 const coursesStore = useCoursesStore();
 const soundStore = useSound();

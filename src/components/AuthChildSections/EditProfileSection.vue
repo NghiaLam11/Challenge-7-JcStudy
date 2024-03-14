@@ -119,6 +119,8 @@ const onPrevCharacter = () => {
     presentCharacter.value = characters.value.length - 1;
   }
 };
+const idUser = localStorage.getItem("idUser");
+
 const onEdit = () => {
   if (
     name.value.length < 20 &&
@@ -132,7 +134,8 @@ const onEdit = () => {
       avatar: characters.value[presentCharacter.value],
     });
     console.log(data.value);
-    useUpdateUserStore(data.value);
+
+    useUpdateUserStore(data.value, idUser);
     useGetUserStore();
     router.push("/auth");
     onBack();
@@ -155,11 +158,13 @@ const oldPassword = ref("");
 const onChangePassword = () => {
   if (userStore.user.password === oldPassword.value) {
     useUpdateAuthPassword(newPassword.value);
-    useUpdateUserStore({
-      password: newPassword.value
-    })
+    useUpdateUserStore(
+      {
+        password: newPassword.value,
+      },
+      idUser
+    );
     onBack();
-
   } else {
     alert("Wrong old password. Please try again!");
   }

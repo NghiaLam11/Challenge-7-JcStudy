@@ -93,12 +93,14 @@ const onToggleUnlock = (course: Course) => {
 };
 const userStore = useUserStore();
 const onUnlock = () => {
+  const idUser = localStorage.getItem("idUser");
+  
   userStore.user.coursesUnlocked[courseSelected.value?.id] =
     courseSelected.value;
   // add to unlocked course array in database
   useUpdateUserStore({
     coursesUnlocked: userStore.user.coursesUnlocked,
-  });
+  }, idUser);
 };
 const currentSlide = ref(0);
 const slideTo = (val: any) => {

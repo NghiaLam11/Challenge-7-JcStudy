@@ -18,23 +18,23 @@ const data = computed(() => {
 const date = new Date();
 const fiveDaysAgo = new Date(
   date.setDate(date.getDate() - 5)
-).toLocaleDateString();
+).toLocaleDateString("en-US");
 // console.log(fiveDaysAgo);
 const fourDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
-).toLocaleDateString();
+).toLocaleDateString("en-US");
 // console.log(fourDaysAgo);
 const threeDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
-).toLocaleDateString();
+).toLocaleDateString("en-US");
 // console.log(threeDaysAgo);
 const twoDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
-).toLocaleDateString();
+).toLocaleDateString("en-US");
 // console.log(twoDaysAgo);
 const oneDaysAgo = new Date(
   date.setDate(date.getDate() + 1)
-).toLocaleDateString();
+).toLocaleDateString("en-US");
 // console.log(oneDaysAgo);
 const chartData = computed(() => ({
   labels: [fiveDaysAgo, fourDaysAgo, threeDaysAgo, twoDaysAgo, oneDaysAgo],

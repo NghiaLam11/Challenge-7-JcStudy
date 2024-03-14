@@ -505,22 +505,22 @@ const onSend = async () => {
   });
   // UPLOAD IMAGE/VIDEO OF COURSE THUMBNAIL
   const idUser: any = localStorage.getItem("idUser");
-  const imgUrlCourse = await useUploadImgStorage(mediaImgLink.value, idUser);
-  const videoUrlCourse = await useUploadVideoStorage(
+  await useUploadImgStorage(mediaImgLink.value, idUser);
+  await useUploadVideoStorage(
     mediaVideoLink.value,
     idUser
   );
   // UPLOAD ALL IMAGES/VIDEOS OF THE LESSONS
   for (const i in chapters.value) {
     for (let j = 0; j < chapters.value[i].length; j++) {
-      const imgUrl = await useUploadImgStorage(
+      await useUploadImgStorage(
         {
           fileName: chapters.value[i][j].imageName,
           filePath: chapters.value[i][j].imagePath,
         },
         idUser
       );
-      const videoUrl = await useUploadVideoStorage(
+      await useUploadVideoStorage(
         {
           fileName: chapters.value[i][j].videoName,
           filePath: chapters.value[i][j].videoPath,
@@ -547,7 +547,7 @@ const onSend = async () => {
     quiz: {},
     chapters: chapters.value,
     isApproved: false,
-    createdAt: new Date().toLocaleDateString(),
+    createdAt: new Date().toLocaleDateString("en-US"),
   });
   await useAddCourseStore(data.value);
   router.push("/");

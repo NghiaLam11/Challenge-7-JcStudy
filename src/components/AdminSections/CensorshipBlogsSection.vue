@@ -16,7 +16,7 @@
                   :key="key"
                 >
                   <div class="card-item">
-                    <div class="remove" @click="onRemove(key)">&#128465;</div>
+                    <div class="remove" @click="onToggleRemove(blog)">&#128465;</div>
                     <div class="thumbnail">
                       <img :src="blog.imgUrl" alt="" />
                     </div>
@@ -52,6 +52,12 @@
                   <Pagination />
                 </template>
               </Carousel>
+              <ConfirmRemoveSection
+                v-if="isToggleRemove"
+                :course="blogSelected"
+                @on-toggle-remove="onToggleRemove"
+                @on-remove="onRemove"
+              />
             </div>
           </div>
         </div>
@@ -66,10 +72,12 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { useBlogsStore } from "../../composable/useBlogs";
 import { useUserStore } from "../../composable/useUser";
+import ConfirmRemoveSection from "./ConfirmRemoveSection.vue"
 import { useRouter } from "vue-router";
 import {
   useDeleteBlogStore,
   useUpdateBlogStore,
+  useUpdateUserStore,
 } from "../../composable/useFirebaseStore";
 const router = useRouter();
 const blogsStore = useBlogsStore();
@@ -82,9 +90,31 @@ const onApprove = (blog: any) => {
   console.log(blog);
   useUpdateBlogStore({ isApproved: true }, blog.id);
 };
-const onRemove = (key: any) => {
+const isToggleRemove = ref(false);
+const blogSelected = ref<any>();
+const onToggleRemove = (blog: any) => {
+  isToggleRemove.value = !isToggleRemove.value;
+  blogSelected.value = blog;
+  console.log(blog);
+};
+
+const onRemove = (notificationText: any, blog: any) => {
   if (confirm("Are you sure!") == true) {
-    useDeleteBlogStore(key);
+    const key = new Date().getTime() + Math.random() * 10;
+    userStore.users[blog.idUser].notifications[key] = {
+      notificationText: notificationText,
+      title: blog.title,
+      isApproved: false,
+      createAt: new Date().toLocaleDateString("en-US"),
+      isRead: false,
+    };
+    useUpdateUserStore(
+      {
+        notifications: userStore.users[blog.idUser].notifications,
+      },
+      blog.idUser
+    );
+    useDeleteBlogStore(blog.id);
   } else {
     return "";
   }
