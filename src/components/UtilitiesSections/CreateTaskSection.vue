@@ -107,7 +107,6 @@ const onAddNewTask = () => {
 const onCancel = () => {
   emit("onCancel", props.task);
 };
-const idUser = localStorage.getItem("idUser");
 
 const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");

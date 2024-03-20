@@ -65,8 +65,6 @@ const onAddFlashcard = () => {
   newFrontCard.value = "";
   newBackCard.value = "";
 };
-const idUser = localStorage.getItem("idUser");
-
 const userStore = useUserStore();
 const onComplete = async () => {
   const idUser = localStorage.getItem("idUser");

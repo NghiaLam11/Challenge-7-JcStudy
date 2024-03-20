@@ -104,7 +104,6 @@ const onAddRow = (position: number) => {
 const onRemoveRow = (position: number) => {
   table.value.splice(position, 1);
 };
-const idUser = localStorage.getItem("idUser");
 
 const onCancel = () => {
   emit("onCancel", props.timetable);

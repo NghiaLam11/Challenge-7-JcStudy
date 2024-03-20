@@ -74,7 +74,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useSignoutAuth } from "../composable/useFirebaseAuth";
 import NotificationsSection from "./AuthChildSections/NotificationsSection.vue";
 import CoursesUnlock from "./ChildSections/CoursesUnlock.vue";

@@ -10,7 +10,6 @@ import {
 } from "firebase/auth";
 
 import { auth } from "../firebase";
-import { useErrorStore } from "./useError";
 import { useUserStore } from "./useUser";
 import { useAddUserStore, useGetUserStore } from "./useFirebaseStore";
 
@@ -26,10 +25,8 @@ export const useSignupAuth = async (user: any) => {
     await useGetUserStore();
     window.location.reload();
   } catch (error: any) {
-    const errorStore = useErrorStore();
     const errorMessage = error.message;
-    errorStore.errorMessage = errorMessage;
-    errorStore.onToggleError();
+    alert(errorMessage);
   }
 };
 
@@ -43,12 +40,10 @@ export const useSigninAuth = async (email: string, password: string) => {
     localStorage.setItem("idUser", userCredential.user.uid);
     console.log(userCredential.user.uid);
     await useGetUserStore();
+    return userCredential.user.uid;
   } catch (error: any) {
-    const errorStore = useErrorStore();
     const errorMessage = error.message;
-    errorStore.errorMessage = errorMessage;
-    errorStore.onToggleError();
-    console.log(errorMessage);
+    alert(errorMessage);
   }
 };
 

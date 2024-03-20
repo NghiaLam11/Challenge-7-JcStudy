@@ -32,7 +32,6 @@ const text = ref(props.note.text || "");
 const onCancel = () => {
   emit("onCancel", props.note);
 };
-const idUser = localStorage.getItem("idUser");
 
 const onComplete = async () => {
   console.log("COMPLETE", text.value);

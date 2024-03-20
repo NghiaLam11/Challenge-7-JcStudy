@@ -15,7 +15,6 @@
   <section v-if="uploaderStore.isUploading">
     <UploaderSection />
   </section>
-  <section v-if="errorStore.isError"><ErrorSection /></section>
 </template>
 <script setup lang="ts">
 import NavBar from "./components/HeaderSection.vue";
@@ -23,11 +22,9 @@ import FooterSection from "./components/FooterSection.vue";
 import ChangeRouteSection from "./components/ChangeRouteSection.vue";
 import LoaderSection from "./components/LoaderSection.vue";
 import UploaderSection from "./components/UploaderSection.vue";
-import ErrorSection from "./components/ErrorSection.vue";
 import { onMounted, watch, ref } from "vue";
 import { useEffectChangeRoute } from "./composable/useEffectChangeRoute";
 import { useLoaderStore, useUploaderStore } from "./composable/useLoader";
-import { useErrorStore } from "./composable/useError";
 import { useRoute, useRouter } from "vue-router";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -45,7 +42,6 @@ const loaderStore = useLoaderStore();
 loaderStore.isLoading = true;
 
 const route = useRoute();
-const errorStore = useErrorStore();
 const userStore = useUserStore();
 const uploaderStore = useUploaderStore();
 const isSpecialPage = ref(false);
